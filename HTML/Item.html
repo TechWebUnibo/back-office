@@ -8,6 +8,19 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
   <link rel="stylesheet" href="../CSS/Main.css">
+  <script>
+    fetch('https://site202118.tw.cs.unibo.it/api/items', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(data => console.log(data))
+      .catch(errore => console - log('ERROR'))
+  </script>
 </head>
 
 <body>
@@ -58,10 +71,12 @@
               aria-describedby="itemnameHelp" required aria-required="true">
           </div>
           <!-- Type -->
-          <!-- TODO aggiungere menù a tendina dopo una get delle type -->
-          <div class="col-12 mb-3">
-            <input type="text" class="form-control" id="type" placeholder="Category of the item"
-              aria-describedby="typeHelp" required aria-required="true">
+          <div class="input-group col-12 mb-3 ">
+            <label class="input-group-text" for="categoryOfTheItem">Category</label>
+            <select class="form-select" id="categoryOfTheItem">
+              <!-- TODO rendere questa option grigia -->
+              <option value="" id="selectPlaceholder" disabled selected hidden>Choose a category</option>
+            </select>
           </div>
           <!-- Price -->
           <div class="col-12 mb-3">
@@ -93,6 +108,36 @@
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+
+  </script>
+  <script>
+    $('h3').css('color', "black");
+  </script>
+  <script>
+    //Loading of the select input
+    //TODO prendere le categorie
+    fetch('https://site202118.tw.cs.unibo.it/api/staff', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(function (data) {
+        console.log(data);
+        appendData(data);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+    function appendData(data) {
+      for (var i = 0; i < data.length; i++) {
+        $('#categoryOfTheItem').append('<option value="' + data[i]._id + '">' + data[i].username + '</option>');
+      }
+    }
+    //POST of a new item
     $('form').submit(function (e) {
       e.preventDefault();
       var item = $('input#itemname').val();
@@ -114,9 +159,6 @@
         .catch(errore => console - log('ERROR'))
       document.getElementById("createUserForm").reset()
     });
-  </script>
-  <script>
-    $('h3').css('color', "black");
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
