@@ -55,35 +55,38 @@
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-var data = JSON.stringify({ username: "Gled", password: "prova1"}, null, '\t');
-/*fetch('https://site202118.tw.cs.unibo.it/api/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: data,
+    var data = JSON.stringify({ username: "Gled", password: "prova1" }, null, '\t');
+
+    fetch('https://site202118.tw.cs.unibo.it/api/auth/login/staff', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: data,
+    })
+      .then(res => {
+        return res.json()
       })
-        .then(res => {
-          return res.json()
-        })
-        .then(data => console.log(data))
-        .catch(errore => console - log('ERROR'))
-
-        var data = JSON.stringify({ username: "Gled", password: "prova1"}, null, '\t');
-
-        
-
-        fetch('https://site202118.tw.cs.unibo.it/api/staff', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+      .then(function (data) {
+        console.log(data)
+        localStorage.token = data.accessToken;
       })
-        .then(res => {
-          return res.json()
-        })
-        .then(data => console.log(data))
-        .catch(errore => console - log('ERROR')) */
+      .catch(errore => console - log('ERROR'))
+
+    fetch('https://site202118.tw.cs.unibo.it/api/auth/publicKey', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(function (data) {
+        console.log(data)
+        localStorage.publicKey = data.publicKey;
+      })
+      .catch(errore => console - log('ERROR'))
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

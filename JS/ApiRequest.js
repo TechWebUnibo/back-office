@@ -110,3 +110,42 @@ fetch('https://site202118.tw.cs.unibo.it/api/staff', {
   })
   .then(data => console.log(data))
   .catch(errore => console - log('ERROR'))
+
+//Login staff
+
+  fetch('https://site202118.tw.cs.unibo.it/api//auth/login/staff', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: data,
+})
+  .then(res => {
+    return res.json()
+  })
+  .then(data => console.log(data))
+  .catch(errore => console - log('ERROR'))
+
+  //GET public key
+
+  fetch('https://site202118.tw.cs.unibo.it/api/auth/publicKey', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+})
+  .then(res => {
+    return res.json()
+  })
+  .then(data => console.log(data))
+  .catch(errore => console - log('ERROR'))
+
+  //dati per loggare
+
+  var data = JSON.stringify({ username: "Gled", password: "prova1" }, null, '\t');
+
+  //controllo via server con il token
+
+  https://site202118.tw.cs.unibo.it/api/auth/staff/authenticated
+
+  //TODO potrebbe essere che nel rental abbiamo solo la categoria e non anche l'item

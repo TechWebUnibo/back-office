@@ -128,7 +128,6 @@
       var comment = $('input#comment').val();
       //TODO manca il commento nell'API dell'utente
       var data = JSON.stringify({ username: name, password: pass, avatar: avat, address: { city: city, zip: zipcode, residence: res } }, null, '\t');
-      console.log(data);
       fetch('https://site202118.tw.cs.unibo.it/api/customers', {
         method: 'POST',
         headers: {

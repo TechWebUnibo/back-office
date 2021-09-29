@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Home Page </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="../CSS/Main.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+        <div class="loginForm offset-1 col-lg-6 col-md-10 col-sm-10 col-10">
+            <h3>
+                LOGIN
+            </h3>
+            <form method="POST">
+                <!-- Username -->
+                <div class="col-12 mb-3">
+                    <input type="text" class="form-control" id="username" placeholder="Username"
+                        aria-describedby="usernameHelp" required aria-required="true">
+                </div>
+                <!-- Password -->
+                <div class="mb-3">
+                    <div class="col-12 mb-1">
+                        <input type="password" class="form-control" id="userPassword" placeholder="Password"
+                            aria-describedby="passwordHelp" required aria-required="true">
+                    </div>
+                    <!-- Show password button -->
+                    <div>
+                        <input type="checkbox" onclick="showPass()">Show Password
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <footer>
+
+    </footer>
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('form').submit(function (e) {
+            e.preventDefault();
+            var name = $('input#username').val();
+            var pass = $('input#userPassword').val();
+            var data = JSON.stringify({ username: name, password: pass }, null, '\t');
+
+            fetch('https://site202118.tw.cs.unibo.it/api/auth/login/staff', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: data,
+            })
+                .then(res => {
+                    //TODO .json butta lo status mentre il .status salva il codice
+                    return res.status
+                })
+                .then(function (data) {
+                    console.log(data)
+                    localStorage.token = data.accessToken;
+                })
+                .catch(function (err) {
+                    console.log(err)
+                })
+
+            fetch('https://site202118.tw.cs.unibo.it/api/auth/publicKey', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(res => {
+                    return res.json()
+                })
+                .then(function (data) {
+                    console.log(data)
+                    localStorage.publicKey = data.publicKey;
+                })
+                .catch(errore => console - log('ERROR'))
+        })
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <script>
+    </script>
+</body>
+
+</html>

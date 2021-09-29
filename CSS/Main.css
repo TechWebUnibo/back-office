@@ -38,6 +38,16 @@ header{
     margin-top: 15px;
     font-weight: bold;
 }
+.loginForm{
+    margin-top: 2rem;
+    background: #ffffff;
+    padding-bottom: 1rem;
+    border-radius: 3%;
+}
+.loginForm > h3{
+    margin-top: 15px;
+    font-weight: bold;
+}
 .searchById{
     margin-top: 2rem;
     margin-bottom: 2rem;

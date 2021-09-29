@@ -9,3 +9,9 @@ function showPass(){
         pass.type = "password";
     }
 }
+//TODO da completare (fare praticamente)
+function isLogged(){
+    accToken = localStorage.token;
+    pubKey = localStorage.publicKey;
+
+}
