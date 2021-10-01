@@ -1,15 +1,16 @@
 body{
     font-size: 17px;
     font-family: Arial, Helvetica, sans-serif;
-    background: #e5e5e5;
+    background: #fcc076;
     line-height: 1.5em;
 }
-header{
+/*TODO scegliere come fare la navbar */
+/*header{
     background: #ffb3d1;
     padding: 20px;
     text-align: center;
     margin-bottom: 10px;
-}
+}*/
 .navbar{
     background-color: #962971;
 }
@@ -50,8 +51,6 @@ header{
 }
 .searchById{
     margin-top: 2rem;
-    margin-bottom: 2rem;
-    padding-bottom: 10px;
     background: #FFFFFF;
     text-align: center;
     border-radius: 0.5rem;
@@ -70,5 +69,6 @@ header{
     background-color: #f8d7da;
     border-color: #f5c6cb;
     padding: 0.4rem;
-    border-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    border-bottom-right-radius: .25rem;
 }

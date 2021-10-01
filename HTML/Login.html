@@ -12,9 +12,9 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="loginForm offset-1 col-lg-6 col-md-10 col-sm-10 col-10">
+            <div class="loginForm offset-lg-2 offset-1 col-lg-8 col-10">
                 <h3>
                     LOGIN
                 </h3>
@@ -32,7 +32,7 @@
                         </div>
                         <!-- Show password button -->
                         <div>
-                            <input type="checkbox" onclick="showPass()">Show Password
+                            <input type="checkbox" autocomplete="off" onclick="showPass()">Show Password
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -80,6 +80,7 @@
                 .catch(function (err) {
                     console.log(err)
                 })
+            
             url = 'https://site202118.tw.cs.unibo.it/api/auth/publicKey';
             fetch(url, {
                 method: 'GET',
