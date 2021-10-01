@@ -32,7 +32,7 @@ header{
     margin-top: 2rem;
     background: #ffffff;
     padding-bottom: 1rem;
-    border-radius: 3%;
+    border-radius: 0.5rem;
 }
 .createForm > h3{
     margin-top: 15px;
@@ -42,7 +42,7 @@ header{
     margin-top: 2rem;
     background: #ffffff;
     padding-bottom: 1rem;
-    border-radius: 3%;
+    border-radius: 0.5rem;
 }
 .loginForm > h3{
     margin-top: 15px;
@@ -54,7 +54,7 @@ header{
     padding-bottom: 10px;
     background: #FFFFFF;
     text-align: center;
-    border-radius: 3%;
+    border-radius: 0.5rem;
 }
 .searchById > h4{
     text-align: center;
@@ -64,4 +64,11 @@ header{
 }
 .active{
     font-weight: bold;
+}
+.errorMessage{
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 0.4rem;
+    border-radius: .25rem;
 }

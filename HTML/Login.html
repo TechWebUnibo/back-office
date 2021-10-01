@@ -14,33 +14,33 @@
 <body>
     <div class="container">
         <div class="row">
-        <div class="loginForm offset-1 col-lg-6 col-md-10 col-sm-10 col-10">
-            <h3>
-                LOGIN
-            </h3>
-            <form method="POST">
-                <!-- Username -->
-                <div class="col-12 mb-3">
-                    <input type="text" class="form-control" id="username" placeholder="Username"
-                        aria-describedby="usernameHelp" required aria-required="true">
-                </div>
-                <!-- Password -->
-                <div class="mb-3">
-                    <div class="col-12 mb-1">
-                        <input type="password" class="form-control" id="userPassword" placeholder="Password"
-                            aria-describedby="passwordHelp" required aria-required="true">
+            <div class="loginForm offset-1 col-lg-6 col-md-10 col-sm-10 col-10">
+                <h3>
+                    LOGIN
+                </h3>
+                <form method="POST">
+                    <!-- Username -->
+                    <div class="col-12 mb-3">
+                        <input type="text" class="form-control" id="username" placeholder="Username"
+                            aria-describedby="usernameHelp" required aria-required="true">
                     </div>
-                    <!-- Show password button -->
-                    <div>
-                        <input type="checkbox" onclick="showPass()">Show Password
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <div class="col-12 mb-1">
+                            <input type="password" class="form-control" id="userPassword" placeholder="Password"
+                                aria-describedby="passwordHelp" required aria-required="true">
+                        </div>
+                        <!-- Show password button -->
+                        <div>
+                            <input type="checkbox" onclick="showPass()">Show Password
+                        </div>
                     </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-
+    <script type="text/javascript" src="../JS/Main.js"></script>
     <footer>
 
     </footer>
@@ -52,8 +52,8 @@
             var name = $('input#username').val();
             var pass = $('input#userPassword').val();
             var data = JSON.stringify({ username: name, password: pass }, null, '\t');
-
-            fetch('https://site202118.tw.cs.unibo.it/api/auth/login/staff', {
+            let url = 'https://site202118.tw.cs.unibo.it/api/auth/login/staff'
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -62,6 +62,15 @@
             })
                 .then(res => {
                     //TODO .json butta lo status mentre il .status salva il codice
+                    //TODO if che controlla cosa accade
+                    //if(res.status == 200) carica pagina else if(res.status == 403 password sbagliata) else (account non trovato)
+                    if (res.status == 200) {
+                        window.location.href = 'Home.html';
+                    }
+                    else if (res.status == 403) {
+
+                        $('#userPassword').after('<div class="errorMessage"> The password is incorrect. </div>');
+                    }
                     return res.status
                 })
                 .then(function (data) {
@@ -71,8 +80,8 @@
                 .catch(function (err) {
                     console.log(err)
                 })
-
-            fetch('https://site202118.tw.cs.unibo.it/api/auth/publicKey', {
+            url = 'https://site202118.tw.cs.unibo.it/api/auth/publicKey';
+            fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
