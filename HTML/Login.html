@@ -68,8 +68,12 @@
                         window.location.href = 'Home.html';
                     }
                     else if (res.status == 403) {
-
+                        $('.errorMessage').remove();
                         $('#userPassword').after('<div class="errorMessage"> The password is incorrect. </div>');
+                    }
+                    else{
+                        $('.errorMessage').remove();
+                        $('#userPassword').after('<div class="errorMessage"> The user doesn&apos;t exist. </div>');
                     }
                     return res.status
                 })
@@ -80,7 +84,7 @@
                 .catch(function (err) {
                     console.log(err)
                 })
-            
+
             url = 'https://site202118.tw.cs.unibo.it/api/auth/publicKey';
             fetch(url, {
                 method: 'GET',
