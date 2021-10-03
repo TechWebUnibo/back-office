@@ -149,3 +149,15 @@ fetch('https://site202118.tw.cs.unibo.it/api/staff', {
   https://site202118.tw.cs.unibo.it/api/auth/staff/authenticated
 
   //TODO potrebbe essere che nel rental abbiamo solo la categoria e non anche l'item
+
+//TODO Card prototype for users
+//TODO password reset
+  '<div class="card" style="width: 18rem;">
+    <div class ="card-body">
+    <h5 class ="card-title">Username: ' + data[i].username + '</h5>
+    <h6>City: ' + data[i].address.city + '</h6>
+    <h6>Address: ' + data[i].address.residence + '</h6>
+    <h6>Zip: ' + data[i].address.zip + '</h6>
+    <h6>Comment: </h6>
+    </div>
+  </div>'
