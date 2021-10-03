@@ -4,6 +4,7 @@ body{
     background: #c0b6e6;
     line-height: 1.5em;
 }
+/* Navbar style */
 .navbar{
     background-color: #FFFFFF;
 }
@@ -22,16 +23,23 @@ body{
 .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .show>.nav-link {
     color: #000000;
 }
-.createForm{
-    margin-top: 2rem;
-    background: #ffffff;
-    padding-bottom: 1rem;
-    border-radius: 0.5rem;
-}
-.createForm > h3{
-    margin-top: 15px;
+.active{
     font-weight: bold;
 }
+.logo{
+    width:120px;
+    height:60px;
+}
+/* Button style */
+.btn-submit {
+    color: #FFFFFF;
+    background-color: #c568d7;
+    border-color: #e1a5cf;
+}
+.btn-submit:focus{
+    box-shadow: 0 0 0 0.25rem rgb(166 19 181 / 26%);
+}
+/* Login style */
 .loginForm{
     margin-top: 2rem;
     background: #ffffff;
@@ -39,6 +47,17 @@ body{
     border-radius: 0.5rem;
 }
 .loginForm > h3{
+    margin-top: 15px;
+    font-weight: bold;
+}
+/* Form style */
+.createForm{
+    margin-top: 2rem;
+    background: #ffffff;
+    padding-bottom: 1rem;
+    border-radius: 0.5rem;
+}
+.createForm > h3{
     margin-top: 15px;
     font-weight: bold;
 }
@@ -54,9 +73,7 @@ body{
     margin-bottom: auto;
     font-weight: bold;
 }
-.active{
-    font-weight: bold;
-}
+/* Error message */
 .errorMessage{
     color: #721c24;
     background-color: #f8d7da;
@@ -64,16 +81,4 @@ body{
     padding: 0.4rem;
     border-bottom-left-radius: .25rem;
     border-bottom-right-radius: .25rem;
-}
-.logo{
-    width:120px;
-    height:60px;
-}
-.btn-submit {
-    color: #FFFFFF;
-    background-color: #c568d7;
-    border-color: #e1a5cf;
-}
-.btn-submit:focus{
-    box-shadow: 0 0 0 0.25rem rgb(166 19 181 / 26%);
 }
