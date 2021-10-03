@@ -85,6 +85,17 @@ body{
     margin-bottom: auto;
     font-weight: bold;
 }
+/* List of element style */
+.catalogForm{
+    margin-top: 2rem;
+    background: #ffffff;
+    padding-bottom: 1rem;
+    border-radius: 0.5rem;
+}
+.catalogForm > h4{
+    margin-top: 15px;
+    font-weight: bold;
+}
 /* Error message */
 .errorMessage{
     color: #721c24;
