@@ -1,7 +1,8 @@
 body{
     font-size: 17px;
     font-family: Arial, Helvetica, sans-serif;
-    background: #c0b6e6;
+    background: rgb(54,75,230);
+    background: linear-gradient(90deg, rgba(54,75,230,1) 0%, rgba(202,144,245,1) 42%, rgba(255,151,223,1) 100%);
     line-height: 1.5em;
 }
 /* Navbar style */
@@ -105,3 +106,14 @@ body{
     border-bottom-left-radius: .25rem;
     border-bottom-right-radius: .25rem;
 }
+/* Scroll bar */
+/* ::-webkit-scrollbar{
+    border-radius: 100vw;
+    background-color: green;
+    width: 1em;
+    height: 100;
+}
+::-webkit-scrollbar-thumb{
+    border-radius: 100vw;
+    background-color: red;
+} */

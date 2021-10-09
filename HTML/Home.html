@@ -29,12 +29,32 @@
               <a class="nav-link active" aria-current="page" href="Home.html">Home</a>
             </li>
             <!-- User -->
-            <li class="nav-item">
-              <a class="nav-link" href="User.html">Users</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownUsers" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Users
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownUsers">
+                <li><a class="dropdown-item" href="User.html">Create</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="UserSearch.html">Search, Modify & Delete</a></li>
+              </ul>
             </li>
             <!-- Item -->
-            <li class="nav-item">
-              <a class="nav-link" href="Item.html">Items</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownItems" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Items
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownItems">
+                <li><a class="dropdown-item" href="Item.html">Create</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="ItemSearch.html">Search, Modify & Delete</a></li>
+              </ul>
             </li>
             <!-- Category -->
             <li class="nav-item">
@@ -44,6 +64,7 @@
             <li class="nav-item">
               <a class="nav-link" href="Rent.html">Rents</a>
             </li>
+
         </div>
       </div>
     </nav>
@@ -71,7 +92,9 @@
         console.log(data)
         localStorage.token = data.accessToken;
       })
-      .catch(errore => console - log('ERROR'))
+      .catch(function (err) {
+        console.log(err);
+      })
 
     fetch('https://site202118.tw.cs.unibo.it/api/auth/publicKey', {
       method: 'GET',
@@ -86,7 +109,9 @@
         console.log(data)
         localStorage.publicKey = data.publicKey;
       })
-      .catch(errore => console - log('ERROR'))
+      .catch(function (err) {
+        console.log(err);
+      })
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
