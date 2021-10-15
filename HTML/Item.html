@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>User Page </title>
+  <title>Item Create Page </title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -30,7 +30,7 @@
     <nav class="navbar navbar-expand-md navbar-light">
       <div class="container-fluid">
         <!-- Logo -->
-        <img src="../Images/logo.png" alt="Logo" class="logo">
+        <img src="http://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Logo" class="logo">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -82,41 +82,39 @@
       </div>
     </nav>
   </header>
+
   <div class="container">
     <div class="row">
       <div class="createForm offset-1 col-lg-6 col-md-10 col-sm-10 col-10">
         <h3 class="mb-4">Create Item</h3>
-        <form method="POST">
+        <!-- FORM -->
+        <form id="createitemForm">
           <!-- Item name -->
           <div class="col-12 mb-3">
             <input type="text" class="form-control" id="itemname" placeholder="Name of the item"
               aria-describedby="itemnameHelp" required aria-required="true">
           </div>
           <!-- Type -->
-          <div class="input-group col-12 mb-3 ">
+          <div class="input-group col-12 mb-3">
             <label class="input-group-text" for="categoryOfTheItem">Category</label>
             <select class="form-select" id="categoryOfTheItem">
-              <!-- TODO rendere questa option grigia -->
               <option value="" id="selectPlaceholder" disabled selected hidden>Choose a category</option>
+            </select>
+          </div>
+          <!-- Condition -->
+          <div class="input-group col-12 mb-3">
+            <label class="input-group-text" for="condition">Condition</label>
+            <select class="form-select" id="condition">
+              <option value="perfect">Perfect</option>
+              <option value="good">Good</option>
+              <option value="suitable">Suitable</option>
+              <option value="not_available">Not Available</option>
             </select>
           </div>
           <!-- Price -->
           <div class="col-12 mb-3">
             <label for="price">Price: </label>
-            <input type="number" id="price " min="0.00" max="10000.00" step="0.01" required aria-required="true" />
-          </div>
-          <div class="col-12 mb-3">
-            <input type="text" class="form-control" id="condition" placeholder="Condition of the item"
-              aria-describedby="conditionHelp" required aria-required="true">
-          </div>
-          <button type="submit" class="btn btn-submit">Submit</button>
-        </form>
-      </div>
-      <div class="searchById offset-1 col-lg-3 col-md-10 col-sm-10 col-10">
-        <h4>Search an item by ID</h4>
-        <form>
-          <div class="offset-2 col-8 mb-3">
-            <input type="text" class="form-control" id="idItem" aria-describedby="idItemHelp">
+            <input type="number" id="price" min="0.00" max="10000.00" step="0.01" required aria-required="true" />
           </div>
           <button type="submit" class="btn btn-submit">Submit</button>
         </form>
@@ -134,8 +132,7 @@
   </script>
   <script>
     //Loading of the select input
-    //TODO prendere le categorie
-    fetch('https://site202118.tw.cs.unibo.it/api/staff', {
+    fetch('https://site202118.tw.cs.unibo.it/api/products', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -151,34 +148,29 @@
       .catch(function (err) {
         console.log(err);
       });
-    function appendData(data) {
-      for (var i = 0; i < data.length; i++) {
-        $('#categoryOfTheItem').append('<option value="' + data[i]._id + '">' + data[i].username + '</option>');
+    function appendData(categories) {
+      for (const category of categories) {
+        $('#categoryOfTheItem').append('<option value="' + category._id + '">' + category.name + '</option>');
       }
     }
     //POST of a new item
-    $('form').submit(function (e) {
+    $('form').submit(async function (e) {
       e.preventDefault();
-      var item = $('input#itemname').val();
-      var typ = $('input#type').val();
-      var prc = $('input#price').val();
-      var cond = $('input#condition').val();
-      var data = JSON.stringify({ name: name, type: typ, price: prc, condition: cond }, null, '\t');
-      fetch('https://site202118.tw.cs.unibo.it/api/customers', {
+      var item = $('#itemname').val();
+      var typ = $('#categoryOfTheItem').val();
+      var prc = $('#price').val();
+      var cond = $('#condition').val();
+      var data = JSON.stringify({ name: item, type: typ, price: prc, condition: cond });
+      let res = fetch('https://site202118.tw.cs.unibo.it/api/items', {
         method: 'POST',
         headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': 'Bearer ' + localStorage.token,
           'Content-Type': 'application/json'
         },
         body: data
       })
-        .then(res => {
-          return res.json()
-        })
-        .then(data => console.log(data))
-        .catch(function (err) {
-          console.log(err);
-        })
-      document.getElementById("createUserForm").reset()
+      $("#createitemForm").trigger('reset')
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

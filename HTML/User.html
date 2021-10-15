@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>User Page </title>
+  <title>User Create Page </title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -91,7 +91,7 @@
           <!-- Avatar -->
           <div class="col-6 mb-3">
             <label for="avatar">Avatar</label>
-            <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
+            <input class ="form-control-file" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
           </div>
           <!-- Address -->
           <div class="row mb-3">
@@ -137,32 +137,40 @@
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    $('form').submit(function (e) {
+    $('form').submit(async function (e) {
       e.preventDefault();
-      var name = $('input#username').val();
-      var pass = $('input#userPassword').val();
-      var avat = $('input#avatar').val();
-      var city = $('input#inputCity').val();
-      var res = $('input#inputAddress').val();
-      var zipcode = $('input#inputZip').val();
-      var comment = $('input#comment').val();
+      let name = $('#username').val();
+      let pass = $('#userPassword').val();
+      let city = $('#inputCity').val();
+      let res = $('#inputAddress').val();
+      let zipcode = $('#inputZip').val();
+      let comment = $('#comment').val();
+      let avat = document.getElementById('avatar');
+      //let address = `{"city": "${city}", "residence": "${res}", "zip": ${zipcode}}`;
+      const formData = new FormData();
+      let address = {
+        city: city,
+        residence: res,
+        zip: zipcode
+      }
+      formData.append('username', name);
+      formData.append('password', pass);
+      formData.append('avatar', avat.files[0]);
+      formData.append('address.city', city);
+      formData.append('address.residence', res);
+      formData.append('address.zip', zipcode);
+
       //TODO manca il commento nell'API dell'utente
-      var data = JSON.stringify({ username: name, password: pass, avatar: avat, address: { city: city, zip: zipcode, residence: res } }, null, '\t');
-      fetch('https://site202118.tw.cs.unibo.it/api/customers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: data
-      })
-        .then(res => {
-          return res.json()
+      try {
+        let res = await fetch('https://site202118.tw.cs.unibo.it/api/customers', {
+          method: 'POST',
+          body: formData
         })
-        .then(data => console.log(data))
-        .catch(function (err) {
-          console.log(err);
-        })
-      document.getElementById("createUserForm").reset()
+        $("#createUserForm").trigger('reset')
+      }
+      catch (error) {
+        console.log(error)
+      }
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

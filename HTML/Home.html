@@ -76,25 +76,6 @@
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    var data = JSON.stringify({ username: "Gled", password: "prova1" }, null, '\t');
-
-    fetch('https://site202118.tw.cs.unibo.it/api/auth/login/staff', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: data,
-    })
-      .then(res => {
-        return res.json()
-      })
-      .then(function (data) {
-        console.log(data)
-        localStorage.token = data.accessToken;
-      })
-      .catch(function (err) {
-        console.log(err);
-      })
 
     fetch('https://site202118.tw.cs.unibo.it/api/auth/publicKey', {
       method: 'GET',

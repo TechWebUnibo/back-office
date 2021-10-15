@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>User Page </title>
+  <title>Category Page </title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -85,7 +85,8 @@
           <!-- Image -->
           <div class="col-6 mb-3">
             <label for="image">Image</label>
-            <input type="file" id="image" name="image" accept="image/png, image/jpeg" required aria-required="true">
+            <input type="file" id="image" name="image" accept="image/png, image/jpeg">
+            <!-- <input type="file" id="image" name="image" accept="image/png, image/jpeg" required aria-required="true"> -->
           </div>
           <button type="submit" class="btn btn-submit">Submit</button>
         </form>
@@ -109,27 +110,48 @@
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    $('form').submit(function (e) {
+    //authenticated?
+    fetch('https://site202118.tw.cs.unibo.it/api/auth/staff/authenticated', {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Authorization': 'Bearer ' + localStorage.token
+      },
+    })
+      .then(res => {
+        if (res.status == 200) return res.json();
+        else window.location.href = 'NotLogged.html';
+      })
+      .then(function (data) {
+        console.log(data);
+      })
+      .catch(function (err) {
+        console.log(err);
+      })
+
+    //Post of the category
+    $('form').submit(async function (e) {
       e.preventDefault();
-      var category = $('input#categoryname').val();
-      var desc = $('input#description').val();
-      var image = $('input#image').val();
-      //TODO non funziona senza il login
-      var data = JSON.stringify({ name: category, description: desc, img: image }, null, '\t');
-      fetch('https://site202118.tw.cs.unibo.it/api/products', {
+
+      let category = $('input#categoryname').val();
+      let desc = $('input#description').val();
+      let img = document.getElementById('image');
+
+      const formData = new FormData();
+      formData.append('name', category);
+      formData.append('description', desc);
+      formData.append('img', img.files[0]);
+
+      let res = await fetch('https://site202118.tw.cs.unibo.it/api/products', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': 'Bearer ' + localStorage.token,
         },
-        body: data,
+        body: formData,
       })
-        .then(res => {
-          return res.json()
-        })
-        .then(data => console.log(data))
-        .catch(function (err) {
-          console.log(err);
-        })
+      console.log(await res.json())
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

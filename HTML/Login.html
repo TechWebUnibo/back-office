@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Home Page </title>
+    <title>Login Page </title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -12,6 +12,14 @@
 </head>
 
 <body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-light">
+            <div class="container-fluid">
+                <!-- Logo -->
+                <img src="../Images/logo.png" alt="Logo" class="logo">
+            </div>
+        </nav>
+    </header>
     <div class="container-fluid">
         <div class="row">
             <div class="loginForm offset-lg-2 offset-1 col-lg-8 col-10">
@@ -47,43 +55,35 @@
     <!-- JQUERY -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $('form').submit(function (e) {
+        $('form').submit(async function (e) {
             e.preventDefault();
             var name = $('input#username').val();
             var pass = $('input#userPassword').val();
             var data = JSON.stringify({ username: name, password: pass }, null, '\t');
             let url = 'https://site202118.tw.cs.unibo.it/api/auth/login/staff'
-            fetch(url, {
+            let res = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: data,
             })
-                .then(res => {
-                    //TODO .json butta lo status mentre il .status salva il codice
-                    //TODO if che controlla cosa accade
-                    //if(res.status == 200) carica pagina else if(res.status == 403 password sbagliata) else (account non trovato)
-                    if (res.status == 200) {
-                        window.location.href = 'Home.html';
-                    }
-                    else if (res.status == 403) {
-                        $('.errorMessage').remove();
-                        $('#userPassword').after('<div class="errorMessage"> The password is incorrect. </div>');
-                    }
-                    else {
-                        $('.errorMessage').remove();
-                        $('#userPassword').after('<div class="errorMessage"> The user doesn&apos;t exist. </div>');
-                    }
-                    return res.status
-                })
-                .then(function (data) {
-                    console.log(data)
-                    localStorage.token = data.accessToken;
-                })
-                .catch(function (err) {
-                    console.log(err)
-                })
+            data = await res.json()
+            console.log(data)
+            console.log(data.accessToken)
+            localStorage.token = data.accessToken;
+            //if(res.status == 200) load the home page, else if(res.status == 403 wrong password) else (account not founded/doesn't exist)
+            if (res.status == 200) {
+                window.location.href = 'Home.html';
+            }
+            else if (res.status == 403) {
+                $('.errorMessage').remove();
+                $('#userPassword').after('<div class="errorMessage"> The password is incorrect. </div>');
+            }
+            else {
+                $('.errorMessage').remove();
+                $('#userPassword').after('<div class="errorMessage"> The user doesn&apos;t exist. </div>');
+            }
 
             url = 'https://site202118.tw.cs.unibo.it/api/auth/publicKey';
             fetch(url, {
