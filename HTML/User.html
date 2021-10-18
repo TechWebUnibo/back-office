@@ -77,6 +77,19 @@
             <input type="text" class="form-control" id="username" placeholder="Username" aria-describedby="usernameHelp"
               required aria-required="true">
           </div>
+          <!-- Name & Surname -->
+          <div class=" row col-12 mb-3">
+            <!-- Name -->
+            <div class="col-6">
+              <input type="text" class="form-control" id="name" placeholder="Name" aria-describedby="nameHelp"
+              required aria-required="true">
+            </div>
+            <!-- Surname -->
+            <div class="col-6">
+              <input type="text" class="form-control" id="surname" placeholder="Surname" aria-describedby="surnameHelp"
+              required aria-required="true">
+            </div>
+          </div>
           <!-- Password -->
           <div class="mb-3">
             <div class="col-12 mb-1">
@@ -119,15 +132,6 @@
           <button type="submit" class="btn btn-submit">Submit</button>
         </form>
       </div>
-      <div class="searchById offset-1 col-lg-3 col-md-10 col-sm-10 col-10">
-        <h4>Search a user by ID</h4>
-        <form>
-          <div class="offset-2 col-8 mb-3">
-            <input type="text" class="form-control" id="idUser" aria-describedby="idUserHelp">
-          </div>
-          <button type="submit" class="btn btn-submit">Submit</button>
-        </form>
-      </div>
     </div>
   </div>
   <footer>
@@ -139,21 +143,19 @@
   <script>
     $('form').submit(async function (e) {
       e.preventDefault();
-      let name = $('#username').val();
+      let username = $('#username').val();
+      let name = $('#name').val();
+      let surname = $('#surname').val();
       let pass = $('#userPassword').val();
       let city = $('#inputCity').val();
       let res = $('#inputAddress').val();
       let zipcode = $('#inputZip').val();
       let comment = $('#comment').val();
       let avat = document.getElementById('avatar');
-      //let address = `{"city": "${city}", "residence": "${res}", "zip": ${zipcode}}`;
-      const formData = new FormData();
-      let address = {
-        city: city,
-        residence: res,
-        zip: zipcode
-      }
-      formData.append('username', name);
+      let formData =new FormData();
+      formData.append('username', username);
+      formData.append('name', name);
+      formData.append('surname', surname);
       formData.append('password', pass);
       formData.append('avatar', avat.files[0]);
       formData.append('address.city', city);
@@ -166,6 +168,7 @@
           method: 'POST',
           body: formData
         })
+        //Reset of the form
         $("#createUserForm").trigger('reset')
       }
       catch (error) {

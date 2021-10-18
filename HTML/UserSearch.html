@@ -81,45 +81,41 @@
 
   </footer>
   <script type="text/javascript" src="../JS/Main.js"></script>
+  <script type="text/javascript" src="../JS/apiLibrary.js"></script>
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-
-  </script>
-  <script>
-    //Loading of the select input
-    //TODO prendere le categorie
-    fetch('https://site202118.tw.cs.unibo.it/api/customers', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+    $(document).ready(async function () {
+      let customers = await getCustomers()
+      console.log(customers)
+      appendData(customers)
     })
-      .then(res => {
-        return res.json()
-      })
-      .then(function (data) {
-        console.log(data);
-        appendData(data);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-    function appendData(customers) {
+    async function appendData(customers) {
       for (const customer of customers) {
         let city, residence, zip
-        //TODO ricordarsi che qui utilizziamo i commenti
+        //TODO capire qual è il controllo che posso fare
+        customer.avatar = "https://site202118.tw.cs.unibo.it" + customer.avatar;
+        if (customer.avatar == "https://site202118.tw.cs.unibo.it") customer.avatar += "/img/avatar/generic-user-icon.png"
+        //TODO ricordarsi che qui utilizziamo i commenti (nel caso di no allora eliminarli anche dalla form)
         if (customer.address != null) {
           //Controls on the content of the address
           city = customer.address.city == '' ? 'Not definied' : customer.address.city;
           residence = customer.address.residence == '' ? 'Not definied' : customer.address.residence;
           zip = customer.address.zip == null ? 'Not definied' : customer.address.zip;
-          $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h5 class ="card-title">'
-            + customer.username + '</h5><h6>City: ' + city + '</h6><h6>Address: ' + residence + '</h6><h6>Zip: '
-            + zip + '</h6><h6>Comment: </h6></div></div>');
+
+          $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><img src="' + customer.avatar +
+            '" class="img-thumbnail img-fluid avatar"><h5 class ="card-title">' + customer.username +
+            '</h5><h6>' + customer.name + ' ' + customer.surname +
+            '</h6><h7>City: ' + city +
+            '</h7><br><h7>Address: ' + residence +
+            '</h7><br><h7>Zip: ' + zip +
+            '</h7><br><h7>Comment: </h7></div></div>');
         }
         else {
-          $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h5 class ="card-title">' + customer.username + '</h5><h6>City: Not definied</h6><h6>Address: Not definied</h6><h6>Zip: Not definied</h6><h6>Comment: </h6></div></div>');
+          $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><img src="' + customer.avatar +
+            '" class="img-thumbnail img-fluid avatar"><h5 class ="card-title">' + customer.username +
+            '</h5><h6>' + customer.name + ' ' + customer.surname +
+            '</h6><h7>City: Not definied</h7><br><h7>Address: Not definied</h7><br><h7>Zip: Not definied</h7><br><h7>Comment: </h7></div></div>');
         }
       }
     }
