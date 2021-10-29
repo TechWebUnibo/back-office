@@ -8,7 +8,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
   <link rel="stylesheet" href="../CSS/Main.css">
-
+  <!-- FONT AWESOME-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 </head>
 
 <body>
@@ -73,19 +75,17 @@
     <div class="row">
       <div class="catalogForm offset-lg-2 offset-1 col-lg-8 col-10">
         <h4>List of Users</h4>
-
         <div class="input-group">
           <div class="form-outline">
             <input type="text" class="form-control" id="searchByUsername" placeholder="Username"
               aria-describedby="searchByUsername" required aria-required="true">
           </div>
-          <button id="searchButton" type="button" class="btn btn-primary">Search
+          <button id="searchButton" type="button" class="btn btn-modify">
             <!-- TODO far funzionare la fa icon -->
             <i class="fa fa-search" aria-hidden="true"></i>
           </button>
         </div>
         <br>
-
         <div class="row" id="cardRecipient"></div>
       </div>
     </div>
@@ -100,8 +100,9 @@
   <script>
     $(document).ready(async function () {
       let customers = await getCustomers()
+      let userFilt = $('#searchByUsername').val();
       console.log(customers)
-      appendData(customers, "")
+      appendData(customers, userFilt)
     })
     async function appendData(customers, usernameFilter) {
       for (const customer of customers) {
@@ -122,23 +123,29 @@
               '</h6><h7>City: ' + city +
               '</h7><br><h7>Address: ' + residence +
               '</h7><br><h7>Zip: ' + zip +
-              '</h7><br><h7>Comment: </h7><br><div class="row"><div class="col-4"><button type="submit" class="btn btn-modify">Modify</button></div></div></div></div>');
+              '</h7><br><h7>Comment: </h7><br><div class="row"><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-modify">Modify</button></div></div></div></div>');
           }
           else {
             $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><img src="' + avatar +
               '" class="img-thumbnail img-fluid avatar"><h5 class ="card-title">' + customer.username +
               '</h5><h6>' + customer.name + ' ' + customer.surname +
-              '</h6><h7>City: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Address: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Zip: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Comment: </h7><br><div class="row"><div class="col-4"><button type="submit" class="btn btn-modify">Modify</button></div></div></div></div>');
+              '</h6><h7>City: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Address: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Zip: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Comment: </h7><br><div class="row"><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-modify">Modify</button></div></div></div></div>');
           }
         }
       }
       $('#searchButton').click(async function () {
         $('#cardRecipient').empty();
-        let userFilt = $('#searchByUsername').val();
+        userFilt = $('#searchByUsername').val();
         appendData(customers, userFilt);
       });
+      $(".btn-modify").each(function () {
+        $(this).on("click", function () {
+          localStorage.idUser = $(this).val();
+          console.log(localStorage.idUser)
+          window.location.href = 'ChangeUser.html';
+        });
+      });
     }
-
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"

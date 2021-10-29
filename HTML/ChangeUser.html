@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Home Page </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="../CSS/Main.css">
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-light">
+            <div class="container-fluid">
+                <!-- Logo -->
+                <img src="../Images/logo.png" alt="Logo" class="logo">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- List of page -->
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <!-- Home -->
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="Home.html">Home</a>
+                        </li>
+                        <!-- User -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownUsers" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Users
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownUsers">
+                                <li><a class="dropdown-item" href="User.html">Create</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="UserSearch.html">Search, Modify & Delete</a></li>
+                            </ul>
+                        </li>
+                        <!-- Item -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownItems" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Items
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownItems">
+                                <li><a class="dropdown-item" href="Item.html">Create</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="ItemSearch.html">Search, Modify & Delete</a></li>
+                            </ul>
+                        </li>
+                        <!-- Category -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="Category.html">Categories</a>
+                        </li>
+                        <!-- Rent -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="Rent.html">Rents</a>
+                        </li>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="createForm offset-1 col-lg-8 col-md-10 col-sm-10 col-10">
+                <h3 class="mb-4">Change or Delete User</h3>
+                <form id="createUserForm" method="POST">
+                    <!-- Username -->
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="usernameHelp">Username</span>
+                        </div>
+                        <input id="username" type="text" class="form-control" aria-label="Username"
+                            aria-describedby="usernameHelp">
+                    </div>
+                    <!-- Name & Surname -->
+                    <div class="row mb-3">
+                        <!-- Name -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="nameHelp">Name</span>
+                            </div>
+                            <input id="name" type="text" class="form-control" aria-label="Name"
+                                aria-describedby="nameHelp">
+                        </div>
+                        <!-- Surname -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="surnameHelp">Surname</span>
+                            </div>
+                            <input id="surname" type="text" class="form-control" aria-label="Surname"
+                                aria-describedby="surnameHelp">
+                        </div>
+                    </div>
+                    <!-- Avatar -->
+                    <div class="col-6 mb-3">
+                        <label for="avatar">Avatar</label><br>
+                        <img id="avatar" src="https://site202118.tw.cs.unibo.it/img/avatar/generic-user-icon.png"
+                            class="mb-3 img-thumbnail img-fluid avatar">
+                        <input class="form-control-file" type="file" id="avatar" name="avatar"
+                            accept="image/png, image/jpeg">
+                    </div>
+                    <!-- Address -->
+                    <div class="row mb-3">
+                        <!-- City -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="cityHelp">City</span>
+                            </div>
+                            <input id="city" type="text" class="form-control" aria-label="City"
+                                aria-describedby="cityHelp">
+                        </div>
+                        <!-- Address -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="addressHelp">Address</span>
+                            </div>
+                            <input id="address" type="text" class="form-control" aria-label="Address"
+                                aria-describedby="addressHelp">
+                        </div>
+                        <!-- Zip -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="zipHelp">ZIP</span>
+                            </div>
+                            <input id="zip" type="text" class="form-control" aria-label="Xip"
+                                aria-describedby="zipHelp">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-modify">Change</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer>
+
+    </footer>
+    <script type="text/javascript" src="../JS/Main.js"></script>
+    <script type="text/javascript" src="../JS/apiLibrary.js"></script>
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- BOOTSTRAP -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(async function () {
+            let customers = await getCustomers()
+            for (const customer of customers) {
+                if (localStorage.idUser == customer._id) {
+                    //TODO ricordarsi che qui utilizziamo i commenti (nel caso di no allora eliminarli anche dalla form)
+                    if (customer.address != null) {
+                        let city, residence, zip
+                        city = customer.address.city == '' ? 'Not defined' : customer.address.city;
+                        residence = customer.address.residence == '' ? 'Not defined' : customer.address.residence;
+                        zip = customer.address.zip == null ? 'Not defined' : customer.address.zip;
+                        $('#city').val(city)
+                        $('#address').val(residence)
+                        $('#zip').val(zip)
+                    }
+                    avatar = "https://site202118.tw.cs.unibo.it" + customer.avatar;
+                    if (avatar == "https://site202118.tw.cs.unibo.it") avatar += "/img/avatar/generic-user-icon.png"
+                    $('#username').val(customer.username)
+                    $('#name').val(customer.name)
+                    $('#surname').val(customer.surname)
+                    console.log(avatar)
+                    $('#avatar').attr('src', avatar);
+                }
+            }
+            $('form').submit(async function () {
+                event.preventDefault();
+                let username = $('#username').val();
+                let name = $('#name').val();
+                let surname = $('#surname').val();
+                let city = $('#city').val();
+                let res = $('#address').val();
+                let zipcode = $('#zip').val();
+                let avat = document.getElementById('avatar');
+                let formData = new FormData();
+                formData.append('username', username);
+                formData.append('name', name);
+                formData.append('surname', surname);
+                // TODO avat da cambiare forse con avat file
+                formData.append('avatar', avat);
+                formData.append('address.city', city);
+                formData.append('address.residence', res);
+                formData.append('address.zip', zipcode);
+                console.log(localStorage.idUser)
+
+                try {
+                    let res = await fetch('https://site202118.tw.cs.unibo.it/api/customers/{' + localStorage.idUser + '}', {
+                        method: 'POST',
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            'Authorization': 'Bearer ' + localStorage.token
+                        },
+                        body: formData
+                    })
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            });
+        })
+    </script>
+
+</body>
+
+</html>

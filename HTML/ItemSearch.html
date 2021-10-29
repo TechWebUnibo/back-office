@@ -8,6 +8,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
   <link rel="stylesheet" href="../CSS/Main.css">
+  <!-- FONT AWESOME-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 </head>
 
@@ -78,7 +81,7 @@
             <input type="text" class="form-control" id="searchByItemName" placeholder="Item Name"
               aria-describedby="searchByItemName" required aria-required="true">
           </div>
-          <button id="searchButton" type="button" class="btn btn-primary">Search
+          <button id="searchButton" type="button" class="btn btn-modify">
             <!-- TODO far funzionare la fa icon -->
             <i class="fa fa-search" aria-hidden="true"></i>
           </button>
@@ -101,8 +104,9 @@
       //Loading of the select input
       let items = await getItems()
       let map = await createCategory()
+      let itemFilt = $('#searchByItemName').val();
       console.log(items)
-      appendData(items, map, "")
+      appendData(items, map, itemFilt)
     })
 
     async function appendData(items, map, itemFilt) {
@@ -117,7 +121,7 @@
       }
       $('#searchButton').click(async function () {
         $('#cardRecipient').empty();
-        let itemFilt = $('#searchByItemName').val();
+        itemFilt = $('#searchByItemName').val();
         appendData(items, map, itemFilt);
       });
     }
