@@ -107,7 +107,7 @@
                         <label for="avatar">Avatar</label><br>
                         <img id="avatar" src="https://site202118.tw.cs.unibo.it/img/avatar/generic-user-icon.png"
                             class="mb-3 img-thumbnail img-fluid avatar">
-                        <input class="form-control-file" type="file" id="avatar" name="avatar"
+                        <input class="form-control-file" type="file" id="avat" name="avatar"
                             accept="image/png, image/jpeg">
                     </div>
                     <!-- Address -->
@@ -161,19 +161,22 @@
                     //TODO ricordarsi che qui utilizziamo i commenti (nel caso di no allora eliminarli anche dalla form)
                     if (customer.address != null) {
                         let city, residence, zip
-                        city = customer.address.city == '' ? 'Not defined' : customer.address.city;
-                        residence = customer.address.residence == '' ? 'Not defined' : customer.address.residence;
-                        zip = customer.address.zip == null ? 'Not defined' : customer.address.zip;
+                        city =  customer.address.city;
+                        residence = customer.address.residence ;
+                        zip = customer.address.zip == null ? '' : customer.address.zip;
                         $('#city').val(city)
                         $('#address').val(residence)
                         $('#zip').val(zip)
                     }
                     avatar = "https://site202118.tw.cs.unibo.it" + customer.avatar;
+                    console.log(avatar)
+                    console.log(customer.avatar)
                     if (avatar == "https://site202118.tw.cs.unibo.it") avatar += "/img/avatar/generic-user-icon.png"
                     $('#username').val(customer.username)
                     $('#name').val(customer.name)
                     $('#surname').val(customer.surname)
                     console.log(avatar)
+                    console.log(customer.avatar)
                     $('#avatar').attr('src', avatar);
                 }
             }
@@ -185,24 +188,24 @@
                 let city = $('#city').val();
                 let res = $('#address').val();
                 let zipcode = $('#zip').val();
-                let avat = document.getElementById('avatar');
+                let avat = document.getElementById('avat');
                 let formData = new FormData();
                 formData.append('username', username);
                 formData.append('name', name);
                 formData.append('surname', surname);
-                // TODO avat da cambiare forse con avat file
-                formData.append('avatar', avat);
+                if (avat.files[0] != null) {
+                    formData.append('avatar', avat.files[0]);
+                }
                 formData.append('address.city', city);
                 formData.append('address.residence', res);
                 formData.append('address.zip', zipcode);
-                console.log(localStorage.idUser)
 
                 try {
-                    let res = await fetch('https://site202118.tw.cs.unibo.it/api/customers/{' + localStorage.idUser + '}', {
+                    let res = await fetch('https://site202118.tw.cs.unibo.it/api/customers/' + localStorage.idUser, {
                         method: 'POST',
                         headers: {
                             'Access-Control-Allow-Origin': '*',
-                            'Authorization': 'Bearer ' + localStorage.token
+                            'Authorization': 'Bearer ' + localStorage.token,
                         },
                         body: formData
                     })

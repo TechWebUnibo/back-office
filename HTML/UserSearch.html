@@ -80,7 +80,7 @@
             <input type="text" class="form-control" id="searchByUsername" placeholder="Username"
               aria-describedby="searchByUsername" required aria-required="true">
           </div>
-          <button id="searchButton" type="button" class="btn btn-modify">
+          <button id="searchButton" type="button" class="btn btn-submit">
             <!-- TODO far funzionare la fa icon -->
             <i class="fa fa-search" aria-hidden="true"></i>
           </button>
@@ -110,7 +110,6 @@
           let city, residence, zip
           avatar = "https://site202118.tw.cs.unibo.it" + customer.avatar;
           if (avatar == "https://site202118.tw.cs.unibo.it") avatar += "/img/avatar/generic-user-icon.png"
-          //TODO ricordarsi che qui utilizziamo i commenti (nel caso di no allora eliminarli anche dalla form)
           if (customer.address != null) {
             //Controls on the content of the address
             city = customer.address.city == '' ? 'Not defined' : customer.address.city;
@@ -123,13 +122,13 @@
               '</h6><h7>City: ' + city +
               '</h7><br><h7>Address: ' + residence +
               '</h7><br><h7>Zip: ' + zip +
-              '</h7><br><h7>Comment: </h7><br><div class="row"><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-modify">Modify</button></div></div></div></div>');
+              '</h7><br><div class="row"><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-modify">Modify</button></div><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-delete">Delete</button></div></div></div></div>');
           }
           else {
             $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><img src="' + avatar +
               '" class="img-thumbnail img-fluid avatar"><h5 class ="card-title">' + customer.username +
               '</h5><h6>' + customer.name + ' ' + customer.surname +
-              '</h6><h7>City: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Address: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Zip: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Comment: </h7><br><div class="row"><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-modify">Modify</button></div></div></div></div>');
+              '</h6><h7>City: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Address: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Zip: </h7><h7 class="text-black-50">Not definied</h7><br><div class="row"><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-modify">Modify</button></div><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-delete">Delete</button></div></div></div></div>');
           }
         }
       }
@@ -138,11 +137,33 @@
         userFilt = $('#searchByUsername').val();
         appendData(customers, userFilt);
       });
-      $(".btn-modify").each(function () {
-        $(this).on("click", function () {
+      $(".btn-modify").each(async function () {
+        $(this).on("click", async function () {
           localStorage.idUser = $(this).val();
           console.log(localStorage.idUser)
           window.location.href = 'ChangeUser.html';
+        });
+      });
+
+      $(".btn-delete").each(async function () {
+        $(this).on("click", async function () {
+          localStorage.idUser = $(this).val();
+          try {
+            let res = await fetch('https://site202118.tw.cs.unibo.it/api/customers/' + localStorage.idUser, {
+              method: 'DELETE',
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + localStorage.token,
+              }
+            })
+          }
+          catch (error) {
+            console.log(error)
+          }
+          $('#cardRecipient').empty();
+          let customers = await getCustomers()
+          userFilt = $('#searchByUsername').val();
+          appendData(customers, userFilt);
         });
       });
     }
