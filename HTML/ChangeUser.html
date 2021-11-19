@@ -27,7 +27,7 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="Home.html">Home</a>
+                            <a class="nav-link" href="Home.html">Home</a>
                         </li>
                         <!-- User -->
                         <li class="nav-item dropdown">
@@ -57,15 +57,25 @@
                                 <li><a class="dropdown-item" href="ItemSearch.html">Search, Modify & Delete</a></li>
                             </ul>
                         </li>
+                        <!-- Rent -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownRent" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Rent
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownRent">
+                                <li><a class="dropdown-item" href="Rent.html">Close a Rent</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+                            </ul>
+                        </li>
                         <!-- Category -->
                         <li class="nav-item">
                             <a class="nav-link" href="Category.html">Categories</a>
                         </li>
-                        <!-- Rent -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="Rent.html">Rents</a>
-                        </li>
-
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -154,6 +164,9 @@
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
     <script>
+        //authenticated?
+        authBack()
+    
         $(document).ready(async function () {
             let customers = await getCustomers()
             for (const customer of customers) {
@@ -161,8 +174,8 @@
                     //TODO ricordarsi che qui utilizziamo i commenti (nel caso di no allora eliminarli anche dalla form)
                     if (customer.address != null) {
                         let city, residence, zip
-                        city =  customer.address.city;
-                        residence = customer.address.residence ;
+                        city = customer.address.city;
+                        residence = customer.address.residence;
                         zip = customer.address.zip == null ? '' : customer.address.zip;
                         $('#city').val(city)
                         $('#address').val(residence)

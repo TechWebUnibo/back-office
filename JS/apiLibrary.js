@@ -16,6 +16,28 @@ const productsUrl = 'products'
 const itemsUrl = 'items'
 
 
+// Authenticated for back-office
+function authBack(){
+    //authenticated?
+    fetch('https://site202118.tw.cs.unibo.it/api/auth/staff/authenticated', {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Authorization': 'Bearer ' + localStorage.token
+      },
+    })
+      .then(res => {
+        if (res.status == 200) return res.json();
+        else window.location.href = 'NotLogged.html';
+      })
+      .then(function (data) {
+        console.log(data);
+      })
+      .catch(function (err) {
+        console.log(err);
+      })
+}
 
 async function apiLogin(username, password) {
   let data = `{

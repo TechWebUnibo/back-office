@@ -28,7 +28,7 @@
               <a class="nav-link" href="Home.html">Home</a>
             </li>
             <!-- User -->
-            <li class="nav-item dropdown active">
+            <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdownUsers" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 Users
@@ -55,14 +55,25 @@
                 <li><a class="dropdown-item" href="ItemSearch.html">Search, Modify & Delete</a></li>
               </ul>
             </li>
+            <!-- Rent -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownRent" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Rent
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownRent">
+                <li><a class="dropdown-item" href="Rent.html">Close a Rent</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+              </ul>
+            </li>
             <!-- Category -->
             <li class="nav-item">
               <a class="nav-link" href="Category.html">Categories</a>
             </li>
-            <!-- Rent -->
-            <li class="nav-item">
-              <a class="nav-link" href="Rent.html">Rents</a>
-            </li>
+          </ul>
         </div>
       </div>
     </nav>
@@ -81,13 +92,13 @@
           <div class="row mb-3">
             <!-- Name -->
             <div class="col-6">
-              <input type="text" class="form-control" id="name" placeholder="Name" aria-describedby="nameHelp"
-              required aria-required="true">
+              <input type="text" class="form-control" id="name" placeholder="Name" aria-describedby="nameHelp" required
+                aria-required="true">
             </div>
             <!-- Surname -->
             <div class="col-6">
               <input type="text" class="form-control" id="surname" placeholder="Surname" aria-describedby="surnameHelp"
-              required aria-required="true">
+                required aria-required="true">
             </div>
           </div>
           <!-- Password -->
@@ -104,7 +115,7 @@
           <!-- Avatar -->
           <div class="col-6 mb-3">
             <label for="avatar">Avatar</label><br>
-            <input class ="form-control-file" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
+            <input class="form-control-file" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
           </div>
           <!-- Address -->
           <div class="row mb-3">
@@ -138,9 +149,13 @@
 
   </footer>
   <script type="text/javascript" src="../JS/Main.js"></script>
+  <script type="text/javascript" src="../JS/apiLibrary.js"></script>
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+    //authenticated?
+    authBack()
+
     $('form').submit(async function (e) {
       e.preventDefault();
       let username = $('#username').val();
@@ -152,7 +167,7 @@
       let zipcode = $('#inputZip').val();
       let comment = $('#comment').val();
       let avat = document.getElementById('avatar');
-      let formData =new FormData();
+      let formData = new FormData();
       formData.append('username', username);
       formData.append('name', name);
       formData.append('surname', surname);

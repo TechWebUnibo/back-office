@@ -26,7 +26,7 @@
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <!-- Home -->
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="Home.html">Home</a>
+              <a class="nav-link" href="Home.html">Home</a>
             </li>
             <!-- User -->
             <li class="nav-item dropdown">
@@ -56,15 +56,25 @@
                 <li><a class="dropdown-item" href="ItemSearch.html">Search, Modify & Delete</a></li>
               </ul>
             </li>
+            <!-- Rent -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownRent" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Rent
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownRent">
+                <li><a class="dropdown-item" href="Rent.html">Close a Rent</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+              </ul>
+            </li>
             <!-- Category -->
             <li class="nav-item">
               <a class="nav-link" href="Category.html">Categories</a>
             </li>
-            <!-- Rent -->
-            <li class="nav-item">
-              <a class="nav-link" href="Rent.html">Rents</a>
-            </li>
-
+          </ul>
         </div>
       </div>
     </nav>
@@ -74,17 +84,22 @@
   <footer>
 
   </footer>
+  <script type="text/javascript" src="../JS/Main.js"></script>
+    <script type="text/javascript" src="../JS/apiLibrary.js"></script>
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- BOOTSTRAP -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
     crossorigin="anonymous"></script>
-    <script>
-      $(document).ready(async function(){
+  <script>
+    //authenticated?
+    authBack()
+    
+    $(document).ready(async function () {
       console.log($('#button'))
-      })
-    </script>
+    })
+  </script>
 
 </body>
 

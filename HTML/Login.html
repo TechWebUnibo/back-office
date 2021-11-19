@@ -48,10 +48,11 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="../JS/Main.js"></script>
     <footer>
 
     </footer>
+    <script type="text/javascript" src="../JS/Main.js"></script>
+    <script type="text/javascript" src="../JS/apiLibrary.js"></script>
     <!-- JQUERY -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -70,8 +71,8 @@
             })
             data = await res.json()
             console.log(data)
-            console.log(data.accessToken)
-            localStorage.token = data.accessToken;
+            setToken(data.accessToken)
+            localStorage.employeeID = data.id
             //if(res.status == 200) load the home page, else if(res.status == 403 wrong password) else (account not founded/doesn't exist)
             if (res.status == 200) {
                 window.location.href = 'Home.html';

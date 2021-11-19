@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../CSS/Main.css">
   <!-- FONT AWESOME-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 </head>
 
@@ -46,7 +46,7 @@
               </ul>
             </li>
             <!-- Item -->
-            <li class="nav-item dropdown active">
+            <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdownItems" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 Items
@@ -59,15 +59,25 @@
                 <li><a class="dropdown-item" href="ItemSearch.html">Search, Modify & Delete</a></li>
               </ul>
             </li>
+            <!-- Rent -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownRent" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Rent
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownRent">
+                <li><a class="dropdown-item" href="Rent.html">Close a Rent</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+              </ul>
             </li>
             <!-- Category -->
             <li class="nav-item">
               <a class="nav-link" href="Category.html">Categories</a>
             </li>
-            <!-- Rent -->
-            <li class="nav-item">
-              <a class="nav-link" href="Rent.html">Rents</a>
-            </li>
+          </ul>
         </div>
       </div>
     </nav>
@@ -99,6 +109,9 @@
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+    //authenticated?
+    authBack()
+    
     $(document).ready(async function () {
 
       //Loading of the select input

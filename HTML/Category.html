@@ -55,14 +55,25 @@
                 <li><a class="dropdown-item" href="ItemSearch.html">Search, Modify & Delete</a></li>
               </ul>
             </li>
+            <!-- Rent -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownRent" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Rent
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownRent">
+                <li><a class="dropdown-item" href="Rent.html">Close a Rent</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+              </ul>
+            </li>
             <!-- Category -->
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="Category.html">Categories</a>
+              <a class="nav-link" href="Category.html">Categories</a>
             </li>
-            <!-- Rent -->
-            <li class="nav-item">
-              <a class="nav-link" href="Rent.html">Rents</a>
-            </li>
+          </ul>
         </div>
       </div>
     </nav>
@@ -115,28 +126,13 @@
 
   </footer>
   <script type="text/javascript" src="../JS/Main.js"></script>
+    <script type="text/javascript" src="../JS/apiLibrary.js"></script>
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     //authenticated?
-    fetch('https://site202118.tw.cs.unibo.it/api/auth/staff/authenticated', {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Authorization': 'Bearer ' + localStorage.token
-      },
-    })
-      .then(res => {
-        if (res.status == 200) return res.json();
-        else window.location.href = 'NotLogged.html';
-      })
-      .then(function (data) {
-        console.log(data);
-      })
-      .catch(function (err) {
-        console.log(err);
-      })
+    authBack()
+
     //Loading of the select input
     fetch('https://site202118.tw.cs.unibo.it/api/products', {
       method: 'GET',

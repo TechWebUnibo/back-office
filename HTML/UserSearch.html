@@ -31,7 +31,7 @@
               <a class="nav-link" href="Home.html">Home</a>
             </li>
             <!-- User -->
-            <li class="nav-item dropdown active">
+            <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdownUsers" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 Users
@@ -58,15 +58,25 @@
                 <li><a class="dropdown-item" href="ItemSearch.html">Search, Modify & Delete</a></li>
               </ul>
             </li>
+            <!-- Rent -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownRent" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Rent
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownRent">
+                <li><a class="dropdown-item" href="Rent.html">Close a Rent</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+              </ul>
             </li>
             <!-- Category -->
             <li class="nav-item">
               <a class="nav-link" href="Category.html">Categories</a>
             </li>
-            <!-- Rent -->
-            <li class="nav-item">
-              <a class="nav-link" href="Rent.html">Rents</a>
-            </li>
+          </ul>
         </div>
       </div>
     </nav>
@@ -79,6 +89,14 @@
           <div class="form-outline">
             <input type="text" class="form-control" id="searchByUsername" placeholder="Username"
               aria-describedby="searchByUsername" required aria-required="true">
+          </div>
+          <div>
+            <input type="text" class="form-control" id="searchByName" placeholder="Name" aria-describedby="searchByName"
+              required aria-required="true">
+          </div>
+          <div>
+            <input type="text" class="form-control" id="searchBySurname" placeholder="Surname"
+              aria-describedby="searchBySurname" required aria-required="true">
           </div>
           <button id="searchButton" type="button" class="btn btn-submit">
             <!-- TODO far funzionare la fa icon -->
@@ -98,15 +116,20 @@
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+    //authenticated?
+    authBack()
+    
     $(document).ready(async function () {
       let customers = await getCustomers()
-      let userFilt = $('#searchByUsername').val();
+      let userFilt = $('#searchByUsername').val()
+      let nameFilt = $('#searchByName').val()
+      let surFilt = $('#searchBySurname').val()
       console.log(customers)
-      appendData(customers, userFilt)
+      appendData(customers, userFilt, nameFilt, surFilt)
     })
-    async function appendData(customers, usernameFilter) {
+    async function appendData(customers, usernameFilter, nameFilter, surnameFilter) {
       for (const customer of customers) {
-        if (usernameFilter == "" || usernameFilter == customer.username) {
+        if ((usernameFilter == "" || usernameFilter == customer.username) && (nameFilter == "" || nameFilter == customer.name) && (surnameFilter == "" || surnameFilter == customer.surname)) {
           let city, residence, zip
           avatar = "https://site202118.tw.cs.unibo.it" + customer.avatar;
           if (avatar == "https://site202118.tw.cs.unibo.it") avatar += "/img/avatar/generic-user-icon.png"
@@ -134,8 +157,10 @@
       }
       $('#searchButton').click(async function () {
         $('#cardRecipient').empty();
-        userFilt = $('#searchByUsername').val();
-        appendData(customers, userFilt);
+        userFilt = $('#searchByUsername').val()
+        nameFilt = $('#searchByName').val()
+        surFilt = $('#searchBySurname').val()
+        appendData(customers, userFilt, nameFilt, surFilt)
       });
       $(".btn-modify").each(async function () {
         $(this).on("click", async function () {
@@ -161,9 +186,11 @@
             console.log(error)
           }
           $('#cardRecipient').empty();
-          let customers = await getCustomers()
-          userFilt = $('#searchByUsername').val();
-          appendData(customers, userFilt);
+          customers = await getCustomers()
+          userFilt = $('#searchByUsername').val()
+          nameFilt = $('#searchByName').val()
+          surFilt = $('#searchBySurname').val()
+          appendData(customers, userFilt, nameFilt, surFilt)
         });
       });
     }

@@ -33,3 +33,24 @@ async function createCategory() {
     }
     return map;
 }
+
+async function mapUserID() {
+    let map = {}
+    //Fetch of the categories
+    try {
+        var customers = await fetch('https://site202118.tw.cs.unibo.it/api/customers', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        customers = await customers.json()
+        for (const customer of customers) {
+            map[customer._id] = customer.username
+        }
+    }
+    catch (error) {
+        console.log(error)
+    }
+    return map;
+}
