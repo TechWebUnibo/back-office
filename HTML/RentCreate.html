@@ -2,16 +2,12 @@
 <html lang="en">
 
 <head>
-  <title>Item Search Page </title>
+  <title>Rent Page </title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
   <link rel="stylesheet" href="../CSS/Main.css">
-  <!-- FONT AWESOME-->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
 </head>
 
 <body>
@@ -85,13 +81,13 @@
   <div class="container">
     <div class="row">
       <div class="catalogForm offset-lg-2 offset-1 col-lg-8 col-10">
-        <h4>List of Items</h4>
+        <h4>List of Users</h4>
         <div class="input-group">
           <div class="form-outline">
-            <input type="text" class="form-control" id="searchByItemName" placeholder="Item Name"
-              aria-describedby="searchByItemName" required aria-required="true">
+            <input type="text" class="form-control" id="searchByUsername" placeholder="Username"
+              aria-describedby="searchByUsername" required aria-required="true">
           </div>
-          <button id="searchButton" type="button" class="btn btn-modify">
+          <button id="searchButton" type="button" class="btn btn-submit">
             <!-- TODO far funzionare la fa icon -->
             <i class="fa fa-search" aria-hidden="true"></i>
           </button>
@@ -111,32 +107,59 @@
   <script>
     //authenticated?
     authBack()
-    
+
     $(document).ready(async function () {
-
-      //Loading of the select input
-      let items = await getItems()
-      let map = await createCategory()
-      let itemFilt = $('#searchByItemName').val();
-      console.log(items)
-      appendData(items, map, itemFilt)
+      let rentals = await getRentals('employee=' + localStorage.employeeID + '&state=in_progress')
+      //TODO riprendere da qua - non sta stampando nulla nei rentals
+      console.log(rentals)
+      let userFilt = $('#searchByUsername').val()
+      let map = mapUserID()
+      appendData(rentals, userFilt, map)
     })
-
-    async function appendData(items, map, itemFilt) {
-      for (const item of items) {
-        console.log(itemFilt)
-        console.log(item.name)
-        if (itemFilt == "" || itemFilt == item.name) {
-          $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h5 class ="card-title">'
-            + item.name + '</h5><h6>Category: ' + map[item.type] +
-            '</h6><h6>Price: ' + item.price + '</h6><h6>Condition: ' + item.condition);
+    async function appendData(rentals, usernameFilter, map) {
+      for (const rent of rentals) {
+        if (usernameFilter == "" || userFilt == map[rent.customer]) {
+          //Controls on the content of the address
+          $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h5>' + rent.customer + '</h5><h5>' + rent.products + '</h5></div></div>');
         }
       }
-      $('#searchButton').click(async function () {
-        $('#cardRecipient').empty();
-        itemFilt = $('#searchByItemName').val();
-        appendData(items, map, itemFilt);
-      });
+
+
+      /*$('#searchButton').click(async function () {
+        $('#cardRecipient').empty()
+        userFilt = $('#searchByUsername').val()
+        appendData(rentals, userFilt, map)
+      })
+      $(".btn-modify").each(async function () {
+        $(this).on("click", async function () {
+          localStorage.idUser = $(this).val();
+          console.log(localStorage.idUser)
+          window.location.href = 'ChangeUser.html'
+        })
+      })
+
+      $(".btn-delete").each(async function () {
+        $(this).on("click", async function () {
+          localStorage.idUser = $(this).val()
+          try {
+            let res = await fetch('https://site202118.tw.cs.unibo.it/api/customers/' + localStorage.idUser, {
+              method: 'DELETE',
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + localStorage.token,
+              }
+            })
+          }
+          catch (error) {
+            console.log(error)
+          }
+          $('#cardRecipient').empty()
+          userFilt = $('#searchByUsername').val()
+          nameFilt = $('#searchByName').val()
+          surFilt = $('#searchBySurname').val()
+          appendData(rentals, userFilt, map)
+        })
+      }) */
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

@@ -24,7 +24,7 @@ function authBack(){
       mode: 'cors',
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Authorization': 'Bearer ' + localStorage.token
+        'Authorization': 'Bearer ' + getToken()
       },
     })
       .then(res => {
