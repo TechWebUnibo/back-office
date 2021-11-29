@@ -36,7 +36,7 @@ async function createCategory() {
 
 async function mapUserID() {
     let map = {}
-    //Fetch of the categories
+    //Fetch of the users
     try {
         var customers = await fetch('https://site202118.tw.cs.unibo.it/api/customers', {
             method: 'GET',

@@ -64,7 +64,9 @@
                                 Rent
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownRent">
-                                <li><a class="dropdown-item" href="RentCreate.html">Close a Rent</a></li>
+                                <li><a class="dropdown-item" href="RentCreate.html">Create a Rent</a></li>
+                                <li>
+                                <li><a class="dropdown-item" href="RentClosure.html">Close a Rent</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -166,7 +168,7 @@
     <script>
         //authenticated?
         authBack()
-    
+
         $(document).ready(async function () {
             let customers = await getCustomers()
             for (const customer of customers) {
