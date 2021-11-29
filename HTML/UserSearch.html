@@ -131,7 +131,10 @@
     })
     async function appendData(customers, usernameFilter, nameFilter, surnameFilter) {
       for (const customer of customers) {
-        if ((usernameFilter == "" || usernameFilter == customer.username) && (nameFilter == "" || nameFilter == customer.name) && (surnameFilter == "" || surnameFilter == customer.surname)) {
+        let cond_username = (usernameFilter == "") || (similarity(customer.username, usernameFilter)>= 0.65) || customer.username.toLowerCase().includes(usernameFilter.toLowerCase(), 0)
+        let cond_name = (nameFilter == "") || (similarity(customer.name, nameFilter)>= 0.65) || customer.name.toLowerCase().includes(nameFilter.toLowerCase(), 0)
+        let cond_surname = (surnameFilter == "") || (similarity(customer.surname, usernameFilter)>= 0.65) || customer.surname.toLowerCase().includes(surnameFilter.toLowerCase(), 0)
+        if(cond_username && cond_name && cond_surname){
           let city, residence, zip
           avatar = "https://site202118.tw.cs.unibo.it" + customer.avatar;
           if (avatar == "https://site202118.tw.cs.unibo.it") avatar += "/img/avatar/generic-user-icon.png"

@@ -124,11 +124,10 @@
       appendData(items, map, itemFilt)
     })
 
-    async function appendData(items, map, itemFilt) {
+    async function appendData(items, map, itemFilter) {
       for (const item of items) {
-        console.log(itemFilt)
-        console.log(item.name)
-        if (itemFilt == "" || itemFilt == item.name) {
+        let cond_itemname = (itemFilter == "") || (similarity(item.name, itemFilter)>= 0.65) || item.name.toLowerCase().includes(itemFilter.toLowerCase(), 0)
+        if (cond_itemname) {
           $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h5 class ="card-title">'
             + item.name + '</h5><h6>Category: ' + map[item.type] +
             '</h6><h6>Price: ' + item.price + '</h6><h6>Condition: ' + item.condition);
