@@ -17,7 +17,7 @@ async function createCategory() {
     let map = {}
     //Fetch of the categories
     try {
-        var products = await fetch('https://site202118.tw.cs.unibo.it/api/products', {
+        let products = await fetch('https://site202118.tw.cs.unibo.it/api/products', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ async function mapUserID() {
     let map = {}
     //Fetch of the users
     try {
-        var customers = await fetch('https://site202118.tw.cs.unibo.it/api/customers', {
+        let customers = await fetch('https://site202118.tw.cs.unibo.it/api/customers', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
