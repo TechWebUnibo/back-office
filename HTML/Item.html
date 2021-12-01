@@ -8,21 +8,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
   <link rel="stylesheet" href="../CSS/Main.css">
-  <script>
-    fetch('https://site202118.tw.cs.unibo.it/api/items', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-      .then(res => {
-        return res.json()
-      })
-      .then(data => console.log(data))
-      .catch(function (err) {
-        console.log(err);
-      })
-  </script>
 </head>
 
 <body>
@@ -58,7 +43,7 @@
             </li>
             <!-- Item -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdownItems" role="button" data-bs-toggle="dropdown"
+              <a class="nav-link dropdown-toggle active" aria-current="page" href="#" id="dropdownItems" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 Items
               </a>
