@@ -134,10 +134,10 @@
       let categories = await getProducts()
       let items = await getProducts()
       let rentals = await getRentals("customerName=TRUE&productName=TRUE")
-      statusFilt = $('#searchByStatus').val()
-      userFilt = $('#searchByUsername').val()
-      categoryFilt = $('#searchByCategory').val()
-      itemFilt = $('#searchByItem').val()
+      let statusFilt = $('#searchByStatus').val()
+      let userFilt = $('#searchByUsername').val()
+      let categoryFilt = $('#searchByCategory').val()
+      let itemFilt = $('#searchByItem').val()
 
       appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
     })
@@ -154,18 +154,32 @@
         $('#searchByItem').append('<option value="' + item._id + '">' + item.name + '</option>');
       }
       for (const rent of rentals) {
-        console.log(rent.end)
+        let btn = await checkStatus(rent.state, rent._id)
+        let stat = rent.state == 'not_started' ? 'Not Started' : rent.state == 'started' ? 'Started' : rent.state == 'delayed' ? 'Delayed' : 'Closed'
         if (1) //cond_status && cond_username && cond_category && cond_item) {
           $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6>'
             + rent.customer +
-            '</h6><h6>Item: ' + rent.products + '</h6><br>First day:'
-            + rent.start.substring(0,10) +'</h6><br>Last day:'
-            + rent.end.substring(0,10) + '<div class="row"><div class="col-4"><button type="submit" value="' + 1 + '" class="btn btn-modify">Modify</button></div><div class="col-4"><button type="submit" value="' + 1 + '" class="btn btn-delete">Delete</button></div></div></div></div>');
+            '</h6><h6>Item: ' + rent.products
+            + '</h6><br>First day:' + rent.start.substring(0, 10)
+            + '</h6><br>Last day:' + rent.end.substring(0, 10)
+            + '</h6><br>Status: ' + stat + '</h6><br>' + '</h6><br><div class="row"><div class="col-4"><button type="submit" value="'
+            + rent._id + '" class="btn btn-modify">Modify</button></div><div class="col-4">' + btn + '</div></div></div></div>');
 
         else {
           // TODO stampare nessun risultato
         }
       }
+    }
+    // check the status of the rent and return the correct button to print
+    async function checkStatus(status, id) {
+      let btnToOpen = '<button type="submit" value="' + id + '" class="btn btn-search">Start</button>'
+      let btnToClose = '<button type="submit" value="' + id + '" class="btn btn-delete">Close</button>'
+      let btnToDoNothing = ""
+      if (status == "not_started") return btnToOpen
+      else if (status == "started") return btnToClose
+      else if (status == "delayed") return btnToClose
+      else if (status == "closed") return btnToDoNothing
+      else return -1
     }
     $('#searchButton').click(async function () {
       $('#cardRecipient').empty();
@@ -175,6 +189,7 @@
       itemFilt = $('#searchByItem').val()
       appendData(customers, categories, items, statusFilt, userFilt, categoryFilt, itemFilt)
     });
+    // Modify the rent
     $(".btn-modify").each(async function () {
       $(this).on("click", async function () {
         localStorage.idUser = $(this).val();
@@ -182,13 +197,14 @@
         window.location.href = 'ChangeUser.html';
       });
     });
-    // Delete of the rent (only rent to open)
+    // Closeing the rent
     $(".btn-delete").each(async function () {
       $(this).on("click", async function () {
-        localStorage.idUser = $(this).val();
+
         try {
-          let res = await fetch('https://site202118.tw.cs.unibo.it/api/customers/' + localStorage.idUser, {
-            method: 'DELETE',
+          console.log('prova')
+          let res = await fetch('https://site202118.tw.cs.unibo.it/api/rentals/' + $(this).val() +'/terminate', {
+            method: 'POST',
             headers: {
               'Access-Control-Allow-Origin': '*',
               'Authorization': 'Bearer ' + localStorage.token,
@@ -199,24 +215,13 @@
           console.log(error)
         }
         $('#cardRecipient').empty();
-        customers = await getCustomers()
+        statusFilt = $('#searchByStatus').val()
         userFilt = $('#searchByUsername').val()
-        nameFilt = $('#searchByName').val()
-        surFilt = $('#searchBySurname').val()
-        appendData(customers, userFilt, nameFilt, surFilt)
+        categoryFilt = $('#searchByCategory').val()
+        itemFilt = $('#searchByItem').val()
+        appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
       });
     });
-    /*
-    //check the status of the rent and return the correct button to print
-    async function checkStatus(status) {
-      btnToOpen = "<btn qualcosa blabla >"
-      btnToClose = "<btn qualcosa blabla >"
-      btnToDoNothing = ""
-      if (status == "stato per aprire") return btnToOpen
-      else if (status == "stato per chiudere") return btnToClose
-      else if (status == "noleggio chiuso") return btnToDoNothing
-      else return -1
-    }*/
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
