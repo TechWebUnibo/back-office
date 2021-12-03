@@ -168,7 +168,7 @@
         method: 'POST',
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Bearer ' + localStorage.token,
+          'Authorization': 'Bearer ' + getToken(),
           'Content-Type': 'application/json'
         },
         body: data

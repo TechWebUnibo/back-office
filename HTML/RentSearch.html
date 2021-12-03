@@ -99,14 +99,17 @@
           <!-- Filter by User -->
           <select aria-describedby="filterByUser" class="dropdownFilter" id="searchByUser">
             <option selected="selected" hidden value="user">User</option>
+            <option value="all">All</option>
           </select>
           <!-- Filter by Category -->
           <select aria-describedby="filterByCategory" class="dropdownFilter" id="searchByCategory">
             <option selected="selected" hidden value="category">Category</option>
+            <option value="all">All</option>
           </select>
           <!-- Filter by Item -->
           <select aria-describedby="filterByItem" class="dropdownFilter" id="searchByItem">
             <option selected="selected" hidden value="item">Item</option>
+            <option value="all">All</option>
           </select>
           <button id="searchButton" type="button" class="btn btn-submit">
             <!-- TODO far funzionare la fa icon -->
@@ -139,10 +142,6 @@
       let categoryFilt = $('#searchByCategory').val()
       let itemFilt = $('#searchByItem').val()
 
-      appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
-    })
-
-    async function appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt) {
       for (const customer of customers) {
         $('#searchByUser').append('<option value="' + customer._id + '">' + customer.username + '</option>');
       }
@@ -153,67 +152,43 @@
       for (const item of items) {
         $('#searchByItem').append('<option value="' + item._id + '">' + item.name + '</option>');
       }
-      for (const rent of rentals) {
-        let btn = await checkStatus(rent.state, rent._id)
-        let stat = rent.state == 'not_started' ? 'Not Started' : rent.state == 'started' ? 'Started' : rent.state == 'delayed' ? 'Delayed' : 'Closed'
-        if (1) //cond_status && cond_username && cond_category && cond_item) {
-          $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6>'
-            + rent.customer +
-            '</h6><h6>Item: ' + rent.products
-            + '</h6><br>First day:' + rent.start.substring(0, 10)
-            + '</h6><br>Last day:' + rent.end.substring(0, 10)
-            + '</h6><br>Status: ' + stat + '</h6><br>' + '</h6><br><div class="row"><div class="col-4"><button type="submit" value="'
-            + rent._id + '" class="btn btn-modify">Modify</button></div><div class="col-4">' + btn + '</div></div></div></div>');
 
-        else {
-          // TODO stampare nessun risultato
+      appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
+    })
+
+    async function appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt) {
+      for (const rent of rentals) {
+        if (rent.employee == localStorage.employeeID) {
+          let btn = await checkStatus(rent.state, rent._id)
+          let stat = rent.state == 'not_started' ? 'Not Started' : rent.state == 'started' ? 'Started' : rent.state == 'delayed' ? 'Delayed' : 'Closed'
+          if (1) //cond_status && cond_username && cond_category && cond_item) {
+            $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6>'
+              + rent.customer +
+              '</h6><h6>Employee: ' + rent.employee +
+              '</h6><h6>Item: ' + rent.products
+              + '</h6><br>First day:' + rent.start.substring(0, 10)
+              + '</h6><br>Last day:' + rent.end.substring(0, 10)
+              + '</h6><br>Status: ' + stat + '</h6><br>' + '</h6><br><div class="row"><div class="col-4"><button type="submit" value="'
+              + rent._id + '" class="btn btn-modify">Modify</button></div><div class="col-4">' + btn + '</div></div></div></div>');
+
+          else {
+            // TODO stampare nessun risultato
+          }
         }
       }
-    }
-    // check the status of the rent and return the correct button to print
-    async function checkStatus(status, id) {
-      let btnToOpen = '<button type="submit" value="' + id + '" class="btn btn-search">Start</button>'
-      let btnToClose = '<button type="submit" value="' + id + '" class="btn btn-delete">Close</button>'
-      let btnToDoNothing = ""
-      if (status == "not_started") return btnToOpen
-      else if (status == "started") return btnToClose
-      else if (status == "delayed") return btnToClose
-      else if (status == "closed") return btnToDoNothing
-      else return -1
-    }
-    $('#searchButton').click(async function () {
-      $('#cardRecipient').empty();
-      statusFilt = $('#searchByStatus').val()
-      userFilt = $('#searchByUsername').val()
-      categoryFilt = $('#searchByCategory').val()
-      itemFilt = $('#searchByItem').val()
-      appendData(customers, categories, items, statusFilt, userFilt, categoryFilt, itemFilt)
-    });
-    // Modify the rent
-    $(".btn-modify").each(async function () {
-      $(this).on("click", async function () {
-        localStorage.idUser = $(this).val();
-        console.log(localStorage.idUser)
-        window.location.href = 'ChangeUser.html';
-      });
-    });
-    // Closeing the rent
-    $(".btn-delete").each(async function () {
-      $(this).on("click", async function () {
-
-        try {
-          console.log('prova')
-          let res = await fetch('https://site202118.tw.cs.unibo.it/api/rentals/' + $(this).val() +'/terminate', {
-            method: 'POST',
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Authorization': 'Bearer ' + localStorage.token,
-            }
-          })
-        }
-        catch (error) {
-          console.log(error)
-        }
+      // check the status of the rent and return the correct button to print
+      async function checkStatus(status, id) {
+        let btnToOpen = '<button type="submit" value="' + id + '" class="btn btn-toStart">Start</button>'
+        let btnToClose = '<button type="submit" value="' + id + '" class="btn btn-toClose">Close</button>'
+        let btnToDoNothing = ""
+        if (status == "not_started") return btnToOpen
+        else if (status == "started") return btnToClose
+        else if (status == "delayed") return btnToClose
+        else if (status == "closed") return btnToDoNothing
+        else return -1
+      }
+      // Filtering
+      $('#searchButton').click(async function () {
         $('#cardRecipient').empty();
         statusFilt = $('#searchByStatus').val()
         userFilt = $('#searchByUsername').val()
@@ -221,7 +196,48 @@
         itemFilt = $('#searchByItem').val()
         appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
       });
-    });
+      // Modify the rent
+      // TODO
+      $(".btn-modify").each(async function () {
+        $(this).on("click", async function () {
+          localStorage.idUser = $(this).val();
+          console.log(localStorage.idUser)
+          window.location.href = 'ChangeUser.html';
+        });
+      });
+      // Closing the rent
+      $(".btn-toClose").each(async function () {
+        $(this).on("click", async function () {
+          localStorage.idRent = $(this).val()
+          window.location.href = 'RentClosure.html';
+        })
+      })
+      // Opening the rent
+      $(".btn-toStart").each(async function () {
+        $(this).on("click", async function () {
+          try {
+            console.log('prova')
+            console.log(getToken())
+            let res = await fetch('https://site202118.tw.cs.unibo.it/api/rentals/' + $(this).val() + '/start', {
+              method: 'POST',
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken(),
+              }
+            })
+          }
+          catch (error) {
+            console.log(error)
+          }
+          $('#cardRecipient').empty();
+          statusFilt = $('#searchByStatus').val()
+          userFilt = $('#searchByUsername').val()
+          categoryFilt = $('#searchByCategory').val()
+          itemFilt = $('#searchByItem').val()
+          appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
+        })
+      })
+    }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"

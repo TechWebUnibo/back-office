@@ -169,9 +169,8 @@
       });
       $(".btn-modify").each(async function () {
         $(this).on("click", async function () {
-          localStorage.idUser = $(this).val();
-          console.log(localStorage.idUser)
-          window.location.href = 'ChangeUser.html';
+          localStorage.idUser = $(this).val()
+          window.location.href = 'ChangeUser.html'
         });
       });
 
@@ -183,7 +182,7 @@
               method: 'DELETE',
               headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + localStorage.token,
+                'Authorization': 'Bearer ' + getToken(),
               }
             })
           }
@@ -196,8 +195,8 @@
           nameFilt = $('#searchByName').val()
           surFilt = $('#searchBySurname').val()
           appendData(customers, userFilt, nameFilt, surFilt)
-        });
-      });
+        })
+      })
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

@@ -17,50 +17,50 @@ const itemsUrl = 'items'
 
 
 // Authenticated for back-office
-function authBack(){
+function authBack() {
     //authenticated?
     fetch('https://site202118.tw.cs.unibo.it/api/auth/staff/authenticated', {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Authorization': 'Bearer ' + getToken()
-      },
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': 'Bearer ' + getToken()
+        },
     })
-      .then(res => {
-        if (res.status == 200) return res.json();
-        else window.location.href = 'NotLogged.html';
-      })
-      .then(function (data) {
-        console.log(data);
-      })
-      .catch(function (err) {
-        console.log(err);
-      })
+        .then(res => {
+            if (res.status == 200) return res.json();
+            else window.location.href = 'NotLogged.html';
+        })
+        .then(function (data) {
+            console.log(data);
+        })
+        .catch(function (err) {
+            console.log(err);
+        })
 }
 
 async function apiLogin(username, password) {
-  let data = `{
+    let data = `{
         "username": "${username}",
         "password": "${password}"
         }`;
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: data,
-  };
-  try {
-    let res = await fetch(CUSTMER_LOGIN, requestOptions);
-    let status = res.status;
-    res = await res.json();
-    if (status === 200) {
-      setToken(res.accessToken);
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: data,
+    };
+    try {
+        let res = await fetch(CUSTMER_LOGIN, requestOptions);
+        let status = res.status;
+        res = await res.json();
+        if (status === 200) {
+            setToken(res.accessToken);
+        }
+        return status;
+    } catch (e) {
+        console.log(e);
     }
-    return status;
-  } catch (e) {
-    console.log(e);
-  }
-  return 502;
+    return 502;
 }
 
 
@@ -85,35 +85,35 @@ async function refreshPublicKey() {
 
 
 async function getPublicKey() {
-    if (!localStorage[PUBLICKEY_KEY] || localStorage[PUBLICKEY_KEY] === 'undefined'){
+    if (!localStorage[PUBLICKEY_KEY] || localStorage[PUBLICKEY_KEY] === 'undefined') {
         await refreshPublicKey()
     }
     return localStorage[PUBLICKEY_KEY]
 }
 
 
-function setToken(token){
+function setToken(token) {
     localStorage[ACCESS_TOKEN_KEY] = token
 }
 
 
-function getToken(){
+function getToken() {
     return localStorage[ACCESS_TOKEN_KEY]
 }
 
-async function isLogged(){
-    try{
+async function isLogged() {
+    try {
         let decoded = jwt.verify(getToken(), await getPublicKey(), { algorithm: 'RS256' })
         return decoded.role === 'customer'
     }
-    catch(err){
+    catch (err) {
         console.log(err)
         return false
     }
 }
 
 
-async function getCustomers (){
+async function getCustomers() {
     let res = await fetch(url + customersUrl, {
         method: 'GET',
         mode: 'cors', // no-cors, *cors, same-origin
@@ -122,174 +122,199 @@ async function getCustomers (){
             'Access-Control-Allow-Origin': '*'
         },
     })
-    if(res.status === 200){
+    if (res.status === 200) {
         res = await res.json()
         return res
     }
-    else{
+    else {
         return []
     }
 }
-async function getStaff(){
-        try {
-            let res = await fetch(url + staffUrl, {
-                method: 'GET',
-                mode: 'cors', // no-cors, *cors, same-origin
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': 'Bearer ' + getToken()
-                },
-            })
-            if (res.status === 200) {
-                res = await res.json()
-                return res
-            }
-            else {
-                return []
-            }
-        }
-        catch (e) {
-            console.log(e)
-        }
-    }
-    async function getProducts(){
-        try{
-            let res = await fetch(url + productsUrl, {
-                method: 'GET',
-                mode: 'cors', // no-cors, *cors, same-origin
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': 'Bearer ' + getToken()
-                },
-            })
-            if(res.status === 200){
-                res = await res.json()
-                return res
-            }
-            else{
-                return []
-            }
-        }
-        catch(e){
-            console.log(e)
-        }
-    }
-    async function getRentals(query){
-        if(typeof query != 'undefined'){
-            query = '?' + new URLSearchParams(query).toString()
-        }
-        else{
-            query = ''
-        }
-        try{
-            let res = await fetch(url + rentsUrl + query, {
-                method: 'GET',
-                mode: 'cors', // no-cors, *cors, same-origin
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': 'Bearer ' + getToken()
-                },
-            })
-            if(res.status === 200){
-                res = await res.json()
-                return res
-            }
-            else{
-                return []
-            }
-        }
-        catch(e){
-            console.log(e)
-        }
-    }
-    async function getInvoices(query) {
-        if (typeof query != 'undefined') {
-            query = '?' + new URLSearchParams(query).toString()
+async function getStaff() {
+    try {
+        let res = await fetch(url + staffUrl, {
+            method: 'GET',
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken()
+            },
+        })
+        if (res.status === 200) {
+            res = await res.json()
+            return res
         }
         else {
-            query = ''
-        }
-        try {
-            let res = await fetch(url + invoicesUrl + query, {
-                method: 'GET',
-                mode: 'cors', // no-cors, *cors, same-origin
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': 'Bearer ' + getToken()
-                },
-            })
-            if (res.status === 200) {
-                res = await res.json()
-                return res
-            }
-            else {
-                return []
-            }
-        }
-        catch (e) {
-            console.log(e)
+            return []
         }
     }
-    async function getItems(query) {
-        if (typeof query != 'undefined') {
-            query = '?' + new URLSearchParams(query).toString()
+    catch (e) {
+        console.log(e)
+    }
+}
+async function getProducts() {
+    try {
+        let res = await fetch(url + productsUrl, {
+            method: 'GET',
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken()
+            },
+        })
+        if (res.status === 200) {
+            res = await res.json()
+            return res
         }
         else {
-            query = ''
-        }
-        try {
-            let res = await fetch(url + itemsUrl + query, {
-                method: 'GET',
-                mode: 'cors', // no-cors, *cors, same-origin
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': 'Bearer ' + getToken()
-                },
-            })
-            if (res.status === 200) {
-                res = await res.json()
-                return res
-            }
-            else {
-                return []
-            }
-        }
-        catch (e) {
-            console.log(e)
+            return []
         }
     }
-    async function modifyStaff(id, data) {
-        try {
-            let res = await fetch(url + staffUrl + '/' + id, {
-                method: 'POST',
-                mode: 'cors', // no-cors, *cors, same-origin
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': 'Bearer ' + getToken()
-                },
-                body: JSON.stringify(data)
-            })
-            if (res.status === 200) {
-                res = await res.json()
-                return res
-            }
-            else {
-                return []
-            }
+    catch (e) {
+        console.log(e)
+    }
+}
+async function getRentals(query) {
+    if (typeof query != 'undefined') {
+        query = '?' + new URLSearchParams(query).toString()
+    }
+    else {
+        query = ''
+    }
+    try {
+        let res = await fetch(url + rentsUrl + query, {
+            method: 'GET',
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken()
+            },
+        })
+        if (res.status === 200) {
+            res = await res.json()
+            return res
         }
-        catch (e) {
-            console.log(e)
+        else {
+            return []
         }
     }
+    catch (e) {
+        console.log(e)
+    }
+}
+//TODO forse da eliminare
+async function getRentByID(id) {
+    id = '/' + new URLSearchParams(id).toString()
+    try {
+        let res = await fetch(url + rentsUrl + id, {
+            method: 'GET',
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken()
+            },
+        })
+        if (res.status === 200) {
+            res = await res.json()
+            return res
+        }
+        else {
+            return []
+        }
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+async function getInvoices(query) {
+    if (typeof query != 'undefined') {
+        query = '?' + new URLSearchParams(query).toString()
+    }
+    else {
+        query = ''
+    }
+    try {
+        let res = await fetch(url + invoicesUrl + query, {
+            method: 'GET',
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken()
+            },
+        })
+        if (res.status === 200) {
+            res = await res.json()
+            return res
+        }
+        else {
+            return []
+        }
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+async function getItems(query) {
+    if (typeof query != 'undefined') {
+        query = '?' + new URLSearchParams(query).toString()
+    }
+    else {
+        query = ''
+    }
+    try {
+        let res = await fetch(url + itemsUrl + query, {
+            method: 'GET',
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken()
+            },
+        })
+        if (res.status === 200) {
+            res = await res.json()
+            return res
+        }
+        else {
+            return []
+        }
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+async function modifyStaff(id, data) {
+    try {
+        let res = await fetch(url + staffUrl + '/' + id, {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken()
+            },
+            body: JSON.stringify(data)
+        })
+        if (res.status === 200) {
+            res = await res.json()
+            return res
+        }
+        else {
+            return []
+        }
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
 
-    async function apiRegister(name, surname, username, password, address, city, zip, avatar) {
-        let data = `{
+async function apiRegister(name, surname, username, password, address, city, zip, avatar) {
+    let data = `{
               "name": "${name}",
               "surname": "${surname}",
               "username": "${username}",
@@ -302,51 +327,51 @@ async function getStaff(){
                     "residence": "${address}"
                 }
               }`;
-        const requestOptions = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: data,
-        };
-        try {
-          let res = await fetch(CUSTOMER_REGISTER, requestOptions);
-          let status = res.status;
-          res = await res.json();
-          if (status === 200) {
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: data,
+    };
+    try {
+        let res = await fetch(CUSTOMER_REGISTER, requestOptions);
+        let status = res.status;
+        res = await res.json();
+        if (status === 200) {
             setToken(res.accessToken);
-          }
-          return status;
-        } catch (e) {
-          console.log(e);
         }
-        return 502;
-      }
+        return status;
+    } catch (e) {
+        console.log(e);
+    }
+    return 502;
+}
 
-async function getUser(){
+async function getUser() {
     let token = getToken()
-    try{
+    try {
         let decoded = jwt.verify(token, await getPublicKey(), { algorithm: 'RS256' })
         return decoded._id
     }
-    catch(err){
+    catch (err) {
         console.log(err)
         return null
     }
 }
 
 
-async function getAvailability (id, start, end, rent) {
+async function getAvailability(id, start, end, rent) {
     try {
         start = start.toISOString().split('T')[0]
         end = end.toISOString().split('T')[0]
 
         let res = await fetch(url + productsUrl + `/${id}/available?start=${start}&end=${end}${rent ? '&rent=' + rent : ''}`, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Authorization': 'Bearer ' + getToken()
-        }
+            method: "GET",
+            mode: "cors",
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken()
+            }
         })
         if (res.status === 200) {
             res = await res.json()
@@ -356,12 +381,12 @@ async function getAvailability (id, start, end, rent) {
             return false
         }
     }
-    catch(err){
+    catch (err) {
         // console.log(err)
     }
 }
 
-async function createRent (customer, start, end, price, products, productType){
+async function createRent(customer, start, end, price, products, productType) {
     start = start.toISOString().split('T')[0]
     end = end.toISOString().split('T')[0]
     const data = {
@@ -372,7 +397,7 @@ async function createRent (customer, start, end, price, products, productType){
         end: end,
         price: price
     }
-    const res = await fetch(url +  rentsUrl, {
+    const res = await fetch(url + rentsUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

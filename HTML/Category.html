@@ -174,7 +174,7 @@
         method: 'POST',
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Bearer ' + localStorage.token,
+          'Authorization': 'Bearer ' + getToken(),
         },
         body: formData,
       })

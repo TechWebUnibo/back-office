@@ -54,7 +54,7 @@ body{
 }
 /* Dropdown filter style */
 .dropdownFilter {
-    opacity: 50%;
+    opacity: 75%;
     height: 2.5rem;
     padding: 8px;
     width: 20%;;
@@ -94,6 +94,22 @@ body{
 }
 .btn-search:focus{
     box-shadow: 0 0 0 0.25rem rgb(250 50 250 / 25%);
+}
+.btn-toOpen {
+    color: #FFFFFF;
+    background-color: #c568d7;
+    border-color: #e1a5cf;
+}
+.btn-toOpen:focus{
+    box-shadow: 0 0 0 0.25rem rgb(166 19 181 / 25%);
+}
+.btn-toClose {
+    color: #FFFFFF;
+    background-color: #815f86;
+    border-color: #e1a5cf;
+}
+.btn-toClose:focus{
+    box-shadow: 0 0 0 0.25rem #815f8677;
 }
 /* Login style */
 .loginForm{
