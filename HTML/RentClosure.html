@@ -86,12 +86,32 @@
         <h3 class="mb-4">Closing a rent</h3>
         <form id="createUserForm" method="POST">
           <!-- TODO togliere le pagine RentClosure e RentStart dal menu dropdown della navbar (sono accessibili solo dalla ricerca) -->
-          <!-- Customer -->
-          <div class="col-6">
-            <input type="text" class="form-control" id="customer" placeholder="Customer Name"
-              aria-describedby="customerHelp" required aria-required="true">
+          <div class="row">
+            <!-- Customer -->
+            <div class="row col-5">
+              <h4 id="customerRent">
+                Customer:
+              </h4>
+              <h4 id="employeeRent">
+                Employee:
+              </h4>
+              <h4 id="itemRent">
+                Item/s:
+              </h4>
+            </div>
+            <div class="col-7 row">
+              <div class="col-4">
+                <h5>Start date: </h5>
+                <h5>End date: </h5>
+              </div>
+              <div class="col-8">
+                <h5 id="startRent"></h5>
+                <h5 id="endRent"></h5>
+              </div>
+            </div>
           </div>
-          <!-- Avatar -->
+          <br>
+          <!-- Condition -->
           <div class="col-6 mb-3">
             <select class="form-select opacity-75" id="conditionOfTheItem">
               <option value="" id="selectPlaceholder" selected>Condition not changed</option>
@@ -101,6 +121,10 @@
               <option value="broken" id="selectBroken">Broken</option>
               <option value="not available" id="selectNotAvailable">Not Available</option>
             </select>
+            <!-- If the item has been broken -->
+            <div id="brokenDate">
+
+            </div>
           </div>
           <button type="submit" class="btn btn-toClose">Close the Rent</button>
         </form>
@@ -120,10 +144,28 @@
 
     $(document).ready(async function () {
       let rent = await getRentByID(localStorage.idRent)
-      console.log(localStorage.idRent)
-      console.log(rent)
       let userFilt = $('#searchByUsername').val()
-      let map = mapUserID()
+      let mapUser = await mapUserID()
+      let mapEmployee = await mapEmployeeID()
+      let mapItem = await mapItemID()
+      $("#customerRent").append(mapUser[rent.customer])
+      $("#employeeRent").append(mapEmployee[rent.employee])
+      $("#itemRent").append(mapItem[rent.products])
+      $("#startRent").append(rent.start.substring(0, 10))
+      $("#startRent").append('<h6>' + rent.start.substring(11, 16) + '</h6>')
+      $("#endRent").append(rent.end.substring(0, 10))
+      $("#endRent").append('<h6>' + rent.end.substring(11, 16) + '</h6>')
+    })
+    $('#conditionOfTheItem').change(function () {
+      let cond = $(this).val()
+      if (cond == "broken") {
+        // TODO migliorare le date
+        $('#brokenDate').append('<br><input placeholder="Start of the repairing" type="text" id="startRepair" class="form-control">' +
+          '<input placeholder="End of the repairing" type="text" id="endRepair" class="form-control">')
+      }
+      else {
+        $('#brokenDate').empty()
+      }
     })
       // TODO API
     /*
@@ -134,42 +176,6 @@
         'Authorization': 'Bearer ' + getToken(),
       }
     })*/
-
-    /*$('#searchButton').click(async function () {
-      $('#cardRecipient').empty()
-      userFilt = $('#searchByUsername').val()
-      appendData(rentals, userFilt, map)
-    })
-    $(".btn-modify").each(async function () {
-      $(this).on("click", async function () {
-        localStorage.idUser = $(this).val();
-        console.log(localStorage.idUser)
-        window.location.href = 'ChangeUser.html'
-      })
-    })
-
-    $(".btn-delete").each(async function () {
-      $(this).on("click", async function () {
-        localStorage.idUser = $(this).val()
-        try {
-          let res = await fetch('https://site202118.tw.cs.unibo.it/api/customers/' + localStorage.idUser, {
-            method: 'DELETE',
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Authorization': 'Bearer ' + getToken(),
-            }
-          })
-        }
-        catch (error) {
-          console.log(error)
-        }
-        $('#cardRecipient').empty()
-        userFilt = $('#searchByUsername').val()
-        nameFilt = $('#searchByName').val()
-        surFilt = $('#searchBySurname').val()
-        appendData(rentals, userFilt, map)
-      })
-    }) */
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"

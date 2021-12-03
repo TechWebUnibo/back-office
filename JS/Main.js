@@ -37,20 +37,32 @@ async function createCategory() {
 async function mapUserID() {
     let map = {}
     //Fetch of the users
-    try {
-        let customers = await fetch('https://site202118.tw.cs.unibo.it/api/customers', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-        customers = await customers.json()
-        for (const customer of customers) {
-            map[customer._id] = customer.username
-        }
+    let users = await getCustomers()
+    for(const user of users)
+    {
+        map[user._id] = user.username
     }
-    catch (error) {
-        console.log(error)
+    return map;
+}
+
+async function mapEmployeeID() {
+    let map = {}
+    //Fetch of the users
+    let users = await getStaff()
+    for(const user of users)
+    {
+        map[user._id] = user.username
+    }
+    return map;
+}
+
+async function mapItemID() {
+    let map = {}
+    //Fetch of the users
+    let items = await getItems()
+    for(const item of items)
+    {
+        map[item._id] = item.name
     }
     return map;
 }

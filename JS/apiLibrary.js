@@ -206,8 +206,8 @@ async function getRentals(query) {
     }
 }
 //TODO forse da eliminare
-async function getRentByID(id) {
-    id = '/' + new URLSearchParams(id).toString()
+async function getRentByID(id, query) {
+    id = '/' + id
     try {
         let res = await fetch(url + rentsUrl + id, {
             method: 'GET',
