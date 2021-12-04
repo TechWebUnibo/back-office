@@ -102,6 +102,21 @@
         <div class="row" id="cardRecipient"></div>
       </div>
     </div>
+
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Ooops...</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            You cannot delete this item
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
     <footer class="footer">
       <div class="container p-5">
@@ -145,7 +160,9 @@
         if (cond_itemname) {
           $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h5 class ="card-title">'
             + item.name + '</h5><h6>Category: ' + map[item.type] +
-            '</h6><h6>Price: ' + item.price + '</h6><h6>Condition: ' + item.condition);
+            '</h6><h6>Price: ' + item.price + '</h6><h6>Condition: ' + item.condition + 
+            '</h6></div><div class="card-footer bg-transparent"><button class="btn btn-primary">Modify</button><button class="btn btn-danger" onClick='+
+            `"deleteCard('${item._id}')">Delete</button></div></div>`);
         }
       }
       $('#searchButton').click(async function () {
@@ -154,6 +171,19 @@
         appendData(items, map, itemFilt);
       });
     }
+  
+    async function deleteCard(id) {
+      const { status, body } = await deleteItem(id)
+      if (status === 200) {
+        window.location.reload()
+      }
+      else {
+        var errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
+          keyboard: false
+        })
+        errorModal.toggle()
+      }
+    } 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"

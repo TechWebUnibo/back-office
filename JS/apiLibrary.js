@@ -29,7 +29,7 @@ function authBack() {
     })
         .then(res => {
             if (res.status == 200) return res.json();
-            else window.location.href = 'https://site202118.tw.cs.unibo.it/admin/Login.html';
+            else window.location.href = 'Login.html';
         })
         .then(function (data) {
             console.log(data);
@@ -287,6 +287,26 @@ async function getItems(query) {
     catch (e) {
         console.log(e)
     }
+}
+
+async function deleteItem(id) {
+    let res
+    try {
+        res = await fetch(url + itemsUrl + '/' + id, {
+            method: 'DELETE',
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken()
+            },
+        })
+    }
+    catch (e) {
+        console.log(e)
+    }
+    let status = res.status
+    return { status, body: await res.json()  }
 }
 async function modifyStaff(id, data) {
     try {
