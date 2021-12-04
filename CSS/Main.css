@@ -185,6 +185,27 @@ body{
     height: 70%;
 }
 
+.container {
+    padding-bottom: 18em;
+}
+
+.footer {
+  background-color: #FFFFFF;
+  bottom: 0;
+  line-height: 40px;
+  margin-top: 2em;
+  width: 100%;
+}
+
+.footer a {
+    text-decoration: none;
+    color: black
+}
+
+.footer ul {
+    list-style: none;
+}
+
 /* Scroll bar */
 /* ::-webkit-scrollbar{
     border-radius: 100vw;
