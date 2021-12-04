@@ -29,7 +29,7 @@ function authBack() {
     })
         .then(res => {
             if (res.status == 200) return res.json();
-            else window.location.href = 'Login.html';
+            else window.location.href = 'https://site202118.tw.cs.unibo.it/admin/Login.html';
         })
         .then(function (data) {
             console.log(data);
