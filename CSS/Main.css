@@ -169,7 +169,22 @@ body{
     padding: 0.4rem;
     border-bottom-left-radius: .25rem;
     border-bottom-right-radius: .25rem;
+}   
+
+
+#homeCards h3 {
+    color: rgb(255, 255, 255);
+    font-size: 2em;
 }
+
+#homeCards .card {
+    margin-top: 1em;
+}
+
+#homeCards img {
+    height: 70%;
+}
+
 /* Scroll bar */
 /* ::-webkit-scrollbar{
     border-radius: 100vw;
