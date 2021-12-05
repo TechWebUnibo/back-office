@@ -428,12 +428,15 @@ async function getAvailability(id, start, end, rent) {
     }
 }
 
-async function createRent(customer, start, end, price, products, productType) {
+async function createRent(customer, employee, start, end, price, products, productType) {
+    start = new Date(start)
+    end = new Date(end)
     start = start.toISOString().split('T')[0]
     end = end.toISOString().split('T')[0]
     const data = {
         customer: customer,
         products: products,
+        employee,
         productType: productType,
         start: start,
         end: end,

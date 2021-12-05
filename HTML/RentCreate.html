@@ -93,12 +93,12 @@
             <label for="customers" class="form-label">Select customer</label>
             <select type="text" class="form-select form-select-lg mb-3" id="customers" 
               aria-label="customer" required aria-required="true">
-              <option selected>Customer...</option>
+              <option value="0" selected>Customer...</option>
             </select>
             <label for="products" class="form-label">Select product</label>
             <select type="text" class="form-select form-select-lg mb-3" id="products" 
               aria-label="product" required aria-required="true">
-              <option selected>Product...</option>
+              <option value="0" selected>Product...</option>
             </select>
           </div>  
         </div>
@@ -116,6 +116,18 @@
           </div>
         <button type="submit" class="btn btn-primary">Create</button>
       </form>
+              <div class="modal fade" id="notify" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalTitle"></h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="textModal" class="modal-body">
+                    </div>
+                  </div>
+                </div>
+              </div>
     </div>
   </div>
     <footer class="footer">
@@ -159,6 +171,10 @@
 
     $('#createRental').submit(async function (event) {
       event.preventDefault()
+        let notify = new bootstrap.Modal(document.getElementById('notify'), {
+        keyboard: false
+      })
+      notify.toggle()
       let customer = $('#customers').val()
       let product = $('#products').val()
       let start = $('#startDate').val()
@@ -166,7 +182,22 @@
       if (start && end && product) {
         console.log(product)
         let res = await getAvailability(product, start, end)
-        console.log(res)
+        if (res.available) {
+          let status = await createRent(customer, localStorage.employeeID, start, end, res.price, res.products, product)
+          if(status !== 200) {
+            $('#textModal').text('Cannot create the rent')
+            $('#modalTitle').text('Ooops...')
+          }
+          else {
+            $('#modalTitle').text('Rent created')
+            $('#textModal').text('The rent has been correctly created')
+          }
+        }
+        else {
+          $('#modalTitle').text('Ooops...')
+          $('#textModal').text('The product selected is unavailable')
+        }
+        notify.toggle()
       }
     })
 
