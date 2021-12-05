@@ -401,6 +401,8 @@ async function getUser() {
 
 async function getAvailability(id, start, end, rent) {
     try {
+        start = new Date(start)
+        end = new Date(end)
         start = start.toISOString().split('T')[0]
         end = end.toISOString().split('T')[0]
 

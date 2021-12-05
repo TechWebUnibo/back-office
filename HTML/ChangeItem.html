@@ -221,26 +221,6 @@
             }
         });
         
-        function createPickers () {
-            $(function () {
-                datePickerController.createDatePicker({
-                    // Associate the text input to a DD/MM/YYYY date format                            
-                    formElements: { "startDate": "%Y-%m-%d" },
-                    noFadeEffect: true,
-                    labelText: ""
-                });
-                datePickerController.createDatePicker({
-                    // Associate the text input to a DD/MM/YYYY date format                            
-                    formElements: { "endDate": "%Y-%m-%d" },
-                    noFadeEffect: true,
-                    labelText: ""
-                });
-                $("#fd-but-startDate").removeClass("date-picker-control")
-                $("#fd-but-startDate").addClass("input-group-text")
-                $("#fd-but-endDate").removeClass("date-picker-control")
-                $("#fd-but-endDate").addClass("input-group-text")
-            });    
-        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
