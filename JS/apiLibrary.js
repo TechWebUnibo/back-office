@@ -332,6 +332,26 @@ async function modifyStaff(id, data) {
         console.log(e)
     }
 }
+async function modifyItem(id, data) {
+    let res
+    try {
+        res = await fetch(url + itemsUrl + '/' + id, {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken()
+            },
+            body: JSON.stringify(data)
+        })
+    }
+    catch (e) {
+        console.log(e)
+    }
+    const status = res.status
+    return { status, body: await res.json() }
+}
 
 async function apiRegister(name, surname, username, password, address, city, zip, avatar) {
     let data = `{
@@ -381,6 +401,8 @@ async function getUser() {
 
 async function getAvailability(id, start, end, rent) {
     try {
+        start = new Date(start)
+        end = new Date(end)
         start = start.toISOString().split('T')[0]
         end = end.toISOString().split('T')[0]
 
@@ -406,12 +428,15 @@ async function getAvailability(id, start, end, rent) {
     }
 }
 
-async function createRent(customer, start, end, price, products, productType) {
+async function createRent(customer, employee, start, end, price, products, productType) {
+    start = new Date(start)
+    end = new Date(end)
     start = start.toISOString().split('T')[0]
     end = end.toISOString().split('T')[0]
     const data = {
         customer: customer,
         products: products,
+        employee,
         productType: productType,
         start: start,
         end: end,

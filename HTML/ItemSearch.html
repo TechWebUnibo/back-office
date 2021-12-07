@@ -161,8 +161,8 @@
           $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h5 class ="card-title">'
             + item.name + '</h5><h6>Category: ' + map[item.type] +
             '</h6><h6>Price: ' + item.price + '</h6><h6>Condition: ' + item.condition + 
-            '</h6></div><div class="card-footer bg-transparent"><button class="btn btn-primary">Modify</button><button class="btn btn-danger" onClick='+
-            `"deleteCard('${item._id}')">Delete</button></div></div>`);
+            `</h6></div><div class="card-footer bg-transparent"><a href="ChangeItem.html?item=${item._id}" class="btn btn-primary">Modify</a><button class="btn btn-danger" onClick='+
+            "deleteCard('${item._id}')">Delete</button></div></div>`);
         }
       }
       $('#searchButton').click(async function () {
@@ -178,7 +178,7 @@
         window.location.reload()
       }
       else {
-        var errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
+        let errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
           keyboard: false
         })
         errorModal.toggle()

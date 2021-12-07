@@ -8,6 +8,10 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
   <link rel="stylesheet" href="../CSS/Main.css">
+  <link rel="stylesheet" href="//assets.cms.gov/resources/libs/datepicker/v6/css/datepicker.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.0/css/font-awesome.css"
+    integrity="sha512-72McA95q/YhjwmWFMGe8RI3aZIMCTJWPBbV8iQY3jy1z9+bi6+jHnERuNrDPo/WGYEzzNs4WdHNyyEr/yXJ9pA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -82,21 +86,48 @@
   </header>
   <div class="container">
     <div class="row">
-      <div class="catalogForm offset-lg-2 offset-1 col-lg-8 col-10">
+      <form id="createRental" class="catalogForm offset-lg-2 offset-1 col-lg-8 col-10">
         <h4>Create a rent</h4>
         <div class="input-group">
           <div class="form-outline">
-            <input type="text" class="form-control" id="searchByUsername" placeholder="Username"
-              aria-describedby="searchByUsername" required aria-required="true">
-          </div>
-          <button id="searchButton" type="button" class="btn btn-submit">
-            <!-- TODO far funzionare la fa icon -->
-            <i class="fa fa-search" aria-hidden="true"></i>
-          </button>
+            <label for="customers" class="form-label">Select customer</label>
+            <select type="text" class="form-select form-select-lg mb-3" id="customers" 
+              aria-label="customer" required aria-required="true">
+              <option value="0" selected>Customer...</option>
+            </select>
+            <label for="products" class="form-label">Select product</label>
+            <select type="text" class="form-select form-select-lg mb-3" id="products" 
+              aria-label="product" required aria-required="true">
+              <option value="0" selected>Product...</option>
+            </select>
+          </div>  
         </div>
         <br>
-        <div class="row" id="cardRecipient"></div>
-      </div>
+          <div class="" id="date">
+              <h4>Insert the period </h4>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Insert start date..." aria-label="start Date" id="startDate"
+                  value="" />
+              </div>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Insert end date..." aria-label="end Date" id="endDate"
+                  value="" />
+              </div>
+          </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+      </form>
+              <div class="modal fade" id="notify" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalTitle"></h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="textModal" class="modal-body">
+                    </div>
+                  </div>
+                </div>
+              </div>
     </div>
   </div>
     <footer class="footer">
@@ -126,62 +157,55 @@
     authBack()
 
     $(document).ready(async function () {
-      let rentals = await getRentals('employee=' + localStorage.employeeID + '&state=in_progress')
-      //TODO riprendere da qua - non sta stampando nulla nei rentals
-      console.log(rentals)
-      let userFilt = $('#searchByUsername').val()
-      let map = mapUserID()
-      appendData(rentals, userFilt, map)
+      let customers = await getCustomers()
+      let products = await getProducts()
+      appendData(customers, '#customers', '_id', 'username')
+      appendData(products, '#products', '_id', 'name')
+      createPickers()
     })
-    async function appendData(rentals, usernameFilter, map) {
-      for (const rent of rentals) {
-        if (usernameFilter == "" || userFilt == map[rent.customer]) {
-          //Controls on the content of the address
-          $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h5>' + rent.customer + '</h5><h5>' + rent.products + '</h5></div></div>');
-        }
+    async function appendData(elements, div, value, text) {
+      for (const element of elements) {
+          $(div).append(`<option value="${element[value]}">${element[text]}</option>`);
       }
-
-
-      /*$('#searchButton').click(async function () {
-        $('#cardRecipient').empty()
-        userFilt = $('#searchByUsername').val()
-        appendData(rentals, userFilt, map)
-      })
-      $(".btn-modify").each(async function () {
-        $(this).on("click", async function () {
-          localStorage.idUser = $(this).val();
-          console.log(localStorage.idUser)
-          window.location.href = 'ChangeUser.html'
-        })
-      })
-
-      $(".btn-delete").each(async function () {
-        $(this).on("click", async function () {
-          localStorage.idUser = $(this).val()
-          try {
-            let res = await fetch('https://site202118.tw.cs.unibo.it/api/customers/' + localStorage.idUser, {
-              method: 'DELETE',
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + getToken(),
-              }
-            })
-          }
-          catch (error) {
-            console.log(error)
-          }
-          $('#cardRecipient').empty()
-          userFilt = $('#searchByUsername').val()
-          nameFilt = $('#searchByName').val()
-          surFilt = $('#searchBySurname').val()
-          appendData(rentals, userFilt, map)
-        })
-      }) */
     }
+
+    $('#createRental').submit(async function (event) {
+      event.preventDefault()
+        let notify = new bootstrap.Modal(document.getElementById('notify'), {
+        keyboard: false
+      })
+      notify.toggle()
+      let customer = $('#customers').val()
+      let product = $('#products').val()
+      let start = $('#startDate').val()
+      let end = $('#endDate').val()
+      if (start && end && product) {
+        console.log(product)
+        let res = await getAvailability(product, start, end)
+        if (res.available) {
+          let status = await createRent(customer, localStorage.employeeID, start, end, res.price, res.products, product)
+          if(status !== 200) {
+            $('#textModal').text('Cannot create the rent')
+            $('#modalTitle').text('Ooops...')
+          }
+          else {
+            $('#modalTitle').text('Rent created')
+            $('#textModal').text('The rent has been correctly created')
+          }
+        }
+        else {
+          $('#modalTitle').text('Ooops...')
+          $('#textModal').text('The product selected is unavailable')
+        }
+        notify.toggle()
+      }
+    })
+
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
     crossorigin="anonymous"></script>
+    <script type="text/javascript" src="//assets.cms.gov/resources/libs/datepicker/v6/js/datepicker.js"></script>
 </body>
 
 </html>
