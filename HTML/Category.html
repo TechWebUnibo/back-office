@@ -63,9 +63,9 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="dropdownRent">
                 <li><a class="dropdown-item" href="RentCreate.html">Create a Rent</a></li>
-                                <li>
-                                <li><a class="dropdown-item" href="RentClosure.html">Close a Rent</a></li>
-                                <li>
+                <li>
+                <li><a class="dropdown-item" href="RentClosure.html">Close a Rent</a></li>
+                <li>
                   <hr class="dropdown-divider">
                 </li>
                 <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
@@ -124,26 +124,26 @@
       </div>
     </div>
   </div>
-    <footer class="footer">
-      <div class="container p-5">
-        <div class="row">
-          <div class="col-md-6">
-            <ul>
-              <li><a href="Home.html">Home</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
-          </div>
+  <footer class="footer">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-6">
+          <ul>
+            <li><a href="Home.html">Home</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
+          </ul>
         </div>
-        <hr>
-        <span class="small-text text-muted">Powered by NoloNolo+</span>
+        <div class="col-md-6">
+          <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
+        </div>
       </div>
-    </footer>
+      <hr>
+      <span class="small-text text-muted">Powered by NoloNolo+</span>
+    </div>
+  </footer>
   <script type="text/javascript" src="../JS/Main.js"></script>
-    <script type="text/javascript" src="../JS/apiLibrary.js"></script>
+  <script type="text/javascript" src="../JS/apiLibrary.js"></script>
   <!-- JQUERY -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
@@ -151,50 +151,73 @@
     authBack()
 
     //Loading of the select input
-    fetch('https://site202118.tw.cs.unibo.it/api/products', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-      .then(res => {
-        return res.json()
+    $(document).ready(async function () {
+
+      let category = await getProducts()
+      await appendData(category)
+
+      $('form').submit(async function (e) {
+        e.preventDefault()
+
+        let category = $('input#categoryname').val();
+        let desc = $('input#description').val();
+        let img = document.getElementById('image');
+
+        const formData = new FormData();
+        formData.append('name', category);
+        formData.append('description', desc);
+        formData.append('img', img.files[0]);
+
+        let res = await fetch('https://site202118.tw.cs.unibo.it/api/products', {
+          method: 'POST',
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': 'Bearer ' + getToken(),
+          },
+          body: formData,
+        })
+        console.log(await res.json())
+
       })
-      .then(function (data) {
-        console.log(data);
-        appendData(data);
+
+      $(".btn-modify").each(async function () {
+        $(this).on("click", async function () {
+          localStorage.idCategory = $('#categoryOfTheItem').val()
+          window.location.href = 'ChangeCategory.html'
+        })
       })
-      .catch(function (err) {
-        console.log(err);
-      });
-    function appendData(categories) {
-      for (const category of categories) {
-        $('#categoryOfTheItem').append('<option value="' + category._id + '">' + category.name + '</option>');
+
+      $(".btn-delete").each(async function () {
+        $(this).on("click", async function () {
+          idCategory = $('#categoryOfTheItem').val()
+          try {
+            let res = await fetch('https://site202118.tw.cs.unibo.it/api/products/' + idCategory, {
+              method: 'DELETE',
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken(),
+              }
+            })
+          }
+          catch (error) {
+            //TODO stampare errore di codice quando non si può eliminare
+            console.log(error)
+          }
+          $('#categoryOfTheItem').empty();
+          category = await getProducts()
+          appendData(category)
+        })
+      })
+
+      async function appendData(categories) {
+        for (const category of categories) {
+          $('#categoryOfTheItem').append('<option value="' + category._id + '">' + category.name + '</option>');
+        }
       }
-    }
+    })
+
     //Post of the category
-    $('form').submit(async function (e) {
-      e.preventDefault();
 
-      let category = $('input#categoryname').val();
-      let desc = $('input#description').val();
-      let img = document.getElementById('image');
-
-      const formData = new FormData();
-      formData.append('name', category);
-      formData.append('description', desc);
-      formData.append('img', img.files[0]);
-
-      let res = await fetch('https://site202118.tw.cs.unibo.it/api/products', {
-        method: 'POST',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Bearer ' + getToken(),
-        },
-        body: formData,
-      })
-      console.log(await res.json())
-    });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
