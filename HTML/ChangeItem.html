@@ -169,19 +169,47 @@
         var item
 
         $(document).ready(async function () {
-                //Loading of the select input
+            //Loading of the select input
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             const id = urlParams.get('item')
-            item = (await getItems({_id: id}))[0]
+            item = (await getItems({ _id: id }))[0]
             $('#itemname').val(item.name)
             $('#condition').val(item.condition)
             $('#price').val(item.price)
-        })
+            brokenItem()
 
-        $('#condition').change(function () {
-            if($('#condition').val() === 'broken') {
-                $('#brokenDate').append(`
+            $('#condition').change(function () {
+                brokenItem()
+            })
+
+            $("#modifyItemForm").submit(async function (event) {
+                event.preventDefault()
+                let name = $('#itemname').val()
+                let price = $('#price').val()
+                let condition = $('#condition').val()
+                let data = { name, price, condition }
+                let startDate = $('#startDate').val()
+                let endDate = $('#endDate').val()
+                if (startDate && endDate) {
+                    data.start = startDate
+                    data.end = endDate
+                }
+                let { status, body } = await modifyItem(item._id, data)
+                if (status === 200) {
+                    window.location.reload()
+                }
+                else {
+                    let errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
+                        keyboard: false
+                    })
+                    errorModal.toggle()
+                }
+            })
+
+            async function brokenItem() {
+                if ($('#condition').val() === 'broken') {
+                    $('#brokenDate').append(`
                     <h4>Insert the period while the item will be unavailable</h4>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Insert start date..." aria-label="start Date" id="startDate" value=""/>
@@ -189,43 +217,24 @@
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Insert end date..." aria-label="end Date" id="endDate" value=""/>
                     </div>`
-                )
-                createPickers()
-            }
-            else {
-                $('#brokenDate').empty()
+                    )
+                    createPickers()
+                }
+                else {
+                    $('#brokenDate').empty()
+                }
             }
         })
 
-        $("#modifyItemForm").submit(async function (event) {
-            event.preventDefault();
-            let name = $('#itemname').val();
-            let price = $('#price').val();
-            let condition = $('#condition').val();
-            let data = { name, price, condition };
-            let startDate = $('#startDate').val()
-            let endDate = $('#endDate').val() 
-            if (startDate && endDate) {
-                data.start = startDate
-                data.end = endDate
-            }
-            let { status, body } = await modifyItem(item._id, data)
-            if (status === 200) {
-                window.location.reload()
-            }
-            else {
-                let errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
-                keyboard: false
-                })
-            errorModal.toggle()
-            }
-        });
-        
+
+
+
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>
-        <script type="text/javascript" src="//assets.cms.gov/resources/libs/datepicker/v6/js/datepicker.js"></script>
+    <script type="text/javascript" src="//assets.cms.gov/resources/libs/datepicker/v6/js/datepicker.js"></script>
 
 </body>
 

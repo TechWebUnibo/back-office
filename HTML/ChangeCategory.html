@@ -149,8 +149,10 @@
 
         $(document).ready(async function () {
             let categories = await getProducts()
+            let image
             for (const category of categories) {
                 if (localStorage.idCategory == category._id) {
+                    image = category.img
                     $('#categoryName').val(category.name)
                     image = "https://site202118.tw.cs.unibo.it" + category.img
                     $('#description').val(category.description)
@@ -168,9 +170,6 @@
                 //TODO risolvere il problema dell'immagine che sparisce dopo una modifica a nome o descrizione
                 if (newImage.files[0] != null) {
                     formData.append('img', newImage.files[0])
-                }
-                else{
-                    let image = document.getElementById('image')
                 }
                 try {
                     let res = await fetch('https://site202118.tw.cs.unibo.it/api/products/' + localStorage.idCategory, {

@@ -11,7 +11,6 @@
   <!-- FONT AWESOME-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
 </head>
 
 <body>
@@ -93,8 +92,17 @@
             <input type="text" class="form-control" id="searchByItemName" placeholder="Item Name"
               aria-describedby="searchByItemName" required aria-required="true">
           </div>
+          <select aria-describedby="filterByCondition" class="dropdownFilter" id="searchByCondition">
+            <option selected="selected" hidden value="">Condition</option>
+            <option value="all">All</option>
+            <option value="perfect">Perfect</option>
+            <option value="good">Good</option>
+            <option value="suitable">Suitable</option>
+            <option value="not_available">Not Available</option>
+            <option value="broken">Broken</option>
+          </select>
           <select aria-describedby="filterByCategory" class="dropdownFilter" id="searchByCategory">
-            <option selected="selected" hidden value="category">Category</option>
+            <option selected="selected" hidden value="">Category</option>
             <option value="all">All</option>
           </select>
           <button id="searchButton" type="button" class="btn btn-modify">
@@ -157,21 +165,23 @@
       let map = await createCategory()
       let categories = await getProducts()
       let itemFilt = $('#searchByItemName').val()
+      let conditionFilt = $('#searchByCondition').val()
       for (const category of categories) {
         $('#searchByCategory').append('<option value="' + category._id + '">' + category.name + '</option>')
       }
-      appendData(items, map, itemFilt, categoryFilt)
+      appendData(items, map, itemFilt, categoryFilt, conditionFilt)
     })
 
-    async function appendData(items, map, itemFilter, categoryFilt) {
-      
-      if(categoryFilt != null){
-        document.getElementById('searchByCategory').value=categoryFilt
+    async function appendData(items, map, itemFilter, categoryFilt, conditionFilt) {
+
+      if (categoryFilt != null) {
+        document.getElementById('searchByCategory').value = categoryFilt
       }
       for (const item of items) {
         let cond_itemname = (itemFilter == "") || (similarity(item.name, itemFilter) >= 0.65) || item.name.toLowerCase().includes(itemFilter.toLowerCase(), 0)
         let cond_category = (categoryFilt == "") || (categoryFilt == undefined) || (categoryFilt == "all") || (categoryFilt == item.type)
-        if (cond_itemname && cond_category) {
+        let cond_condition = (conditionFilt == "") || (conditionFilt == undefined) || (conditionFilt == "all") || (conditionFilt == item.condition)
+        if (cond_itemname && cond_category && cond_condition) {
           $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h5 class ="card-title">'
             + item.name + '</h5><h6>Category: ' + map[item.type] +
             '</h6><h6>Price: ' + item.price + '</h6><h6>Condition: ' + item.condition +
@@ -183,7 +193,8 @@
         $('#cardRecipient').empty()
         itemFilt = $('#searchByItemName').val()
         categoryFilt = $('#searchByCategory').val()
-        appendData(items, map, itemFilt, categoryFilt)
+        conditionFilt = $('#searchByCondition').val()
+        appendData(items, map, itemFilt, categoryFilt, conditionFilt)
       })
     }
 

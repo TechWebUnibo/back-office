@@ -8,6 +8,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
   <link rel="stylesheet" href="../CSS/Main.css">
+  <!-- FONT AWESOME-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 </head>
 
 <body>
@@ -43,8 +46,8 @@
             </li>
             <!-- Item -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle active" aria-current="page" href="#" id="dropdownItems" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
+              <a class="nav-link dropdown-toggle active" aria-current="page" href="#" id="dropdownItems" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 Items
               </a>
               <ul class="dropdown-menu" aria-labelledby="dropdownItems">
@@ -83,14 +86,15 @@
 
   <div class="container">
     <div class="row">
-      <div class="createForm offset-1 col-lg-8 col-md-10 col-sm-10 col-10">
+      <!-- ITEM -->
+      <div class="createForm offset-1 col-lg-5 col-md-10 col-sm-10 col-10">
         <h3 class="mb-4">Create Item</h3>
         <!-- FORM -->
-        <form id="createitemForm">
+        <form id="createItemForm">
           <!-- Item name -->
           <div class="col-12 mb-3">
-            <input type="text" class="form-control" id="itemname" placeholder="Name of the item"
-              aria-describedby="itemnameHelp" required aria-required="true">
+            <input type="text" class="form-control" id="itemName" placeholder="Name of the item"
+              aria-describedby="itemNameHelp" required aria-required="true">
           </div>
           <!-- Type -->
           <div class="input-group col-12 mb-3">
@@ -118,26 +122,68 @@
           <button type="submit" class="btn btn-submit">Submit</button>
         </form>
       </div>
+      <!-- BUNDLE -->
+      <div class="createForm offset-1 col-lg-4 col-md-10 col-sm-10 col-10">
+        <h3 class="mb-4">Create Bundle</h3>
+        <!-- FORM -->
+        <form id="createBundleForm">
+          <!-- Bundle name -->
+          <div class="col-12 mb-3">
+            <input type="text" class="form-control" id="bundleName" placeholder="Name of the bundle"
+              aria-describedby="itemNameHelp" required aria-required="true">
+          </div>
+
+          <!-- First mandatory item of the bundle -->
+          <div id="itemGroup">
+            <div class="input-group col-12 mb-3">
+              <label class="input-group-text" for="firstItem">1° Item</label>
+              <select class="form-select" id="firstItem">
+              </select>
+            </div>
+            <!-- Second mandatory item of the bundle -->
+            <div class="input-group col-12 mb-3">
+              <label class="input-group-text" for="secondItem">2° Item</label>
+              <select class="form-select" id="secondItem">
+              </select>
+            </div>
+          </div>
+          <!-- Button to add more items to the bundle -->
+          <div class="input-group col-12 mb-1">
+            <label class="input-group-text" for="addItem">Add Item</label>
+            <button id="addItem" type="button" class="btn btn-modify">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
+          <!-- Button to remove items from the bundle -->
+          <div class="input-group col-12 mb-3">
+            <label class="input-group-text" for="removeItem">Remove Item</label>
+            <button id="removeItem" type="button" class="btn btn-delete">
+              <i class="fa fa-minus"></i>
+            </button>
+          </div>
+          <button type="submit" class="btn btn-submit">Submit</button>
+        </form>
+      </div>
     </div>
   </div>
-    <footer class="footer">
-      <div class="container p-5">
-        <div class="row">
-          <div class="col-md-6">
-            <ul>
-              <li><a href="Home.html">Home</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
-          </div>
+  <footer class="footer">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-6">
+          <ul>
+            <li><a href="Home.html">Home</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
+          </ul>
         </div>
-        <hr>
-        <span class="small-text text-muted">Powered by NoloNolo+</span>
+        <div class="col-md-6">
+          <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
+        </div>
       </div>
-    </footer>
+      <hr>
+      <span class="small-text text-muted">Powered by NoloNolo+</span>
+    </div>
+  </footer>
   <script type="text/javascript" src="../JS/Main.js"></script>
   <script type="text/javascript" src="../JS/apiLibrary.js"></script>
   <!-- JQUERY -->
@@ -149,47 +195,71 @@
     //authenticated?
     authBack()
 
-    //Loading of the select input
-    fetch('https://site202118.tw.cs.unibo.it/api/products', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-      .then(res => {
-        return res.json()
+    $(document).ready(async function () {
+      let count = 3
+      let categories = await getProducts()
+      let items = await getItems()
+      await appendCategory(categories)
+      await appendItem(items, 'firstItem')
+      await appendItem(items, 'secondItem')
+
+      //POST of a new item
+      $('#createItemForm').submit(async function (e) {
+        e.preventDefault()
+        console.log('ciao')
+        var item = $('#itemName').val()
+        var typ = $('#categoryOfTheItem').val()
+        var prc = $('#price').val()
+        var cond = $('#condition').val()
+        var data = JSON.stringify({ name: item, type: typ, price: prc, condition: cond })
+        let res = await fetch('https://site202118.tw.cs.unibo.it/api/items', {
+          method: 'POST',
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': 'Bearer ' + getToken(),
+            'Content-Type': 'application/json'
+          },
+          body: data
+        })
+        await location.reload()
       })
-      .then(function (data) {
-        console.log(data);
-        appendData(data);
+
+      //POST of a bundle
+
+      //Add item to the bundle
+      $('.btn-modify').click(async function () {
+        $('.errorMessage').remove()
+        $('#itemGroup').append('<div class="input-group col-12 mb-3"><label class="input-group-text" for="' + count + 'Item">'
+          + count + '° Item</label><select class="form-select" id="'
+          + count + 'Item"></select></div>')
+        await appendItem(items, count + 'Item')
+        count += 1
+
       })
-      .catch(function (err) {
-        console.log(err);
+      //Remove item to the bundle
+      $('.btn-delete').click(async function () {
+        if (count > 3) {
+          $('#itemGroup div:last').remove()
+          count -= 1
+        }
+        else {
+          $('.errorMessage').remove()
+          $('.btn-delete').after('<div class="errorMessage"> The bundle needs at least 2 items. </div>')
+        }
       })
-    function appendData(categories) {
-      for (const category of categories) {
-        $('#categoryOfTheItem').append('<option value="' + category._id + '">' + category.name + '</option>');
+      async function appendCategory(categories) {
+        for (const category of categories) {
+          $('#categoryOfTheItem').append('<option value="' + category._id + '">' + category.name + '</option>')
+        }
       }
-    }
-    //POST of a new item
-    $('form').submit(async function (e) {
-      e.preventDefault();
-      var item = $('#itemname').val();
-      var typ = $('#categoryOfTheItem').val();
-      var prc = $('#price').val();
-      var cond = $('#condition').val();
-      var data = JSON.stringify({ name: item, type: typ, price: prc, condition: cond });
-      let res = fetch('https://site202118.tw.cs.unibo.it/api/items', {
-        method: 'POST',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Bearer ' + getToken(),
-          'Content-Type': 'application/json'
-        },
-        body: data
-      })
-      $("#createitemForm").trigger('reset')
-    });
+      async function appendItem(items, idSelect) {
+        for (const item of items) {
+          $('#' + idSelect).append('<option value="' + item._id + '">' + item.name + '</option>')
+        }
+      }
+    })
+
+
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
