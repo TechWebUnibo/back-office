@@ -116,7 +116,7 @@
         </div>
         <br>
         <!-- Buttons for action -->
-        <div class="row">
+        <div id="buttons" class="row">
           <div class="col-4"><button type="submit" class="btn btn-modify">Modify</button></div>
           <div class="col-4"><button type="submit" class="btn btn-delete">Delete</button></div>
           <div class="col-4"><button type="submit" class="btn btn-search">Search</button></div>
@@ -176,7 +176,7 @@
           },
           body: formData,
         })
-        console.log(await res.json())
+        location.reload()
 
       })
 
@@ -203,9 +203,20 @@
             //TODO stampare errore di codice quando non si può eliminare
             console.log(error)
           }
-          $('#categoryOfTheItem').empty();
+          $('#categoryOfTheItem').empty()
           category = await getProducts()
           appendData(category)
+        })
+      })
+      $('.btn-search').each(async function () {
+        $(this).on("click", async function () {
+          $('.errorMessage').remove()
+          if ($('#categoryOfTheItem').val() != null) {
+            window.location.href = 'ItemSearch.html?idCategory=' + $('#categoryOfTheItem').val()
+          }
+          else {
+            $('#buttons').after('<div class="errorMessage">Select a Category</div>')
+          }
         })
       })
 

@@ -47,8 +47,8 @@
             </li>
             <!-- Item -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle active" aria-current="page" href="#" id="dropdownItems" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
+              <a class="nav-link dropdown-toggle active" aria-current="page" href="#" id="dropdownItems" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 Items
               </a>
               <ul class="dropdown-menu" aria-labelledby="dropdownItems">
@@ -93,8 +93,11 @@
             <input type="text" class="form-control" id="searchByItemName" placeholder="Item Name"
               aria-describedby="searchByItemName" required aria-required="true">
           </div>
+          <select aria-describedby="filterByCategory" class="dropdownFilter" id="searchByCategory">
+            <option selected="selected" hidden value="category">Category</option>
+            <option value="all">All</option>
+          </select>
           <button id="searchButton" type="button" class="btn btn-modify">
-            <!-- TODO far funzionare la fa icon -->
             <i class="fa fa-search" aria-hidden="true"></i>
           </button>
         </div>
@@ -118,24 +121,24 @@
     </div>
 
   </div>
-    <footer class="footer">
-      <div class="container p-5">
-        <div class="row">
-          <div class="col-md-6">
-            <ul>
-              <li><a href="Home.html">Home</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
-          </div>
+  <footer class="footer">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-6">
+          <ul>
+            <li><a href="Home.html">Home</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
+          </ul>
         </div>
-        <hr>
-        <span class="small-text text-muted">Powered by NoloNolo+</span>
+        <div class="col-md-6">
+          <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
+        </div>
       </div>
-    </footer>
+      <hr>
+      <span class="small-text text-muted">Powered by NoloNolo+</span>
+    </div>
+  </footer>
   <script type="text/javascript" src="../JS/Main.js"></script>
   <script type="text/javascript" src="../JS/apiLibrary.js"></script>
   <!-- JQUERY -->
@@ -146,32 +149,44 @@
 
     $(document).ready(async function () {
 
+      const queryString = window.location.search
+      const urlParams = new URLSearchParams(queryString)
+      let categoryFilt = urlParams.get('idCategory')
       //Loading of the select input
       let items = await getItems()
       let map = await createCategory()
-      let itemFilt = $('#searchByItemName').val();
-      console.log(items)
-      appendData(items, map, itemFilt)
+      let categories = await getProducts()
+      let itemFilt = $('#searchByItemName').val()
+      for (const category of categories) {
+        $('#searchByCategory').append('<option value="' + category._id + '">' + category.name + '</option>')
+      }
+      appendData(items, map, itemFilt, categoryFilt)
     })
 
-    async function appendData(items, map, itemFilter) {
+    async function appendData(items, map, itemFilter, categoryFilt) {
+      
+      if(categoryFilt != null){
+        document.getElementById('searchByCategory').value=categoryFilt
+      }
       for (const item of items) {
-        let cond_itemname = (itemFilter == "") || (similarity(item.name, itemFilter)>= 0.65) || item.name.toLowerCase().includes(itemFilter.toLowerCase(), 0)
-        if (cond_itemname) {
+        let cond_itemname = (itemFilter == "") || (similarity(item.name, itemFilter) >= 0.65) || item.name.toLowerCase().includes(itemFilter.toLowerCase(), 0)
+        let cond_category = (categoryFilt == "") || (categoryFilt == undefined) || (categoryFilt == "all") || (categoryFilt == item.type)
+        if (cond_itemname && cond_category) {
           $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h5 class ="card-title">'
             + item.name + '</h5><h6>Category: ' + map[item.type] +
-            '</h6><h6>Price: ' + item.price + '</h6><h6>Condition: ' + item.condition + 
+            '</h6><h6>Price: ' + item.price + '</h6><h6>Condition: ' + item.condition +
             `</h6></div><div class="card-footer bg-transparent"><a href="ChangeItem.html?item=${item._id}" class="btn btn-primary">Modify</a><button class="btn btn-danger" onClick='+
-            "deleteCard('${item._id}')">Delete</button></div></div>`);
+            "deleteCard('${item._id}')">Delete</button></div></div>`)
         }
       }
       $('#searchButton').click(async function () {
-        $('#cardRecipient').empty();
-        itemFilt = $('#searchByItemName').val();
-        appendData(items, map, itemFilt);
-      });
+        $('#cardRecipient').empty()
+        itemFilt = $('#searchByItemName').val()
+        categoryFilt = $('#searchByCategory').val()
+        appendData(items, map, itemFilt, categoryFilt)
+      })
     }
-  
+
     async function deleteCard(id) {
       const { status, body } = await deleteItem(id)
       if (status === 200) {
@@ -183,7 +198,7 @@
         })
         errorModal.toggle()
       }
-    } 
+    }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
