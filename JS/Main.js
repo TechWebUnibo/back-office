@@ -107,23 +107,26 @@ function editDistance(s1, s2) {
     return costs[s2.length];
 }
 
-function createPickers() {
+function createPickers(startId, endId) {
+    startId = startId || 'startDate'
+    endId = endId || 'endDate'
+
     $(function () {
         datePickerController.createDatePicker({
             // Associate the text input to a DD/MM/YYYY date format                            
-            formElements: { "startDate": "%Y-%m-%d" },
+            formElements: { startId: "%Y-%m-%d" },
             noFadeEffect: true,
             labelText: ""
         });
         datePickerController.createDatePicker({
             // Associate the text input to a DD/MM/YYYY date format                            
-            formElements: { "endDate": "%Y-%m-%d" },
+            formElements: { endId: "%Y-%m-%d" },
             noFadeEffect: true,
             labelText: ""
         });
-        $("#fd-but-startDate").removeClass("date-picker-control")
-        $("#fd-but-startDate").addClass("input-group-text")
-        $("#fd-but-endDate").removeClass("date-picker-control")
-        $("#fd-but-endDate").addClass("input-group-text")
+        $("#fd-but-" + startId).removeClass("date-picker-control")
+        $("#fd-but-" + startId).addClass("input-group-text")
+        $("#fd-but-" + endId).removeClass("date-picker-control")
+        $("#fd-but-" + endId).addClass("input-group-text")
     });
 }

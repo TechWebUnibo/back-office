@@ -32,8 +32,8 @@
             </li>
             <!-- User -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle active" aria-current="page" href="#" id="dropdownUsers" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
+              <a class="nav-link dropdown-toggle active" aria-current="page" href="#" id="dropdownUsers" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 Users
               </a>
               <ul class="dropdown-menu" aria-labelledby="dropdownUsers">
@@ -67,11 +67,9 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownRent">
                 <li><a class="dropdown-item" href="RentCreate.html">Create a Rent</a></li>
                 <li>
-                <li><a class="dropdown-item" href="RentClosure.html">Close a Rent</a></li>
-                <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Operate</a></li>
               </ul>
             </li>
             <!-- Category -->
@@ -110,24 +108,24 @@
       </div>
     </div>
   </div>
-    <footer class="footer">
-      <div class="container p-5">
-        <div class="row">
-          <div class="col-md-6">
-            <ul>
-              <li><a href="Home.html">Home</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
-          </div>
+  <footer class="footer">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-6">
+          <ul>
+            <li><a href="Home.html">Home</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
+          </ul>
         </div>
-        <hr>
-        <span class="small-text text-muted">Powered by NoloNolo+</span>
+        <div class="col-md-6">
+          <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
+        </div>
       </div>
-    </footer>
+      <hr>
+      <span class="small-text text-muted">Powered by NoloNolo+</span>
+    </div>
+  </footer>
   <script type="text/javascript" src="../JS/Main.js"></script>
   <script type="text/javascript" src="../JS/apiLibrary.js"></script>
   <!-- JQUERY -->
@@ -146,10 +144,10 @@
     })
     async function appendData(customers, usernameFilter, nameFilter, surnameFilter) {
       for (const customer of customers) {
-        let cond_username = (usernameFilter == "") || (similarity(customer.username, usernameFilter)>= 0.65) || customer.username.toLowerCase().includes(usernameFilter.toLowerCase(), 0)
-        let cond_name = (nameFilter == "") || (similarity(customer.name, nameFilter)>= 0.65) || customer.name.toLowerCase().includes(nameFilter.toLowerCase(), 0)
-        let cond_surname = (surnameFilter == "") || (similarity(customer.surname, usernameFilter)>= 0.65) || customer.surname.toLowerCase().includes(surnameFilter.toLowerCase(), 0)
-        if(cond_username && cond_name && cond_surname){
+        let cond_username = (usernameFilter == "") || (similarity(customer.username, usernameFilter) >= 0.65) || customer.username.toLowerCase().includes(usernameFilter.toLowerCase(), 0)
+        let cond_name = (nameFilter == "") || (similarity(customer.name, nameFilter) >= 0.65) || customer.name.toLowerCase().includes(nameFilter.toLowerCase(), 0)
+        let cond_surname = (surnameFilter == "") || (similarity(customer.surname, usernameFilter) >= 0.65) || customer.surname.toLowerCase().includes(surnameFilter.toLowerCase(), 0)
+        if (cond_username && cond_name && cond_surname) {
           let city, residence, zip
           avatar = "https://site202118.tw.cs.unibo.it" + customer.avatar;
           if (avatar == "https://site202118.tw.cs.unibo.it") avatar += "/img/avatar/generic-user-icon.png"

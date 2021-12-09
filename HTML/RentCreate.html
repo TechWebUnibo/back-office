@@ -61,18 +61,16 @@
             </li>
             <!-- Rent -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle active" aria-current="page" href="#" id="dropdownRent" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
+              <a class="nav-link dropdown-toggle active" aria-current="page" href="#" id="dropdownRent" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 Rent
               </a>
               <ul class="dropdown-menu" aria-labelledby="dropdownRent">
                 <li><a class="dropdown-item" href="RentCreate.html">Create a Rent</a></li>
                 <li>
-                <li><a class="dropdown-item" href="RentClosure.html">Close a Rent</a></li>
-                <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Operate</a></li>
               </ul>
             </li>
             <!-- Category -->
@@ -91,63 +89,63 @@
         <div class="input-group">
           <div class="form-outline">
             <label for="customers" class="form-label">Select customer</label>
-            <select type="text" class="form-select form-select-lg mb-3" id="customers" 
-              aria-label="customer" required aria-required="true">
+            <select type="text" class="form-select form-select-lg mb-3" id="customers" aria-label="customer" required
+              aria-required="true">
               <option value="0" selected>Customer...</option>
             </select>
             <label for="products" class="form-label">Select product</label>
-            <select type="text" class="form-select form-select-lg mb-3" id="products" 
-              aria-label="product" required aria-required="true">
+            <select type="text" class="form-select form-select-lg mb-3" id="products" aria-label="product" required
+              aria-required="true">
               <option value="0" selected>Product...</option>
             </select>
-          </div>  
+          </div>
         </div>
         <br>
-          <div class="" id="date">
-              <h4>Insert the period </h4>
-              <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Insert start date..." aria-label="start Date" id="startDate"
-                  value="" />
-              </div>
-              <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Insert end date..." aria-label="end Date" id="endDate"
-                  value="" />
-              </div>
+        <div class="" id="date">
+          <h4>Insert the period </h4>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Insert start date..." aria-label="start Date"
+              id="startDate" value="" />
           </div>
-        <button type="submit" class="btn btn-primary">Create</button>
-      </form>
-              <div class="modal fade" id="notify" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="modalTitle"></h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div id="textModal" class="modal-body">
-                    </div>
-                  </div>
-                </div>
-              </div>
-    </div>
-  </div>
-    <footer class="footer">
-      <div class="container p-5">
-        <div class="row">
-          <div class="col-md-6">
-            <ul>
-              <li><a href="Home.html">Home</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Insert end date..." aria-label="end Date" id="endDate"
+              value="" />
           </div>
         </div>
-        <hr>
-        <span class="small-text text-muted">Powered by NoloNolo+</span>
+        <button type="submit" class="btn btn-primary">Create</button>
+      </form>
+      <div class="modal fade" id="notify" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalTitle"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="textModal" class="modal-body">
+            </div>
+          </div>
+        </div>
       </div>
-    </footer>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-6">
+          <ul>
+            <li><a href="Home.html">Home</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
+        </div>
+      </div>
+      <hr>
+      <span class="small-text text-muted">Powered by NoloNolo+</span>
+    </div>
+  </footer>
   <script type="text/javascript" src="../JS/Main.js"></script>
   <script type="text/javascript" src="../JS/apiLibrary.js"></script>
   <!-- JQUERY -->
@@ -165,13 +163,13 @@
     })
     async function appendData(elements, div, value, text) {
       for (const element of elements) {
-          $(div).append(`<option value="${element[value]}">${element[text]}</option>`);
+        $(div).append(`<option value="${element[value]}">${element[text]}</option>`);
       }
     }
 
     $('#createRental').submit(async function (event) {
       event.preventDefault()
-        let notify = new bootstrap.Modal(document.getElementById('notify'), {
+      let notify = new bootstrap.Modal(document.getElementById('notify'), {
         keyboard: false
       })
       notify.toggle()
@@ -184,7 +182,7 @@
         let res = await getAvailability(product, start, end)
         if (res.available) {
           let status = await createRent(customer, localStorage.employeeID, start, end, res.price, res.products, product)
-          if(status !== 200) {
+          if (status !== 200) {
             $('#textModal').text('Cannot create the rent')
             $('#modalTitle').text('Ooops...')
           }
@@ -205,7 +203,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
     crossorigin="anonymous"></script>
-    <script type="text/javascript" src="//assets.cms.gov/resources/libs/datepicker/v6/js/datepicker.js"></script>
+  <script type="text/javascript" src="//assets.cms.gov/resources/libs/datepicker/v6/js/datepicker.js"></script>
 </body>
 
 </html>

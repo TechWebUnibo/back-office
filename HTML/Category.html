@@ -64,11 +64,9 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownRent">
                 <li><a class="dropdown-item" href="RentCreate.html">Create a Rent</a></li>
                 <li>
-                <li><a class="dropdown-item" href="RentClosure.html">Close a Rent</a></li>
-                <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Operate</a></li>
               </ul>
             </li>
             <!-- Category -->
@@ -159,14 +157,14 @@
       $('form').submit(async function (e) {
         e.preventDefault()
 
-        let category = $('input#categoryname').val();
-        let desc = $('input#description').val();
-        let img = document.getElementById('image');
+        let category = $('input#categoryname').val()
+        let desc = $('input#description').val()
+        let img = document.getElementById('image')
 
-        const formData = new FormData();
-        formData.append('name', category);
-        formData.append('description', desc);
-        formData.append('img', img.files[0]);
+        const formData = new FormData()
+        formData.append('name', category)
+        formData.append('description', desc)
+        formData.append('img', img.files[0])
 
         let res = await fetch('https://site202118.tw.cs.unibo.it/api/products', {
           method: 'POST',
@@ -211,7 +209,7 @@
       $('.btn-search').each(async function () {
         $(this).on("click", async function () {
           $('.errorMessage').remove()
-          if ($('#categoryOfTheItem').val() != null) {
+          if ($('#categoryOfTheItem').val() != null && category.products.length == 0) {
             window.location.href = 'ItemSearch.html?idCategory=' + $('#categoryOfTheItem').val()
           }
           else {
@@ -222,7 +220,12 @@
 
       async function appendData(categories) {
         for (const category of categories) {
-          $('#categoryOfTheItem').append('<option value="' + category._id + '">' + category.name + '</option>');
+          if (category.products.length == 0) {
+            $('#categoryOfTheItem').append('<option value="' + category._id + '">' + category.name + '</option>')
+          }
+          else {
+            $('#categoryOfTheItem').append('<option class="optionBundle" value="' + category._id + '">' + category.name + '</option>')
+          }
         }
       }
     })

@@ -64,11 +64,9 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownRent">
                 <li><a class="dropdown-item" href="RentCreate.html">Create a Rent</a></li>
                 <li>
-                <li><a class="dropdown-item" href="RentClosure.html">Close a Rent</a></li>
-                <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Operate</a></li>
               </ul>
             </li>
             <!-- Category -->
@@ -95,9 +93,7 @@
               <h4 id="employeeRent">
                 Employee:
               </h4>
-              <h4 id="itemRent">
-                Item/s:
-              </h4>
+
             </div>
             <div class="col-7 row">
               <div class="col-4">
@@ -112,43 +108,33 @@
           </div>
           <br>
           <!-- Condition -->
-          <div class="col-6 mb-3">
-            <select class="form-select opacity-75" id="conditionOfTheItem">
-              <option value="" id="selectPlaceholder" selected>Condition not changed</option>
-              <option value="perfect" id="selectPerfect">Perfect</option>
-              <option value="good" id="selectGood">Good</option>
-              <option value="suitable" id="selectSuitable">Suitable</option>
-              <option value="broken" id="selectBroken">Broken</option>
-              <option value="not available" id="selectNotAvailable">Not Available</option>
-            </select>
-            <!-- If the item has been broken -->
-            <div id="brokenDate">
+          <div id='itemsContainer'>
 
-            </div>
           </div>
+
           <button type="submit" class="btn btn-toClose">Close the Rent</button>
         </form>
       </div>
     </div>
   </div>
-    <footer class="footer">
-      <div class="container p-5">
-        <div class="row">
-          <div class="col-md-6">
-            <ul>
-              <li><a href="Home.html">Home</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
-          </div>
+  <footer class="footer">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-6">
+          <ul>
+            <li><a href="Home.html">Home</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
+          </ul>
         </div>
-        <hr>
-        <span class="small-text text-muted">Powered by NoloNolo+</span>
+        <div class="col-md-6">
+          <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
+        </div>
       </div>
-    </footer>
+      <hr>
+      <span class="small-text text-muted">Powered by NoloNolo+</span>
+    </div>
+  </footer>
   <script type="text/javascript" src="../JS/Main.js"></script>
   <script type="text/javascript" src="../JS/apiLibrary.js"></script>
   <!-- JQUERY -->
@@ -156,6 +142,27 @@
   <script>
     //authenticated?
     authBack()
+
+    async function loadItem(item) {
+      const fullItem = (await getItems({ _id: item }))[0]
+      const div = `<h4>${fullItem.name}</h4>`
+      const select = `
+            <select class="form-select opacity-75" id="itemCondition_${fullItem._id}" onChange='brokenState(${fullItem._id})'>
+                  <option value="" id="selectPlaceholder" selected>Condition not changed</option>
+                  <option value="perfect" id="selectPerfect">Perfect</option>
+                  <option value="good" id="selectGood">Good</option>
+              <option value="suitable" id="selectSuitable">Suitable</option>
+                  <option value="broken" id="selectBroken">Broken</option>
+                  <option value="not available" id="selectNotAvailable">Not Available</option>
+                </select>
+                <!-- If the item has been broken -->
+                <div id="brokenDate_${fullItem._id}">
+          
+                </div>
+              `
+      $('#itemsContainer').append(div)
+      $('#itemsContainer').append(select)
+    }
 
     $(document).ready(async function () {
       let rent = await getRentByID(localStorage.idRent)
@@ -165,23 +172,27 @@
       let mapItem = await mapItemID()
       $("#customerRent").append(mapUser[rent.customer])
       $("#employeeRent").append(mapEmployee[rent.employee])
-      $("#itemRent").append(mapItem[rent.products])
       $("#startRent").append(rent.start.substring(0, 10))
       $("#startRent").append('<h6>' + rent.start.substring(11, 16) + '</h6>')
       $("#endRent").append(rent.end.substring(0, 10))
       $("#endRent").append('<h6>' + rent.end.substring(11, 16) + '</h6>')
+      for (const item of rent.products) {
+        await loadItem(item)
+      }
     })
-    $('#conditionOfTheItem').change(function () {
-      let cond = $(this).val()
+    function brokenState(id) {
+      cond = $(`#itemCondition_${id}`).val()
+      console.log(cond)
       if (cond == "broken") {
         // TODO migliorare le date
-        $('#brokenDate').append('<br><input placeholder="Start of the repairing" type="text" id="startRepair" class="form-control">' +
+        $(`#brokenDate_${id}`).append('<br><input placeholder="Start of the repairing" type="text" id="startRepair" class="form-control">' +
           '<input placeholder="End of the repairing" type="text" id="endRepair" class="form-control">')
       }
       else {
-        $('#brokenDate').empty()
+        $(`#brokenDate_${id}`).empty()
       }
-    })
+    }
+
       // TODO API
     /*
     let res = await fetch('https://site202118.tw.cs.unibo.it/api/rentals/' + $(this).val() + '/terminate', {

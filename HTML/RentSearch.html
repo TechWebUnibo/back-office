@@ -67,11 +67,9 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownRent">
                 <li><a class="dropdown-item" href="RentCreate.html">Create a Rent</a></li>
                 <li>
-                <li><a class="dropdown-item" href="RentClosure.html">Close a Rent</a></li>
-                <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Operate</a></li>
               </ul>
             </li>
             <!-- Category -->
@@ -121,24 +119,37 @@
       </div>
     </div>
   </div>
-    <footer class="footer">
-      <div class="container p-5">
-        <div class="row">
-          <div class="col-md-6">
-            <ul>
-              <li><a href="Home.html">Home</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
-              <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
-          </div>
+  <!-- Modal Notification -->
+  <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <hr>
-        <span class="small-text text-muted">Powered by NoloNolo+</span>
+        <div class="modal-body">
+        </div>
       </div>
-    </footer>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-6">
+          <ul>
+            <li><a href="Home.html">Home</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
+            <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid" alt="Company Logo">
+        </div>
+      </div>
+      <hr>
+      <span class="small-text text-muted">Powered by NoloNolo+</span>
+    </div>
+  </footer>
   <script type="text/javascript" src="../JS/Main.js"></script>
   <script type="text/javascript" src="../JS/apiLibrary.js"></script>
   <!-- JQUERY -->
@@ -174,15 +185,14 @@
     async function appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt) {
       for (const rent of rentals) {
         if (rent.employee == localStorage.employeeID) {
-          let btn = await checkStatus(rent.state, rent._id)
-          let stat = rent.state == 'not_started' ? 'Not Started' : rent.state == 'started' ? 'Started' : rent.state == 'delayed' ? 'Delayed' : 'Closed'
+          let btn = await checkStatus(rent.state, rent._id, rent.start, rent.end)
+          let stat = rent.state == 'not_started' ? 'Not Started' : rent.state == 'in_progress' ? 'In Progress' : rent.state == 'delayed' ? 'Delayed' : 'Closed'
           if (1) //cond_status && cond_username && cond_category && cond_item) {
-            $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6>'
+            $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6></h6><h6>Customer: '
               + rent.customer +
-              '</h6><h6>Employee: ' + rent.employee +
               '</h6><h6>Item: ' + rent.products
-              + '</h6><br>First day:' + rent.start.substring(0, 10)
-              + '</h6><br>Last day:' + rent.end.substring(0, 10)
+              + '</h6><br>First day: ' + rent.start.substring(0, 10)
+              + '</h6><br>Last day: ' + rent.end.substring(0, 10)
               + '</h6><br>Status: ' + stat + '</h6><br>' + '</h6><br><div class="row"><div class="col-4"><button type="submit" value="'
               + rent._id + '" class="btn btn-modify">Modify</button></div><div class="col-4">' + btn + '</div></div></div></div>');
 
@@ -192,15 +202,18 @@
         }
       }
       // check the status of the rent and return the correct button to print
-      async function checkStatus(status, id) {
-        let btnToOpen = '<button type="submit" value="' + id + '" class="btn btn-toStart">Start</button>'
+      async function checkStatus(status, id, start, end) {
+        let btnToOpen = '<button type="submit" value="' + id + '" class="btn btn-toOpen">Start</button>'
         let btnToClose = '<button type="submit" value="' + id + '" class="btn btn-toClose">Close</button>'
         let btnToDoNothing = ""
-        if (status == "not_started") return btnToOpen
-        else if (status == "started") return btnToClose
+        let today = (new Date())
+        today.setHours(23,59,59,0)
+        if (status == "not_started" && Date.parse(today) >= Date.parse(start) && Date.parse(today) <= Date.parse(end)) {
+          return btnToOpen
+        }
+        else if (status == "in_progress") return btnToClose
         else if (status == "delayed") return btnToClose
-        else if (status == "closed") return btnToDoNothing
-        else return -1
+        else return btnToDoNothing
       }
       // Filtering
       $('#searchButton').click(async function () {
@@ -215,24 +228,21 @@
       // TODO
       $(".btn-modify").each(async function () {
         $(this).on("click", async function () {
-          localStorage.idUser = $(this).val();
-          console.log(localStorage.idUser)
-          window.location.href = 'ChangeUser.html';
+          localStorage.idRent = $(this).val()
+          window.location.href = 'ChangeRent.html'
         });
       });
       // Closing the rent
       $(".btn-toClose").each(async function () {
         $(this).on("click", async function () {
           localStorage.idRent = $(this).val()
-          window.location.href = 'RentClosure.html';
+          window.location.href = 'RentClosure.html'
         })
       })
       // Opening the rent
-      $(".btn-toStart").each(async function () {
+      $(".btn-toOpen").each(async function () {
         $(this).on("click", async function () {
-          try {
-            console.log('prova')
-            console.log(getToken())
+          try {ç
             let res = await fetch('https://site202118.tw.cs.unibo.it/api/rentals/' + $(this).val() + '/start', {
               method: 'POST',
               headers: {
@@ -240,6 +250,22 @@
                 'Authorization': 'Bearer ' + getToken(),
               }
             })
+            let title = ''
+            let text = ''
+            if(res.status === 200) {
+              title = 'Rent started'
+              text = 'The selected rent is correctly started'
+            }
+            else {
+              title = 'Something wrong'
+              text = 'There was an error'
+            }
+            let notification = new bootstrap.Modal(document.getElementById('notification'), {
+              keyboard: false
+            })
+            $('#modalTitle').text(title)
+            $('.modal-body').text(text)
+            notification.toggle()
           }
           catch (error) {
             console.log(error)

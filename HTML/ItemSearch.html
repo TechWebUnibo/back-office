@@ -67,11 +67,9 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownRent">
                 <li><a class="dropdown-item" href="RentCreate.html">Create a Rent</a></li>
                 <li>
-                <li><a class="dropdown-item" href="RentClosure.html">Close a Rent</a></li>
-                <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Operate</a></li>
               </ul>
             </li>
             <!-- Category -->
@@ -167,7 +165,9 @@
       let itemFilt = $('#searchByItemName').val()
       let conditionFilt = $('#searchByCondition').val()
       for (const category of categories) {
-        $('#searchByCategory').append('<option value="' + category._id + '">' + category.name + '</option>')
+        if (category.products.length == 0) {
+          $('#searchByCategory').append('<option value="' + category._id + '">' + category.name + '</option>')
+        }
       }
       appendData(items, map, itemFilt, categoryFilt, conditionFilt)
     })

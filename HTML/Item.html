@@ -67,11 +67,9 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownRent">
                 <li><a class="dropdown-item" href="RentCreate.html">Create a Rent</a></li>
                 <li>
-                <li><a class="dropdown-item" href="RentClosure.html">Close a Rent</a></li>
-                <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="RentSearch.html">Search & Modify</a></li>
+                <li><a class="dropdown-item" href="RentSearch.html">Search & Operate</a></li>
               </ul>
             </li>
             <!-- Category -->
@@ -129,40 +127,64 @@
         <form id="createBundleForm">
           <!-- Bundle name -->
           <div class="col-12 mb-3">
-            <input type="text" class="form-control" id="bundleName" placeholder="Name of the bundle"
-              aria-describedby="itemNameHelp" required aria-required="true">
+            <input type="text" class="form-control" id="bundleName" placeholder="Bundle's name"
+              aria-describedby="bundleNameHelp" required aria-required="true">
+          </div>
+          <!-- Description -->
+          <div class="col-12 mb-3">
+            <input type="text" class="form-control" id="description" placeholder="Description..."
+              aria-describedby="descriptionHelp" required aria-required="true">
+          </div>
+          <!-- Image -->
+          <div class="col-6 mb-3">
+            <label for="image">Image</label>
+            <input type="file" id="image" name="image" accept="image/png, image/jpeg">
+            <!-- <input type="file" id="image" name="image" accept="image/png, image/jpeg" required aria-required="true"> -->
           </div>
 
-          <!-- First mandatory item of the bundle -->
-          <div id="itemGroup">
+          <!-- First mandatory category of the bundle -->
+          <div id="categoryGroup">
             <div class="input-group col-12 mb-3">
-              <label class="input-group-text" for="firstItem">1° Item</label>
-              <select class="form-select" id="firstItem">
+              <label class="input-group-text" for="1Category">1° Category</label>
+              <select class="form-select" id="1Category">
               </select>
             </div>
-            <!-- Second mandatory item of the bundle -->
+            <!-- Second mandatory category of the bundle -->
             <div class="input-group col-12 mb-3">
-              <label class="input-group-text" for="secondItem">2° Item</label>
-              <select class="form-select" id="secondItem">
+              <label class="input-group-text" for="2Category">2° Category</label>
+              <select class="form-select" id="2Category">
               </select>
             </div>
           </div>
-          <!-- Button to add more items to the bundle -->
+          <!-- Button to add more categories to the bundle -->
           <div class="input-group col-12 mb-1">
-            <label class="input-group-text" for="addItem">Add Item</label>
-            <button id="addItem" type="button" class="btn btn-modify">
+            <label class="input-group-text" for="addItem">Add Category</label>
+            <button id="addCategory" type="button" class="btn btn-modify">
               <i class="fa fa-plus"></i>
             </button>
           </div>
-          <!-- Button to remove items from the bundle -->
+          <!-- Button to remove categories from the bundle -->
           <div class="input-group col-12 mb-3">
-            <label class="input-group-text" for="removeItem">Remove Item</label>
-            <button id="removeItem" type="button" class="btn btn-delete">
+            <label class="input-group-text" for="removeItem">Remove Category</label>
+            <button id="removeCategory" type="button" class="btn btn-delete">
               <i class="fa fa-minus"></i>
             </button>
           </div>
           <button type="submit" class="btn btn-submit">Submit</button>
         </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Ooops...</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Something wrong...
+        </div>
       </div>
     </div>
   </div>
@@ -198,15 +220,13 @@
     $(document).ready(async function () {
       let count = 3
       let categories = await getProducts()
-      let items = await getItems()
       await appendCategory(categories)
-      await appendItem(items, 'firstItem')
-      await appendItem(items, 'secondItem')
+      await appendGroupCategory(categories, '1Category')
+      await appendGroupCategory(categories, '2Category')
 
       //POST of a new item
       $('#createItemForm').submit(async function (e) {
         e.preventDefault()
-        console.log('ciao')
         var item = $('#itemName').val()
         var typ = $('#categoryOfTheItem').val()
         var prc = $('#price').val()
@@ -221,25 +241,67 @@
           },
           body: data
         })
-        await location.reload()
+        if (res.status === 200) {
+          window.location.reload()
+        }
+        else {
+          let notification = new bootstrap.Modal(document.getElementById('notification'), {
+            keyboard: false
+          })
+          notification.toggle()
+        }
       })
 
       //POST of a bundle
+      $('#createBundleForm').submit(async function (e) {
+        e.preventDefault()
 
-      //Add item to the bundle
+        let category = $('input#bundleName').val()
+        let desc = $('input#description').val()
+        let img = document.getElementById('image')
+
+        const formData = new FormData()
+        formData.append('name', category)
+        formData.append('description', desc)
+        formData.append('img', img.files[0])
+        let cnt = count - 1
+        let products = []
+        for (let i = 1; i <= cnt; i++) {
+          formData.append(`products[${i - 1}]`, $('#' + i + 'Category').val())
+        }
+        let res = await fetch('https://site202118.tw.cs.unibo.it/api/products', {
+          method: 'POST',
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': 'Bearer ' + getToken(),
+          },
+          body: formData,
+        })
+        if (res.status === 200) {
+          window.location.reload()
+        }
+        else {
+          let notification = new bootstrap.Modal(document.getElementById('notification'), {
+            keyboard: false
+          })
+          notification.toggle()
+        }
+      })
+
+      //Add Category to the bundle
       $('.btn-modify').click(async function () {
         $('.errorMessage').remove()
-        $('#itemGroup').append('<div class="input-group col-12 mb-3"><label class="input-group-text" for="' + count + 'Item">'
-          + count + '° Item</label><select class="form-select" id="'
-          + count + 'Item"></select></div>')
-        await appendItem(items, count + 'Item')
+        $('#categoryGroup').append('<div class="input-group col-12 mb-3"><label class="input-group-text" for="' + count + 'Category">'
+          + count + '° Category</label><select class="form-select" id="'
+          + count + 'Category"></select></div>')
+        await appendGroupCategory(categories, count + 'Category')
         count += 1
 
       })
       //Remove item to the bundle
       $('.btn-delete').click(async function () {
         if (count > 3) {
-          $('#itemGroup div:last').remove()
+          $('#categoryGroup div:last').remove()
           count -= 1
         }
         else {
@@ -249,12 +311,16 @@
       })
       async function appendCategory(categories) {
         for (const category of categories) {
-          $('#categoryOfTheItem').append('<option value="' + category._id + '">' + category.name + '</option>')
+          if (category.products.length == 0) {
+            $('#categoryOfTheItem').append('<option value="' + category._id + '">' + category.name + '</option>')
+          }
         }
       }
-      async function appendItem(items, idSelect) {
-        for (const item of items) {
-          $('#' + idSelect).append('<option value="' + item._id + '">' + item.name + '</option>')
+      async function appendGroupCategory(categories, idSelect) {
+        for (const category of categories) {
+          if (category.products.length == 0) {
+            $('#' + idSelect).append('<option value="' + category._id + '">' + category.name + '</option>')
+          }
         }
       }
     })
