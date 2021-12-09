@@ -81,30 +81,30 @@ function similarity(s1, s2) {
 }
 
 function editDistance(s1, s2) {
-    s1 = s1.toLowerCase();
-    s2 = s2.toLowerCase();
+    s1 = s1.toLowerCase()
+    s2 = s2.toLowerCase()
 
-    var costs = new Array();
+    var costs = new Array()
     for (var i = 0; i <= s1.length; i++) {
-        var lastValue = i;
+        var lastValue = i
         for (var j = 0; j <= s2.length; j++) {
             if (i == 0)
-                costs[j] = j;
+                costs[j] = j
             else {
                 if (j > 0) {
                     var newValue = costs[j - 1];
                     if (s1.charAt(i - 1) != s2.charAt(j - 1))
                         newValue = Math.min(Math.min(newValue, lastValue),
-                            costs[j]) + 1;
-                    costs[j - 1] = lastValue;
-                    lastValue = newValue;
+                            costs[j]) + 1
+                    costs[j - 1] = lastValue
+                    lastValue = newValue
                 }
             }
         }
         if (i > 0)
-            costs[s2.length] = lastValue;
+            costs[s2.length] = lastValue
     }
-    return costs[s2.length];
+    return costs[s2.length]
 }
 
 function createPickers(startId, endId) {
@@ -117,16 +117,16 @@ function createPickers(startId, endId) {
             formElements: { startId: "%Y-%m-%d" },
             noFadeEffect: true,
             labelText: ""
-        });
+        })
         datePickerController.createDatePicker({
             // Associate the text input to a DD/MM/YYYY date format                            
             formElements: { endId: "%Y-%m-%d" },
             noFadeEffect: true,
             labelText: ""
-        });
+        })
         $("#fd-but-" + startId).removeClass("date-picker-control")
         $("#fd-but-" + startId).addClass("input-group-text")
         $("#fd-but-" + endId).removeClass("date-picker-control")
         $("#fd-but-" + endId).addClass("input-group-text")
-    });
+    })
 }
