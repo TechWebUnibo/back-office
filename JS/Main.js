@@ -114,13 +114,13 @@ function createPickers(startId, endId) {
     $(function () {
         datePickerController.createDatePicker({
             // Associate the text input to a DD/MM/YYYY date format                            
-            formElements: { startId: "%Y-%m-%d" },
+            formElements: { [startId]: "%Y-%m-%d" },
             noFadeEffect: true,
             labelText: ""
         })
         datePickerController.createDatePicker({
             // Associate the text input to a DD/MM/YYYY date format                            
-            formElements: { endId: "%Y-%m-%d" },
+            formElements: { [endId]: "%Y-%m-%d" },
             noFadeEffect: true,
             labelText: ""
         })

@@ -193,8 +193,8 @@
               '</h6><h6>Item: ' + rent.products
               + '</h6><br>First day: ' + rent.start.substring(0, 10)
               + '</h6><br>Last day: ' + rent.end.substring(0, 10)
-              + '</h6><br>Status: ' + stat + '</h6><br>' + '</h6><br><div class="row"><div class="col-4"><button type="submit" value="'
-              + rent._id + '" class="btn btn-modify">Modify</button></div><div class="col-4">' + btn + '</div></div></div></div>');
+              + '</h6><br>Status: ' + stat + '</h6><br>' + '</h6><br><button type="submit" value="'
+              + rent._id + '" class="btn btn-modify">Modify</button>' + btn + '</div></div>');
 
           else {
             // TODO stampare nessun risultato
@@ -242,7 +242,7 @@
       // Opening the rent
       $(".btn-toOpen").each(async function () {
         $(this).on("click", async function () {
-          try {ç
+          try {
             let res = await fetch('https://site202118.tw.cs.unibo.it/api/rentals/' + $(this).val() + '/start', {
               method: 'POST',
               headers: {
@@ -253,8 +253,7 @@
             let title = ''
             let text = ''
             if(res.status === 200) {
-              title = 'Rent started'
-              text = 'The selected rent is correctly started'
+              window.location.reload()
             }
             else {
               title = 'Something wrong'
