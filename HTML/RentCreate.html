@@ -88,15 +88,13 @@
         <h4>Create a rent</h4>
         <div class="input-group">
           <div class="form-outline">
-            <label for="customers" class="form-label">Select customer</label>
+            <label for="customers" class="form-label" required>Select customer</label>
             <select type="text" class="form-select form-select-lg mb-3" id="customers" aria-label="customer" required
               aria-required="true">
-              <option value="0" selected>Customer...</option>
             </select>
             <label for="products" class="form-label">Select product</label>
             <select type="text" class="form-select form-select-lg mb-3" id="products" aria-label="product" required
               aria-required="true">
-              <option value="0" selected>Product...</option>
             </select>
           </div>
         </div>
@@ -105,14 +103,18 @@
           <h4>Insert the period </h4>
           <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Insert start date..." aria-label="start Date"
-              id="startDate" value="" />
+              id="startDate" value=""/>
           </div>
           <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Insert end date..." aria-label="end Date" id="endDate"
               value="" />
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <div id="availability">
+
+        </div>
+        <button type="submit" id="submit" class="btn btn-primary" disabled>Create</button>
+        <button type="button" id="available" class="btn btn-primary">Check availability</button>
       </form>
       <div class="modal fade" id="notify" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
         <div class="modal-dialog">
@@ -197,6 +199,33 @@
         }
         notify.toggle()
       }
+    })
+
+    $('#available').click(async function (event) {
+      event.preventDefault()
+      let customer = $('#customer').val()
+      let product = $('#products').val()
+      let start = $('#startDate').val()
+      let end = $('#endDate').val()
+      let res = await getAvailability(product, start, end)
+      $('#availability').empty  ()
+      if (res.available === true) {
+        $('#submit').prop('disabled', false)
+        $('#availability').append(`
+        <div class="alert alert-success" role="alert">
+          The item selected is available for ${res.price}€
+        </div>
+        `)
+      }
+      else {
+        $('#submit').prop('disabled', true)
+        $('#availability').append(`
+        <div class="alert alert-danger" role="alert">
+          The item selected is not available
+        </div>
+        `) 
+      }
+      console.log(res)
     })
 
   </script>

@@ -107,6 +107,19 @@
         <div class="row" id="cardRecipient"></div>
       </div>
     </div>
+      <!-- Modal Notification -->
+      <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalTitle"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
   <footer class="footer">
     <div class="container p-5">
@@ -157,19 +170,19 @@
             residence = customer.address.residence == '' ? 'Not defined' : customer.address.residence;
             zip = customer.address.zip == null ? 'Not defined' : customer.address.zip;
 
-            $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><img src="' + avatar +
+            $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body text-center"><img src="' + avatar +
               '" class="img-thumbnail img-fluid avatar"><h5 class ="card-title">' + customer.username +
               '</h5><h6>' + customer.name + ' ' + customer.surname +
               '</h6><h7>City: ' + city +
               '</h7><br><h7>Address: ' + residence +
               '</h7><br><h7>Zip: ' + zip +
-              '</h7><br><div class="row"><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-modify">Modify</button></div><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-delete">Delete</button></div></div></div></div>');
+              '</h7><br><button type="submit" value="' + customer._id + '" class="btn btn-modify">Modify</button><button type="submit" value="' + customer._id + '" class="btn btn-delete">Delete</button></div></div>');
           }
           else {
-            $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><img src="' + avatar +
+            $('#cardRecipient').append('<div class="card col-lg-4 text-center";"><div class ="card-body"><img src="' + avatar +
               '" class="img-thumbnail img-fluid avatar"><h5 class ="card-title">' + customer.username +
               '</h5><h6>' + customer.name + ' ' + customer.surname +
-              '</h6><h7>City: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Address: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Zip: </h7><h7 class="text-black-50">Not definied</h7><br><div class="row"><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-modify">Modify</button></div><div class="col-4"><button type="submit" value="' + customer._id + '" class="btn btn-delete">Delete</button></div></div></div></div>');
+              '</h6><h7>City: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Address: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Zip: </h7><h7 class="text-black-50">Not definied</h7><br><button type="submit" value="' + customer._id + '" class="btn btn-modify">Modify</button></div><button type="submit" value="' + customer._id + '" class="btn btn-delete">Delete</button></div></div>');
           }
         }
       }
@@ -198,6 +211,18 @@
                 'Authorization': 'Bearer ' + getToken(),
               }
             })
+            if (res.status === 200) {
+              window.location.reload()
+            }
+            else {
+              const body = await res.json()
+              let notification = new bootstrap.Modal(document.getElementById('notification'), {
+                keyboard: false
+              })
+              $('#modalTitle').text('User cannot be removed')
+              $('.modal-body').text(body.message)
+              notification.toggle()
+            }
           }
           catch (error) {
             console.log(error)

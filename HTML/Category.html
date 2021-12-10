@@ -95,7 +95,7 @@
           </div>
           <!-- Image -->
           <div class="col-6 mb-3">
-            <label for="image">Image</label>
+            <label for="image">Category image</label>
             <input type="file" id="image" name="image" accept="image/png, image/jpeg">
             <!-- <input type="file" id="image" name="image" accept="image/png, image/jpeg" required aria-required="true"> -->
           </div>
@@ -114,10 +114,22 @@
         </div>
         <br>
         <!-- Buttons for action -->
-        <div id="buttons" class="row">
-          <div class="col-4"><button type="submit" class="btn btn-modify">Modify</button></div>
-          <div class="col-4"><button type="submit" class="btn btn-delete">Delete</button></div>
-          <div class="col-4"><button type="submit" class="btn btn-search">Search</button></div>
+        <div id="buttons" class="text-start">
+          <button type="submit" class="btn btn-modify">Modify</button>
+          <button type="submit" class="btn btn-delete">Delete</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Ooops...</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Something wrong...
+          </div>
         </div>
       </div>
     </div>
@@ -196,6 +208,17 @@
                 'Authorization': 'Bearer ' + getToken(),
               }
             })
+            if (res.status === 200) {
+              window.location.reload()
+            }
+            else {
+              let errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
+                keyboard: false
+              })
+              $('#modalTitle').text('Category not removable')
+              $('.modal-body').text('This category is rented, you cannot delete it')
+              errorModal.toggle()
+            }
           }
           catch (error) {
             //TODO stampare errore di codice quando non si può eliminare
@@ -206,6 +229,7 @@
           appendData(category)
         })
       })
+      /*
       $('.btn-search').each(async function () {
         $(this).on("click", async function () {
           $('.errorMessage').remove()
@@ -216,7 +240,7 @@
             $('#buttons').after('<div class="errorMessage">Select a Category</div>')
           }
         })
-      })
+      }) */
 
       async function appendData(categories) {
         for (const category of categories) {
