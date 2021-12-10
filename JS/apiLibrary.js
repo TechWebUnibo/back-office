@@ -352,6 +352,26 @@ async function modifyItem(id, data) {
     const status = res.status
     return { status, body: await res.json() }
 }
+async function modifyRent(id, data) {
+    let res
+    try {
+        res = await fetch(url + rentsUrl + '/' + id, {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken()
+            },
+            body: JSON.stringify(data)
+        })
+    }
+    catch (e) {
+        console.log(e)
+    }
+    const status = res.status
+    return { status, body: await res.json() }
+}
 
 async function apiRegister(name, surname, username, password, address, city, zip, avatar) {
     let data = `{

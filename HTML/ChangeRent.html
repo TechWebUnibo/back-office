@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Rent Modify</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="../CSS/Main.css">
+    <link rel="stylesheet" href="//assets.cms.gov/resources/libs/datepicker/v6/css/datepicker.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.0/css/font-awesome.css"
+        integrity="sha512-72McA95q/YhjwmWFMGe8RI3aZIMCTJWPBbV8iQY3jy1z9+bi6+jHnERuNrDPo/WGYEzzNs4WdHNyyEr/yXJ9pA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-light">
+            <div class="container-fluid">
+                <!-- Logo -->
+                <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Logo" class="logo">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- List of page -->
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <!-- Home -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="Home.html">Home</a>
+                        </li>
+                        <!-- User -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownUsers" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Users
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownUsers">
+                                <li><a class="dropdown-item" href="User.html">Create</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="UserSearch.html">Search, Modify & Delete</a></li>
+                            </ul>
+                        </li>
+                        <!-- Item -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownItems" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Items
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownItems">
+                                <li><a class="dropdown-item" href="Item.html">Create</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="ItemSearch.html">Search, Modify & Delete</a></li>
+                            </ul>
+                        </li>
+                        <!-- Rent -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle active" aria-current="page" href="#" id="dropdownRent"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Rent
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownRent">
+                                <li><a class="dropdown-item" href="RentCreate.html">Create a Rent</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="RentSearch.html">Search & Operate</a></li>
+                            </ul>
+                        </li>
+                        <!-- Category -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="Category.html">Categories</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="createForm offset-2 col-8">
+                <h3 class="mb-4">Closing a rent</h3>
+                <form id="closeRent" method="POST">
+                    <div class="row">
+                        <!-- Customer -->
+                        <div class="row">
+                            <h4 id="customerRent">
+                                Customer:
+                            </h4>
+                            <h4 id="employeeRent">
+                                Employee:
+                            </h4>
+                        </div>
+                        <div class="row">
+                            <div class="">
+                                <h4 id='startRent'>Start date: </h4>
+                                <h4 id='endRent'>End date: </h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h4>Items</h4>
+                            <ul id='itemsContainer' class="list-group list-group-flush">
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="" id="date">
+                        <h4>Insert the period </h4>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Insert start date..."
+                                aria-label="start Date" id="startDate" value="" />
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Insert end date..."
+                                aria-label="end Date" id="endDate" value="" />
+                        </div>
+                    </div>
+                    <div id="availability">
+
+                    </div>
+                    <button type="submit" id="modifyRental" class="btn btn-primary" disabled>Modify</button>
+                    <button type="button" id="available" class="btn btn-primary">Check availability</button>
+                </form>
+            </div>
+        </div>
+        <!-- Modal Notification -->
+        <div class="modal fade" id="notify" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="textModal" class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container p-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul>
+                        <li><a href="Home.html">Home</a></li>
+                        <li><a href="https://site202118.tw.cs.unibo.it/">Shop</a></li>
+                        <li><a href="https://site202118.tw.cs.unibo.it/management-dashboard">Manager</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" class="img-fluid"
+                        alt="Company Logo">
+                </div>
+            </div>
+            <hr>
+            <span class="small-text text-muted">Powered by NoloNolo+</span>
+        </div>
+    </footer>
+    <script type="text/javascript" src="../JS/Main.js"></script>
+    <script type="text/javascript" src="../JS/apiLibrary.js"></script>
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        //authenticated?
+        authBack()
+        var rent
+        $(document).ready(async function () {
+            rent = await getRentByID(localStorage.idRent)
+            console.log(rent)
+            let mapUser = await mapUserID()
+            let mapEmployee = await mapEmployeeID()
+            // Print of information about the rent
+            $("#customerRent").append(mapUser[rent.customer])
+            $("#employeeRent").append(mapEmployee[rent.employee])
+            $("#startRent").append('' + rent.start.split('T')[0] + '')
+            $("#endRent").append('' + rent.end.split('T')[0] + '')
+            // Print of the items of the rent
+            for (const item of rent.products) {
+                await loadItem(item)
+            }
+            createPickers()
+            $('#startDate').val(rent.start)
+            $('#endDate').val(rent.end)
+        })
+        async function loadItem(item) {
+            const fullItem = (await getItems({ _id: item }))[0]
+            $('#itemsContainer').append(
+                `<li class='list-group-item'>${fullItem.name}</li>`
+            )
+        }
+        $('#modifyRental').click(async function (event) {
+            event.preventDefault()
+            let notify = new bootstrap.Modal(document.getElementById('notify'), {
+                keyboard: false
+            })
+            let start = $('#startDate').val()
+            let end = $('#endDate').val()
+            console.log(start, end)
+            if (start && end) {
+                let res = await getAvailability(rent.productType, start, end, rent._id)
+                if (res.available) {
+                    let { status, body } = await modifyRent(rent._id, { start, end, price: res.price })
+                    if (status !== 200) {
+                        $('#textModal').text('Cannot modify the rent')
+                        $('#modalTitle').text('Ooops...')
+                    }
+                    else {
+                        $('#modalTitle').text('Rent modified')
+                        $('#textModal').text('The rent has been correctly modified')
+                    }
+                }
+                else {
+                    $('#modalTitle').text('Ooops...')
+                    $('#textModal').text('The product selected is unavailable')
+                }
+                notify.toggle()
+            }
+        })
+        $('#available').click(async function (event) {
+            event.preventDefault()
+            let product = rent.productType
+            let start = $('#startDate').val()
+            let end = $('#endDate').val()
+            console.log(product, start, end, rent._id)
+            let res = await getAvailability(product, start, end, rent._id)
+            $('#availability').empty()
+            if (res.available === true) {
+                $('#modifyRental').prop('disabled', false)
+                $('#availability').append(`
+        <div class="alert alert-success" role="alert">
+          The item selected is available for ${res.price}€
+        </div>
+        `)
+            }
+            else {
+                $('#modifyRental').prop('disabled', true)
+                $('#availability').append(`
+        <div class="alert alert-danger" role="alert">
+          The item selected is not available
+        </div>
+        `)
+            }
+        })
+
+
+        /*
+            let res = await fetch('https://site202118.tw.cs.unibo.it/api/rentals/' + $(this).val() + '/terminate', {
+              method: 'POST',
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + getToken(),
+              }
+            })*/
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="//assets.cms.gov/resources/libs/datepicker/v6/js/datepicker.js"></script>
+    <script type="text/javascript" src="//assets.cms.gov/resources/libs/datepicker/v6/js/datepicker.js"></script>
+</body>
+
+</html>

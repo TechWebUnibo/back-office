@@ -164,7 +164,7 @@
         let rent = await getRentByID(localStorage.idRent)
         let data = {
           products: {},
-          notes: 'A'
+          notes: ''
         }
 
         for (const item of rent.products) {
@@ -178,6 +178,8 @@
             data.products[item].end = endDate
           }
           data.products[item].condition = cond
+          console.log($('#notes').text())
+          data.notes = $('#notes').text()
         }
         console.log(JSON.stringify(data))
         try {
@@ -191,7 +193,7 @@
             body: JSON.stringify(data)
           })
           if(res.status === 200) {
-            window.location.replace('/admin/RentSearch.html')
+            window.location.replace('RentSearch.html')
           }
         }
         catch (error) {
@@ -229,7 +231,7 @@
                 <option value="good" id="selectGood" selected>Good</option>
             <option value="suitable" id="selectSuitable">Suitable</option>
                 <option value="broken" id="selectBroken">Broken</option>
-                <option value="not available" id="selectNotAvailable">Not Available</option>
+                <option value="not_available" id="selectNotAvailable">Not Available</option>
               </select>
               <!-- If the item has been broken -->
               <div id="brokenDate_${fullItem._id}">
