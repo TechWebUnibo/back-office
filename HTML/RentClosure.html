@@ -178,8 +178,7 @@
             data.products[item].end = endDate
           }
           data.products[item].condition = cond
-          console.log($('#notes').text())
-          data.notes = $('#notes').text()
+          data.notes = $('#notes').val()
         }
         console.log(JSON.stringify(data))
         try {
