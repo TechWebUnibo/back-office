@@ -76,6 +76,10 @@
             <li class="nav-item">
               <a class="nav-link" href="Category.html">Categories</a>
             </li>
+            <!-- Logout -->
+            <li class="nav-item">
+              <a class="nav-link" href="Login.html">Logout</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -186,21 +190,21 @@
       for (const rent of rentals) {
         if (rent.employee == localStorage.employeeID) {
           let btn = await checkStatus(rent.state, rent._id, rent.start, rent.end)
-          let modifyBtn = (rent.state === 'terminated' || rent.state === 'delayed' || rent.state === 'cancelled' )
-          ? ''
-          : `<button type="submit" value="${rent._id}" class="btn btn-modify">Modify</button>`
+          let modifyBtn = (rent.state === 'terminated' || rent.state === 'delayed' || rent.state === 'cancelled')
+            ? ''
+            : `<button type="submit" value="${rent._id}" class="btn btn-modify">Modify</button>`
           let stat = rent.state == 'not_started' ? 'Not Started' : rent.state == 'in_progress'
-          ? 'In Progress' : rent.state == 'delayed'
-          ? 'Delayed' : rent.state === 'cancelled'
-          ? 'Cancelled' : 'Closed'
+            ? 'In Progress' : rent.state == 'delayed'
+              ? 'Delayed' : rent.state === 'cancelled'
+                ? 'Cancelled' : 'Closed'
           if (1) //cond_status && cond_username && cond_category && cond_item) {
             $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6></h6><h6>Customer: '
               + rent.customer +
               '</h6><h6>Item: ' + rent.products
               + '</h6><br>First day: ' + rent.start.split('T')[0]
               + '</h6><br>Last day: ' + rent.end.split('T')[0] + '</h6>'
-              + '<br>Status: ' + stat + '</h6><br>' +'</h6><br>' + modifyBtn + btn + '</div></div>');
-              
+              + '<br>Status: ' + stat + '</h6><br>' + '</h6><br>' + modifyBtn + btn + '</div></div>');
+
 
           else {
             // TODO stampare nessun risultato
@@ -213,7 +217,7 @@
         let btnToClose = '<button type="submit" value="' + id + '" class="btn btn-toClose">Close</button>'
         let btnToDoNothing = ""
         let today = (new Date())
-        today.setHours(23,59,59,0)
+        today.setHours(23, 59, 59, 0)
         if (status == "not_started" && Date.parse(today) >= Date.parse(start) && Date.parse(today) <= Date.parse(end)) {
           return btnToOpen
         }
@@ -258,7 +262,7 @@
             })
             let title = ''
             let text = ''
-            if(res.status === 200) {
+            if (res.status === 200) {
               window.location.reload()
             }
             else {

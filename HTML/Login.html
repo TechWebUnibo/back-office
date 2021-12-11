@@ -71,6 +71,10 @@
     <!-- JQUERY -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(async function () {
+            setToken(null)
+            localStorage.employeeID = null
+        })
         $('form').submit(async function (e) {
             e.preventDefault();
             var name = $('input#username').val();
@@ -85,7 +89,6 @@
                 body: data,
             })
             data = await res.json()
-            console.log(data)
             setToken(data.accessToken)
             localStorage.employeeID = data.id
             //if(res.status == 200) load the home page, else if(res.status == 403 wrong password) else (account not founded/doesn't exist)
