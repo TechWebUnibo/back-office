@@ -8,6 +8,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
   <link rel="stylesheet" href="../CSS/Main.css">
+  <!-- FONT AWESOME-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 </head>
 
 <body>
@@ -80,13 +83,15 @@
   </header>
   <div class="container">
     <div class="row">
+      <!-- CATEGORY & BUNDLE -->
       <div class="createForm offset-1 col-lg-6 col-md-10 col-sm-10 col-10">
-        <h3 class="mb-4">Create Category</h3>
-        <form method="POST">
-          <!-- Category name -->
+        <h3 class="mb-4">Create Category & Bundle</h3>
+        <!-- FORM -->
+        <form id="createBundleForm">
+          <!-- Category or Bundle name -->
           <div class="col-12 mb-3">
-            <input type="text" class="form-control" id="categoryname" placeholder="Category's name"
-              aria-describedby="categorynameHelp" required aria-required="true">
+            <input type="text" class="form-control" id="catOrBundleName" placeholder="Bundle's name"
+              aria-describedby="catOrBundleNameHelp" required aria-required="true">
           </div>
           <!-- Description -->
           <div class="col-12 mb-3">
@@ -95,9 +100,44 @@
           </div>
           <!-- Image -->
           <div class="col-6 mb-3">
-            <label for="image">Category image</label>
-            <input type="file" id="image" name="image" accept="image/png, image/jpeg">
-            <!-- <input type="file" id="image" name="image" accept="image/png, image/jpeg" required aria-required="true"> -->
+            <label for="image">Image</label>
+            <input type="file" id="image" name="image" accept="image/png, image/jpeg" required aria-required="true">
+          </div>
+          <!-- Button to show the data for the bundle creation-->
+          <div>
+            <input type="checkbox" autocomplete="off" id="checkBundle" onclick="showBundle()"> Is it a bundle?
+          </div>
+          <div id="isBundle">
+            <!-- First mandatory category of the bundle -->
+            <div id="categoryGroup">
+              <div class="input-group col-12 mb-3">
+                <label class="input-group-text" for="1Category">1° Category</label>
+                <select class="form-select" id="1Category">
+                  <option value="noCategory" selected>No Category</option>
+                </select>
+              </div>
+              <!-- Second mandatory category of the bundle -->
+              <div class="input-group col-12 mb-3">
+                <label class="input-group-text" for="2Category">2° Category</label>
+                <select class="form-select" id="2Category">
+                  <option value="noCategory" selected>No Category</option>
+                </select>
+              </div>
+            </div>
+            <!-- Button to add more categories to the bundle -->
+            <div class="input-group col-12 mb-1">
+              <label class="input-group-text" for="addItem">Add Category</label>
+              <button id="addCategory" type="button" class="btn btn-plus">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+            <!-- Button to remove categories from the bundle -->
+            <div class="input-group col-12 mb-3">
+              <label class="input-group-text" for="removeItem">Remove Category</label>
+              <button id="removeCategory" type="button" class="btn btn-minus">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
           </div>
           <button type="submit" class="btn btn-submit">Submit</button>
         </form>
@@ -160,36 +200,87 @@
     //authenticated?
     authBack()
 
+    function showBundle() {
+      if ($('#checkBundle').is(":checked")) {
+        $("#isBundle").show()
+      } else {
+        $("#isBundle").hide()
+      }
+    }
+
     //Loading of the select input
     $(document).ready(async function () {
 
-      let category = await getProducts()
-      await appendData(category)
-
-      $('form').submit(async function (e) {
+      let categories = await getProducts()
+      let count = 3
+      await appendGroupCategory(categories, 'categoryOfTheItem')
+      await appendGroupCategory(categories, '1Category')
+      await appendGroupCategory(categories, '2Category')
+      showBundle()
+      //POST of a category or bundle
+      $('#createBundleForm').submit(async function (e) {
         e.preventDefault()
 
-        let category = $('input#categoryname').val()
-        let desc = $('input#description').val()
+        let category = $('#catOrBundleName').val()
+        let desc = $('#description').val()
         let img = document.getElementById('image')
-
         const formData = new FormData()
         formData.append('name', category)
         formData.append('description', desc)
         formData.append('img', img.files[0])
+        let cnt = count - 1
+        let products = []
 
-        let res = await fetch('https://site202118.tw.cs.unibo.it/api/products', {
-          method: 'POST',
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Authorization': 'Bearer ' + getToken(),
-          },
-          body: formData,
-        })
-        location.reload()
+        for (let i = 1; i <= cnt; i++) {
+          if ($('#' + i + 'Category').val() != 'noCategory')
+            formData.append(`products[${i - 1}]`, $('#' + i + 'Category').val())
+        }
 
+        try {
+          let res = await fetch('https://site202118.tw.cs.unibo.it/api/products', {
+            method: 'POST',
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': 'Bearer ' + getToken(),
+            },
+            body: formData,
+          })
+          if (res.status === 200) {
+            location.reload()
+          }
+          else {
+            let notification = new bootstrap.Modal(document.getElementById('notification'), {
+              keyboard: false
+            })
+            notification.toggle()
+          }
+        }
+        catch (error) {
+          console.log(error)
+        }
       })
 
+      //Add Category to the bundle
+      $('.btn-plus').click(async function () {
+        $('.errorMessage').remove()
+        $('#categoryGroup').append('<div class="input-group col-12 mb-3"><label class="input-group-text" for="' + count + 'Category">'
+          + count + '° Category</label><select class="form-select" id="'
+          + count + 'Category"><option value="noCategory"  selected>No Category</option></select></div>')
+        await appendGroupCategory(categories, count + 'Category')
+        count += 1
+
+      })
+      //Remove item to the bundle
+      $('.btn-minus').click(async function () {
+        if (count > 3) {
+          $('#categoryGroup div:last').remove()
+          count -= 1
+        }
+        else {
+          $('.errorMessage').remove()
+          $('.btn-minus').after('<div class="errorMessage"> The bundle needs at least 2 items. </div>')
+        }
+      })
       $(".btn-modify").each(async function () {
         $(this).on("click", async function () {
           localStorage.idCategory = $('#categoryOfTheItem').val()
@@ -224,12 +315,23 @@
             //TODO stampare errore di codice quando non si può eliminare
             console.log(error)
           }
-          $('#categoryOfTheItem').empty()
-          category = await getProducts()
-          appendData(category)
+          location.reload()
         })
       })
-      /*
+      async function appendGroupCategory(categories, idSelect) {
+        for (const category of categories) {
+          if (category.products.length == 0) {
+            $('#' + idSelect).append('<option value="' + category._id + '">' + category.name + '</option>')
+          }
+          else {
+            $('#' + idSelect).append('<option class="optionBundle" value="' + category._id + '">' + category.name + '</option>')
+          }
+        }
+      }
+
+
+
+      /* TODO
       $('.btn-search').each(async function () {
         $(this).on("click", async function () {
           $('.errorMessage').remove()
@@ -241,17 +343,6 @@
           }
         })
       }) */
-
-      async function appendData(categories) {
-        for (const category of categories) {
-          if (category.products.length == 0) {
-            $('#categoryOfTheItem').append('<option value="' + category._id + '">' + category.name + '</option>')
-          }
-          else {
-            $('#categoryOfTheItem').append('<option class="optionBundle" value="' + category._id + '">' + category.name + '</option>')
-          }
-        }
-      }
     })
 
     //Post of the category
