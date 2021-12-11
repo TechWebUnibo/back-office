@@ -161,6 +161,7 @@
         <div id="buttons" class="text-start">
           <button type="submit" class="btn btn-modify">Modify</button>
           <button type="submit" class="btn btn-delete">Delete</button>
+          <button type="submit" class="btn btn-search">Search</button>
         </div>
       </div>
     </div>
@@ -333,20 +334,27 @@
         }
       }
 
-
-
-      /* TODO
       $('.btn-search').each(async function () {
         $(this).on("click", async function () {
           $('.errorMessage').remove()
-          if ($('#categoryOfTheItem').val() != null && category.products.length == 0) {
+          let categories = await getProducts()
+          let leng
+          for(const category of categories){
+            if(category._id == $('#categoryOfTheItem').val()){
+              leng = category.products.length
+            }
+          }
+          console.log(leng)
+
+          if ($('#categoryOfTheItem').val() != null && leng == 0) {
             window.location.href = 'ItemSearch.html?idCategory=' + $('#categoryOfTheItem').val()
           }
           else {
             $('#buttons').after('<div class="errorMessage">Select a Category</div>')
           }
         })
-      }) */
+      })
+
     })
 
     //Post of the category
