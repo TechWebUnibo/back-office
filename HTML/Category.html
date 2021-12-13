@@ -300,11 +300,11 @@
               window.location.reload()
             }
             else {
-              let errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
+              let errorModal = new bootstrap.Modal(document.getElementById('notification'), {
                 keyboard: false
               })
-              $('#modalTitle').text('Category not removable')
-              $('.modal-body').text('This category is rented, you cannot delete it')
+              $('#notificationTitle').text('Category not removable')
+              $('#notificationText').text('This category is rented, you cannot delete it')
               errorModal.toggle()
             }
           }
@@ -312,12 +312,11 @@
             //TODO stampare errore di codice quando non si può eliminare
             console.log(error)
           }
-          location.reload()
         })
       })
       async function appendGroupCategory(categories, idSelect) {
         for (const category of categories) {
-          if (category.products.length == 0) {
+          if (category.products.length == 0 || idSelect === 'categoryOfTheItem') {
             $('#' + idSelect).append('<option value="' + category._id + '">' + category.name + '</option>')
           }
         }
