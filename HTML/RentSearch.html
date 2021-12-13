@@ -217,7 +217,9 @@
         let btnToClose = '<button type="submit" value="' + id + '" class="btn btn-toClose">Close</button>'
         let btnToDoNothing = ""
         let today = (new Date())
-        today.setHours(0, 0, 0, 0)
+        today.setHours(23, 59, 59, 0)
+        console.log('Rental: ' ,Date.parse(today) >= Date.parse(start))
+        console.log('End: ',Date.parse(today) <= Date.parse(end))
         if (status == "not_started" && Date.parse(today) >= Date.parse(start) && Date.parse(today) <= Date.parse(end)) {
           return btnToOpen
         }
