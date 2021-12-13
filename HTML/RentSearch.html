@@ -226,22 +226,26 @@
         else return btnToDoNothing
       }
       // Filtering
+      // TODO grossi problemi
       $('#searchButton').click(async function () {
-        $('#cardRecipient').empty();
+        $('#cardRecipient').empty()
+        customers = await getCustomers()
+        categories = await getProducts()
+        items = await getProducts()
+        rentals = await getRentals("customerName=TRUE&productName=TRUE")
         statusFilt = $('#searchByStatus').val()
         userFilt = $('#searchByUsername').val()
         categoryFilt = $('#searchByCategory').val()
         itemFilt = $('#searchByItem').val()
         appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
-      });
+      })
       // Modify the rent
-      // TODO
       $(".btn-modify").each(async function () {
         $(this).on("click", async function () {
           localStorage.idRent = $(this).val()
           window.location.href = 'ChangeRent.html'
-        });
-      });
+        })
+      })
       // Closing the rent
       $(".btn-toClose").each(async function () {
         $(this).on("click", async function () {

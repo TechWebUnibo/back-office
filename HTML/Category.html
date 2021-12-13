@@ -235,12 +235,13 @@
         formData.append('img', img.files[0])
         let cnt = count - 1
         let products = []
-
-        for (let i = 1; i <= cnt; i++) {
-          if ($('#' + i + 'Category').val() != 'noCategory')
-            formData.append(`products[${i - 1}]`, $('#' + i + 'Category').val())
+        if ($('#checkBundle').is(":checked")) {
+          for (let i = 1; i <= cnt; i++) {
+            if ($('#' + i + 'Category').val() != 'noCategory'){
+              formData.append(`products[${i - 1}]`, $('#' + i + 'Category').val())
+            }
+          }
         }
-
         try {
           let res = await fetch('https://site202118.tw.cs.unibo.it/api/products', {
             method: 'POST',
@@ -317,7 +318,6 @@
             }
           }
           catch (error) {
-            //TODO stampare errore di codice quando non si può eliminare
             console.log(error)
           }
           location.reload()
@@ -339,8 +339,8 @@
           $('.errorMessage').remove()
           let categories = await getProducts()
           let leng
-          for(const category of categories){
-            if(category._id == $('#categoryOfTheItem').val()){
+          for (const category of categories) {
+            if (category._id == $('#categoryOfTheItem').val()) {
               leng = category.products.length
             }
           }
