@@ -217,10 +217,10 @@
         let btnToClose = '<button type="submit" value="' + id + '" class="btn btn-toClose">Close</button>'
         let btnToDoNothing = ""
         let today = (new Date())
-        today.setHours(23, 59, 59, 0)
+        today.setHours(0, 0, 0, 0)
         console.log('Rental: ' ,Date.parse(today) >= Date.parse(start))
         console.log('End: ',Date.parse(today) <= Date.parse(end))
-        if (status == "not_started" && Date.parse(today) >= Date.parse(start) && Date.parse(today) <= Date.parse(end)) {
+        if (status == "not_started" && today.setHours(23,59,59,0) >= Date.parse(start) && today.setHours(0,0,0,0) <= Date.parse(end)) {
           return btnToOpen
         }
         else if (status == "in_progress") return btnToClose
