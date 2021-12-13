@@ -215,7 +215,7 @@
         <div class="input-group mt-3" >
           <input type="text" class="form-control" placeholder="Insert end date..." aria-label="end Date" id="endRepair${id}" value="" required/>
         </div>`)
-        createPickers('startRepair' + id, 'endRepair' + id)
+        createPickers('startRepair' + id, 'endRepair' + id, true)
       }
       else {
         $(`#brokenDate_${id}`).empty()

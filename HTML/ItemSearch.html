@@ -189,7 +189,7 @@
           $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h5 class ="card-title">'
             + item.name + '</h5><h6>Category: ' + map[item.type] +
             '</h6><h6>Price: ' + item.price + '</h6><h6>Condition: ' + item.condition +
-            `</h6></div><div class="card-footer bg-transparent"><a href="ChangeItem.html?item=${item._id}" class="btn btn-primary">Modify</a><button class="btn btn-danger" onClick='+
+            `</h6></div><div class="card-footer bg-transparent"><a href="ChangeItem.html?item=${item._id}" class="btn btn-primary">Modify</a><button class="btn btn-danger" onClick=
             "deleteCard('${item._id}')">Delete</button></div></div>`)
         }
       }
@@ -204,6 +204,7 @@
 
     async function deleteCard(id) {
       const { status, body } = await deleteItem(id)
+      console.log('ciao')
       if (status === 200) {
         window.location.reload()
       }
