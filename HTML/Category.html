@@ -94,7 +94,7 @@
         <form id="createBundleForm">
           <!-- Category or Bundle name -->
           <div class="col-12 mb-3">
-            <input type="text" class="form-control" id="catOrBundleName" placeholder="Bundle's name"
+            <input type="text" class="form-control" id="catOrBundleName" placeholder="Name"
               aria-describedby="catOrBundleNameHelp" required aria-required="true">
           </div>
           <!-- Description -->
@@ -165,14 +165,14 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="modalTitle">Ooops...</h5>
+            <h5 class="modal-title" id="notificationTitle">Ooops...</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" id="notificationText">
             Something wrong...
           </div>
         </div>
@@ -250,15 +250,7 @@
             },
             body: formData,
           })
-          if (res.status === 200) {
-            location.reload()
-          }
-          else {
-            let notification = new bootstrap.Modal(document.getElementById('notification'), {
-              keyboard: false
-            })
-            notification.toggle()
-          }
+          showNotification('Category', res.status, 'created')
         }
         catch (error) {
           console.log(error)
@@ -327,9 +319,6 @@
         for (const category of categories) {
           if (category.products.length == 0) {
             $('#' + idSelect).append('<option value="' + category._id + '">' + category.name + '</option>')
-          }
-          else {
-            $('#' + idSelect).append('<option class="optionBundle" value="' + category._id + '">' + category.name + '</option>')
           }
         }
       }

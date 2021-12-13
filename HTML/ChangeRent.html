@@ -189,7 +189,7 @@
             for (const item of rent.products) {
                 await loadItem(item)
             }
-            createPickers()
+            createPickers('startDate', 'endDate', true)
             $('#startDate').val(rent.start)
             $('#endDate').val(rent.end)
         })
@@ -239,7 +239,7 @@
                 $('#modifyRental').prop('disabled', false)
                 $('#availability').append(`
         <div class="alert alert-success" role="alert">
-          The item selected is available for ${res.price}€
+          The product selected is available for ${res.price}€
         </div>
         `)
             }
@@ -247,7 +247,7 @@
                 $('#modifyRental').prop('disabled', true)
                 $('#availability').append(`
         <div class="alert alert-danger" role="alert">
-          The item selected is not available
+          The product selected is not available
         </div>
         `)
             }

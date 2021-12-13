@@ -107,7 +107,7 @@ function editDistance(s1, s2) {
     return costs[s2.length]
 }
 
-function createPickers(startId, endId) {
+function createPickers(startId, endId, blockStart) {
     startId = startId || 'startDate'
     endId = endId || 'endDate'
 
@@ -124,9 +124,30 @@ function createPickers(startId, endId) {
             noFadeEffect: true,
             labelText: ""
         })
+        const today = (new Date()).toISOString().split('T')[0]
+        console.log(today)
+        $('#' + startId).val(today)
+        if(blockStart)
+            $('#' + startId).prop('disabled', true)
         $("#fd-but-" + startId).removeClass("date-picker-control")
         $("#fd-but-" + startId).addClass("input-group-text")
         $("#fd-but-" + endId).removeClass("date-picker-control")
         $("#fd-but-" + endId).addClass("input-group-text")
     })
+}
+
+function showNotification(title, status, text) {
+    let notification = new bootstrap.Modal(document.getElementById('notification'), {
+        keyboard: false
+    })
+    console.log(title)
+    if (status === 200) {
+        $('#notificationTitle').text(`${title} ${text}`)
+        $('#notificationText').text(`The ${title.toLowerCase()} was ${text}`)
+    }
+    else {
+        $('#notificationTitle').text('Oooops...')
+        $('#notificationText').text('Something wrong...')
+    }
+    notification.toggle()
 }

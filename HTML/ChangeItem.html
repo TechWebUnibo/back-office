@@ -124,14 +124,14 @@
                 </form>
             </div>
         </div>
-        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitle">Ooops...</h5>
+                        <h5 class="modal-title" id="notificationTitle">Ooops...</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" id="notificationText">
                         Something wrong...
                     </div>
                 </div>
@@ -198,15 +198,7 @@
                     data.end = endDate
                 }
                 let { status, body } = await modifyItem(item._id, data)
-                if (status === 200) {
-                    window.location.reload()
-                }
-                else {
-                    let errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
-                        keyboard: false
-                    })
-                    errorModal.toggle()
-                }
+                showNotification('Item', status, 'modified')
             })
 
             async function brokenItem() {
@@ -220,7 +212,7 @@
                         <input type="text" class="form-control" placeholder="Insert end date..." aria-label="end Date" id="endDate" value=""/>
                     </div>`
                     )
-                    createPickers('startDate', 'endDate')
+                    createPickers('startDate', 'endDate', true)
                 }
                 else {
                     $('#brokenDate').empty()

@@ -100,7 +100,7 @@
           </div>
           <!-- Type -->
           <div class="input-group col-12 mb-3">
-            <label class="input-group-text" for="categoryOfTheItem">Category</label>
+            <label class="input-group-text" for="categoryOfTheItem" required>Category</label>
             <select class="form-select" id="categoryOfTheItem">
               <option value="" id="selectPlaceholder" disabled selected hidden>Choose a category</option>
             </select>
@@ -108,7 +108,7 @@
           <!-- Condition -->
           <div class="input-group col-12 mb-3">
             <label class="input-group-text" for="condition">Condition</label>
-            <select class="form-select" id="condition">
+            <select class="form-select" id="condition" required>
               <option value="perfect">Perfect</option>
               <option value="good">Good</option>
               <option value="suitable">Suitable</option>
@@ -118,10 +118,10 @@
           </div>
           <!-- Price -->
           <div class="col-12 mb-3">
-            <label for="price">Price: </label>
-            <input type="number" id="price" min="0.00" max="10000.00" step="0.01" required aria-required="true" />
+            <label for="price" >Price: </label>
+            <input type="number" id="price" min="0.00" max="10000.00" step="0.01" required aria-required="true" required/>
           </div>
-          <button type="submit" class="btn btn-submit">Submit</button>
+          <button type="submit" class="btn btn-submit">Create</button>
         </form>
       </div>
     </div>
@@ -130,10 +130,10 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalTitle">Ooops...</h5>
+          <h5 class="modal-title" id="notificationTitle">Ooops...</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="notificationText">
           Something wrong...
         </div>
       </div>
@@ -172,6 +172,9 @@
       let count = 3
       let categories = await getProducts()
       await appendCategory(categories)
+      let notification = new bootstrap.Modal(document.getElementById('notification'), {
+        keyboard: false
+      })
 
       //POST of a new item
       $('#createItemForm').submit(async function (e) {
@@ -190,15 +193,7 @@
           },
           body: data
         })
-        if (res.status === 200) {
-          location.reload()
-        }
-        else {
-          let notification = new bootstrap.Modal(document.getElementById('notification'), {
-            keyboard: false
-          })
-          notification.toggle()
-        }
+        showNotification('Item', res.status, 'created')
       })
       async function appendCategory(categories) {
         for (const category of categories) {

@@ -139,11 +139,6 @@
               <input type="text" class="form-control" id="inputZip">
             </div>
           </div>
-          <!-- Comments -->
-          <div class="col-12 mb-3">
-            <input type="text" class="form-control" id="comment" placeholder="Something about the user..."
-              aria-describedby="commentsHelp">
-          </div>
           <button type="submit" class="btn btn-submit">Submit</button>
         </form>
       </div>
@@ -184,7 +179,6 @@
       let city = $('#inputCity').val()
       let res = $('#inputAddress').val()
       let zipcode = $('#inputZip').val()
-      let comment = $('#comment').val()
       let avat = document.getElementById('avatar')
       let formData = new FormData()
       formData.append('username', username)
@@ -201,7 +195,7 @@
           method: 'POST',
           body: formData
         })
-        location.reload()
+        window.location.reload()
       }
       catch (error) {
         console.log(error)
