@@ -94,9 +94,9 @@
           <select aria-describedby="filterByStatus" class="dropdownFilter" id="searchByStatus">
             <option selected="selected" hidden value="rent-status">Status of the rent</option>
             <option value="all">All</option>
-            <option value="toOpen">Yet to start</option>
+            <option value="not_started">Yet to start</option>
             <option value="rented">Rented</option>
-            <option value="closed">Closed</option>
+            <option value="terminated">Closed</option>
             <option value="delayed">Delayed</option>
             <option value="cancelled">Cancelled</option>
           </select>
@@ -188,7 +188,9 @@
 
       async function appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt) {
         $('#cardRecipient').empty()
+        console.log('ciao')
         for (const rent of rentals) {
+          console.log(rent.state)
           if (rent.employee == localStorage.employeeID) {
             let btn = await checkStatus(rent.state, rent._id, rent.start, rent.end)
             let modifyBtn = (rent.state === 'terminated' || rent.state === 'delayed' || rent.state === 'cancelled')
@@ -210,6 +212,60 @@
             }
           }
         }
+        // Filtering
+        $('#searchButton').click(async function () {
+          statusFilt = $('#searchByStatus').val()
+          userFilt = $('#searchByUsername').val()
+          categoryFilt = $('#searchByCategory').val()
+          itemFilt = $('#searchByItem').val()
+          appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
+        })
+        // Modify the rent
+        $(".btn-modify").each(async function () {
+          $(this).on("click", async function () {
+            localStorage.idRent = $(this).val()
+            window.location.href = 'ChangeRent.html'
+          })
+        })
+        // Closing the rent
+        $(".btn-toClose").each(async function () {
+          $(this).on("click", async function () {
+            localStorage.idRent = $(this).val()
+            window.location.href = 'RentClosure.html'
+          })
+        })
+        // Opening the rent
+        $(".btn-toOpen").each(async function () {
+          $(this).on("click", async function () {
+            try {
+              let res = await fetch('https://site202118.tw.cs.unibo.it/api/rentals/' + $(this).val() + '/start', {
+                method: 'POST',
+                headers: {
+                  'Access-Control-Allow-Origin': '*',
+                  'Authorization': 'Bearer ' + getToken(),
+                }
+              })
+              let title = ''
+              let text = ''
+              if (res.status === 200) {
+                location.reload()
+              }
+              else {
+                title = 'Something wrong'
+                text = 'There was an error'
+              }
+              let notification = new bootstrap.Modal(document.getElementById('notification'), {
+                keyboard: false
+              })
+              $('#modalTitle').text(title)
+              $('.modal-body').text(text)
+              notification.toggle()
+            }
+            catch (error) {
+              console.log(error)
+            }
+          })
+        })
       }
 
       // check the status of the rent and return the correct button to print
@@ -219,8 +275,6 @@
         let btnToDoNothing = ""
         let today = (new Date())
         today.setHours(0, 0, 0, 0)
-        console.log('Rental: ', Date.parse(today) >= Date.parse(start))
-        console.log('End: ', Date.parse(today) <= Date.parse(end))
         if (status == "not_started" && today.setHours(23, 59, 59, 0) >= Date.parse(start) && today.setHours(0, 0, 0, 0) <= Date.parse(end)) {
           return btnToOpen
         }
@@ -228,60 +282,6 @@
         else if (status == "delayed") return btnToClose
         else return btnToDoNothing
       }
-      // Filtering
-      $('#searchButton').click(async function () {
-        statusFilt = $('#searchByStatus').val()
-        userFilt = $('#searchByUsername').val()
-        categoryFilt = $('#searchByCategory').val()
-        itemFilt = $('#searchByItem').val()
-        appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
-      })
-      // Modify the rent
-      $(".btn-modify").each(async function () {
-        $(this).on("click", async function () {
-          localStorage.idRent = $(this).val()
-          window.location.href = 'ChangeRent.html'
-        })
-      })
-      // Closing the rent
-      $(".btn-toClose").each(async function () {
-        $(this).on("click", async function () {
-          localStorage.idRent = $(this).val()
-          window.location.href = 'RentClosure.html'
-        })
-      })
-      // Opening the rent
-      $(".btn-toOpen").each(async function () {
-        $(this).on("click", async function () {
-          try {
-            let res = await fetch('https://site202118.tw.cs.unibo.it/api/rentals/' + $(this).val() + '/start', {
-              method: 'POST',
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + getToken(),
-              }
-            })
-            let title = ''
-            let text = ''
-            if (res.status === 200) {
-              location.reload()
-            }
-            else {
-              title = 'Something wrong'
-              text = 'There was an error'
-            }
-            let notification = new bootstrap.Modal(document.getElementById('notification'), {
-              keyboard: false
-            })
-            $('#modalTitle').text(title)
-            $('.modal-body').text(text)
-            notification.toggle()
-          }
-          catch (error) {
-            console.log(error)
-          }
-        })
-      })
     })
 
   </script>
