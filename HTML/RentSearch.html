@@ -97,6 +97,8 @@
             <option value="toOpen">Yet to start</option>
             <option value="rented">Rented</option>
             <option value="closed">Closed</option>
+            <option value="delayed">Delayed</option>
+            <option value="cancelled">Cancelled</option>
           </select>
           <!-- Filter by User -->
           <select aria-describedby="filterByUser" class="dropdownFilter" id="searchByUser">
@@ -165,13 +167,12 @@
     $(document).ready(async function () {
       let customers = await getCustomers()
       let categories = await getProducts()
-      let items = await getProducts()
+      let items = await getItems()
       let rentals = await getRentals("customerName=TRUE&productName=TRUE")
       let statusFilt = $('#searchByStatus').val()
       let userFilt = $('#searchByUsername').val()
       let categoryFilt = $('#searchByCategory').val()
       let itemFilt = $('#searchByItem').val()
-
       for (const customer of customers) {
         $('#searchByUser').append('<option value="' + customer._id + '">' + customer.username + '</option>');
       }
@@ -182,35 +183,35 @@
       for (const item of items) {
         $('#searchByItem').append('<option value="' + item._id + '">' + item.name + '</option>');
       }
-
       appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
-    })
-
-    async function appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt) {
-      for (const rent of rentals) {
-        if (rent.employee == localStorage.employeeID) {
-          let btn = await checkStatus(rent.state, rent._id, rent.start, rent.end)
-          let modifyBtn = (rent.state === 'terminated' || rent.state === 'delayed' || rent.state === 'cancelled')
-            ? ''
-            : `<button type="submit" value="${rent._id}" class="btn btn-modify">Modify</button>`
-          let stat = rent.state == 'not_started' ? 'Not Started' : rent.state == 'in_progress'
-            ? 'In Progress' : rent.state == 'delayed'
-              ? 'Delayed' : rent.state === 'cancelled'
-                ? 'Cancelled' : 'Closed'
-          if (1) //cond_status && cond_username && cond_category && cond_item) {
-            $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6></h6><h6>Customer: '
-              + rent.customer +
-              '</h6><h6>Item: ' + rent.products
-              + '</h6><br>First day: ' + rent.start.split('T')[0]
-              + '</h6><br>Last day: ' + rent.end.split('T')[0] + '</h6>'
-              + '<br>Status: ' + stat + '</h6><br>' + '</h6><br>' + modifyBtn + btn + '</div></div>');
 
 
-          else {
-            // TODO stampare nessun risultato
+      async function appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt) {
+        $('#cardRecipient').empty()
+        for (const rent of rentals) {
+          if (rent.employee == localStorage.employeeID) {
+            let btn = await checkStatus(rent.state, rent._id, rent.start, rent.end)
+            let modifyBtn = (rent.state === 'terminated' || rent.state === 'delayed' || rent.state === 'cancelled')
+              ? ''
+              : `<button type="submit" value="${rent._id}" class="btn btn-modify">Modify</button>`
+            let stat = rent.state == 'not_started' ? 'Not Started' : rent.state == 'in_progress'
+              ? 'In Progress' : rent.state == 'delayed'
+                ? 'Delayed' : rent.state === 'cancelled'
+                  ? 'Cancelled' : 'Closed'
+            let cond_status = (statusFilt == "rent-status") || (statusFilt == "all") || (statusFilt == rent.state)
+            //let cond_condition = (conditionFilt == "") || (conditionFilt == undefined) || (conditionFilt == "all") || (conditionFilt == item.condition)
+            if (cond_status) { //cond_status && cond_username && cond_category && cond_item) {
+              $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6></h6><h6>Customer: '
+                + rent.customer +
+                '</h6><h6>Item: ' + rent.products
+                + '</h6><br>First day: ' + rent.start.split('T')[0]
+                + '</h6>Last day: ' + rent.end.split('T')[0] + '</h6>'
+                + '<br>Status: ' + stat + '</h6><br>' + '</h6></div><div class="card-footer bg-transparent">' + modifyBtn + btn + '</div></div>')
+            }
           }
         }
       }
+
       // check the status of the rent and return the correct button to print
       async function checkStatus(status, id, start, end) {
         let btnToOpen = '<button type="submit" value="' + id + '" class="btn btn-toOpen">Start</button>'
@@ -218,9 +219,9 @@
         let btnToDoNothing = ""
         let today = (new Date())
         today.setHours(0, 0, 0, 0)
-        console.log('Rental: ' ,Date.parse(today) >= Date.parse(start))
-        console.log('End: ',Date.parse(today) <= Date.parse(end))
-        if (status == "not_started" && today.setHours(23,59,59,0) >= Date.parse(start) && today.setHours(0,0,0,0) <= Date.parse(end)) {
+        console.log('Rental: ', Date.parse(today) >= Date.parse(start))
+        console.log('End: ', Date.parse(today) <= Date.parse(end))
+        if (status == "not_started" && today.setHours(23, 59, 59, 0) >= Date.parse(start) && today.setHours(0, 0, 0, 0) <= Date.parse(end)) {
           return btnToOpen
         }
         else if (status == "in_progress") return btnToClose
@@ -228,13 +229,7 @@
         else return btnToDoNothing
       }
       // Filtering
-      // TODO grossi problemi
       $('#searchButton').click(async function () {
-        $('#cardRecipient').empty()
-        customers = await getCustomers()
-        categories = await getProducts()
-        items = await getProducts()
-        rentals = await getRentals("customerName=TRUE&productName=TRUE")
         statusFilt = $('#searchByStatus').val()
         userFilt = $('#searchByUsername').val()
         categoryFilt = $('#searchByCategory').val()
@@ -269,7 +264,7 @@
             let title = ''
             let text = ''
             if (res.status === 200) {
-              window.location.reload()
+              location.reload()
             }
             else {
               title = 'Something wrong'
@@ -285,15 +280,10 @@
           catch (error) {
             console.log(error)
           }
-          $('#cardRecipient').empty();
-          statusFilt = $('#searchByStatus').val()
-          userFilt = $('#searchByUsername').val()
-          categoryFilt = $('#searchByCategory').val()
-          itemFilt = $('#searchByItem').val()
-          appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
         })
       })
-    }
+    })
+
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
