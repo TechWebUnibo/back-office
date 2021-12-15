@@ -194,14 +194,18 @@
             }
             cond_categories = (categoryFilt == "item") || (categoryFilt == "all") || (categoryFilt == rent.products)
             if (cond_status && cond_username && cond_categories) {
-              let items = ''
+              let items = '<br>'
               for(const category of rent.products){
                 items += '</h6><h6>Item: ' + category
+              }
+              let divclass = ''
+              if(modifyBtn != '' || btn != ''){
+                divclass = ' class="card-footer bg-transparent" '
               }
               $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6></h6><h6>Customer: '
                 + rent.customer + items + '</h6><h6>First day: ' + rent.start.split('T')[0]
                 + '</h6><h6>Last day: ' + rent.end.split('T')[0] + '</h6>'
-                + '<br>Status: ' + stat + '</h6><br>' + '</h6></div><div class="card-footer bg-transparent">' + modifyBtn + btn + '</div></div>')
+                + 'Status: ' + stat + '</h6><br>' + '</h6></div><div '+ divclass +'>' + modifyBtn + btn + '</div></div>')
             }
           }
         }

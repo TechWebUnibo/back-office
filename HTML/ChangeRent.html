@@ -90,8 +90,8 @@
     <div class="container">
         <div class="row">
             <div class="createForm offset-2 col-8">
-                <h3 class="mb-4">Closing a rent</h3>
-                <form id="closeRent" method="POST">
+                <h3 class="mb-4">Modify a rent</h3>
+                <form id="modifyRent" method="POST">
                     <div class="row">
                         <!-- Customer -->
                         <div class="row">
@@ -109,7 +109,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <h4>Items</h4>
+                            <h4>Items:</h4>
                             <ul id='itemsContainer' class="list-group list-group-flush">
                             </ul>
                         </div>
@@ -190,8 +190,8 @@
                 await loadItem(item)
             }
             createPickers('startDate', 'endDate', true)
-            $('#startDate').val(rent.start)
-            $('#endDate').val(rent.end)
+            $('#startDate').val(rent.start.split('T')[0] + '')
+            $('#endDate').val(rent.end.split('T')[0] + '')
         })
         async function loadItem(item) {
             const fullItem = (await getItems({ _id: item }))[0]

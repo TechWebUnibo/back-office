@@ -125,7 +125,6 @@ function createPickers(startId, endId, blockStart) {
             labelText: ""
         })
         const today = (new Date()).toISOString().split('T')[0]
-        console.log(today)
         $('#' + startId).val(today)
         if(blockStart)
             $('#' + startId).prop('disabled', true)
