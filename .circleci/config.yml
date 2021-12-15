@@ -20,6 +20,10 @@ jobs:
             scp CSS/* antonio.lopez2@lucia.cs.unibo.it:/home/web/site202118/html/public/css/
             scp JS/* antonio.lopez2@lucia.cs.unibo.it:/home/web/site202118/html/public/js/
             scp HTML/* antonio.lopez2@lucia.cs.unibo.it:/home/web/site202118/html/public/html/
+      - run:
+          name: Update src
+          command: |
+            ssh antonio.lopez2@lucia.cs.unibo.it "bash --login -c 'cd /home/web/site202118/html/src/back-office && git pull' "
 
 
 workflows:
