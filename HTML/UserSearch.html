@@ -110,19 +110,19 @@
         <div class="row" id="cardRecipient"></div>
       </div>
     </div>
-      <!-- Modal Notification -->
-      <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="modalTitle"></h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            </div>
+    <!-- Modal Notification -->
+    <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
           </div>
         </div>
       </div>
+    </div>
   </div>
   <footer class="footer">
     <div class="container p-5">
@@ -159,6 +159,7 @@
       appendData(customers, userFilt, nameFilt, surFilt)
     })
     async function appendData(customers, usernameFilter, nameFilter, surnameFilter) {
+      $('#cardRecipient').empty()
       for (const customer of customers) {
         let cond_username = (usernameFilter == "") || (similarity(customer.username, usernameFilter) >= 0.65) || customer.username.toLowerCase().includes(usernameFilter.toLowerCase(), 0)
         let cond_name = (nameFilter == "") || (similarity(customer.name, nameFilter) >= 0.65) || customer.name.toLowerCase().includes(nameFilter.toLowerCase(), 0)
@@ -172,40 +173,38 @@
             city = customer.address.city == '' ? 'Not defined' : customer.address.city;
             residence = customer.address.residence == '' ? 'Not defined' : customer.address.residence;
             zip = customer.address.zip == null ? 'Not defined' : customer.address.zip;
-
-            $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body text-center"><img src="' + avatar +
+            $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><img src="' + avatar +
               '" class="img-thumbnail img-fluid avatar"><h5 class ="card-title">' + customer.username +
               '</h5><h6>' + customer.name + ' ' + customer.surname +
               '</h6><h7>City: ' + city +
-              '</h7><br><h7>Address: ' + residence +
-              '</h7><br><h7>Zip: ' + zip +
-              '</h7><br><button type="button" value="' + customer._id + '" class="btn btn-modify">Modify</button><button type="button" value="' + customer._id + '" class="btn btn-delete">Delete</button></div></div>');
+              '</h7><h7>Address: ' + residence +
+              '</h7><h7>Zip: ' + zip +
+              '</h7></div><div class="card-footer bg-transparent"><button type="button" value="' + customer._id + '" class="btn btn-modify">Modify</button><button type="button" value="' + customer._id + '" class="btn btn-delete">Delete</button></div></div>');
           }
           else {
-            $('#cardRecipient').append('<div class="card col-lg-4 text-center";"><div class ="card-body"><img src="' + avatar +
+            $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><img src="' + avatar +
               '" class="img-thumbnail img-fluid avatar"><h5 class ="card-title">' + customer.username +
               '</h5><h6>' + customer.name + ' ' + customer.surname +
-              '</h6><h7>City: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Address: </h7><h7 class="text-black-50">Not definied</h7><br><h7>Zip: </h7><h7 class="text-black-50">Not definied</h7><br><button value="' + customer._id + '" class="btn btn-modify">Modify</button></div><button type="button" value="' + customer._id + '" class="btn btn-delete">Delete</button></div></div>');
+              '</h6><h7>City: </h7><h7 class="text-black-50">Not definied</h7><h7>Address: </h7><h7 class="text-black-50">Not definied</h7><h7>Zip: </h7><h7 class="text-black-50">Not definied</h7></div><div class="card-footer bg-transparent"><button value="' + customer._id + '" class="btn btn-modify">Modify</button></div><button type="button" value="' + customer._id + '" class="btn btn-delete">Delete</button></div></div>');
           }
         }
       }
       $('#searchButton').click(async function () {
-        $('#cardRecipient').empty();
         userFilt = $('#searchByUsername').val()
         nameFilt = $('#searchByName').val()
         surFilt = $('#searchBySurname').val()
         appendData(customers, userFilt, nameFilt, surFilt)
-      });
+      })
       $(".btn-modify").each(async function () {
         $(this).on("click", async function () {
           localStorage.idUser = $(this).val()
           window.location.href = 'ChangeUser.html'
-        });
-      });
+        })
+      })
 
       $(".btn-delete").each(async function () {
         $(this).on("click", async function () {
-          localStorage.idUser = $(this).val();
+          localStorage.idUser = $(this).val()
           try {
             let res = await fetch('https://site202118.tw.cs.unibo.it/api/customers/' + localStorage.idUser, {
               method: 'DELETE',
