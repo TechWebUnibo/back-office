@@ -105,11 +105,6 @@
             <option selected="selected" hidden value="user">User</option>
             <option value="all">All</option>
           </select>
-          <!-- Filter by Category -->
-          <select aria-describedby="filterByCategory" class="dropdownFilter" id="searchByCategory">
-            <option selected="selected" hidden value="category">Category</option>
-            <option value="all">All</option>
-          </select>
           <!-- Filter by Item -->
           <select aria-describedby="filterByItem" class="dropdownFilter" id="searchByItem">
             <option selected="selected" hidden value="item">Item</option>
@@ -166,31 +161,22 @@
 
     $(document).ready(async function () {
       let customers = await getCustomers()
-      let categories = await getProducts()
-      let items = await getItems()
+      let products = await getProducts()
       let rentals = await getRentals("customerName=TRUE&productName=TRUE")
       let statusFilt = $('#searchByStatus').val()
-      let userFilt = $('#searchByUsername').val()
-      let categoryFilt = $('#searchByCategory').val()
-      let itemFilt = $('#searchByItem').val()
+      let userFilt = $('#searchByUser').val()
+      let categoryFilt = $('#searchByItem').val()
       for (const customer of customers) {
-        $('#searchByUser').append('<option value="' + customer._id + '">' + customer.username + '</option>');
+        $('#searchByUser').append('<option value="' + customer.username + '">' + customer.username + '</option>');
       }
-      for (const category of categories) {
-        $('#searchByCategory').append('<option value="' + category._id + '">' + category.name + '</option>');
+      for (const product of products) {
+        $('#searchByItem').append('<option value="' + product.name + '">' + product.name + '</option>');
       }
-      // TODO mettere solo gli item con le category selezionata
-      for (const item of items) {
-        $('#searchByItem').append('<option value="' + item._id + '">' + item.name + '</option>');
-      }
-      appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
+      appendData(customers, products, rentals, statusFilt, userFilt, categoryFilt)
 
-
-      async function appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt) {
+      async function appendData(customers, products, rentals, statusFilt, userFilt, categoryFilt) {
         $('#cardRecipient').empty()
-        console.log('ciao')
         for (const rent of rentals) {
-          console.log(rent.state)
           if (rent.employee == localStorage.employeeID) {
             let btn = await checkStatus(rent.state, rent._id, rent.start, rent.end)
             let modifyBtn = (rent.state === 'terminated' || rent.state === 'delayed' || rent.state === 'cancelled')
@@ -201,25 +187,24 @@
                 ? 'Delayed' : rent.state === 'cancelled'
                   ? 'Cancelled' : 'Closed'
             let cond_status = (statusFilt == "rent-status") || (statusFilt == "all") || (statusFilt == rent.state)
-            //let cond_condition = (conditionFilt == "") || (conditionFilt == undefined) || (conditionFilt == "all") || (conditionFilt == item.condition)
-            if (cond_status) { //cond_status && cond_username && cond_category && cond_item) {
+            let cond_username = (userFilt == 'user') || (userFilt == "all") || (userFilt == rent.customer)
+            let cond_categories = 0
+            for(const category of rent.products){
+              cont_categories = category == categoryFilt ? 1 : cond_categories
+            }
+            cond_categories = (categoryFilt == "item") || (categoryFilt == "all") || (categoryFilt == rent.products)
+            if (cond_status && cond_username && cond_categories) {
+              let items = ''
+              for(const category of rent.products){
+                items += '</h6><h6>Item: ' + category
+              }
               $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6></h6><h6>Customer: '
-                + rent.customer +
-                '</h6><h6>Item: ' + rent.products
-                + '</h6><br>First day: ' + rent.start.split('T')[0]
+                + rent.customer + items + '</h6><br>First day: ' + rent.start.split('T')[0]
                 + '</h6>Last day: ' + rent.end.split('T')[0] + '</h6>'
                 + '<br>Status: ' + stat + '</h6><br>' + '</h6></div><div class="card-footer bg-transparent">' + modifyBtn + btn + '</div></div>')
             }
           }
         }
-        // Filtering
-        $('#searchButton').click(async function () {
-          statusFilt = $('#searchByStatus').val()
-          userFilt = $('#searchByUsername').val()
-          categoryFilt = $('#searchByCategory').val()
-          itemFilt = $('#searchByItem').val()
-          appendData(customers, categories, items, rentals, statusFilt, userFilt, categoryFilt, itemFilt)
-        })
         // Modify the rent
         $(".btn-modify").each(async function () {
           $(this).on("click", async function () {
@@ -267,7 +252,13 @@
           })
         })
       }
-
+      // Filtering
+      $('#searchButton').click(async function () {
+        statusFilt = $('#searchByStatus').val()
+        userFilt = $('#searchByUser').val()
+        categoryFilt = $('#searchByItem').val()
+        appendData(customers, products, rentals, statusFilt, userFilt, categoryFilt)
+      })
       // check the status of the rent and return the correct button to print
       async function checkStatus(status, id, start, end) {
         let btnToOpen = '<button type="submit" value="' + id + '" class="btn btn-toOpen">Start</button>'
