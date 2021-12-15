@@ -95,7 +95,7 @@
             <option selected="selected" hidden value="rent-status">Status of the rent</option>
             <option value="all">All</option>
             <option value="not_started">Yet to start</option>
-            <option value="rented">Rented</option>
+            <option value="in_progress">Rented</option>
             <option value="terminated">Closed</option>
             <option value="delayed">Delayed</option>
             <option value="cancelled">Cancelled</option>
@@ -199,8 +199,8 @@
                 items += '</h6><h6>Item: ' + category
               }
               $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6></h6><h6>Customer: '
-                + rent.customer + items + '</h6><br>First day: ' + rent.start.split('T')[0]
-                + '</h6>Last day: ' + rent.end.split('T')[0] + '</h6>'
+                + rent.customer + items + '</h6><h6>First day: ' + rent.start.split('T')[0]
+                + '</h6><h6>Last day: ' + rent.end.split('T')[0] + '</h6>'
                 + '<br>Status: ' + stat + '</h6><br>' + '</h6></div><div class="card-footer bg-transparent">' + modifyBtn + btn + '</div></div>')
             }
           }
