@@ -189,7 +189,7 @@
             for (const item of rent.products) {
                 await loadItem(item)
             }
-            createPickers('startDate', 'endDate', true)
+            createPickers('startDate', 'endDate')
             $('#startDate').val(rent.start.split('T')[0] + '')
             $('#endDate').val(rent.end.split('T')[0] + '')
         })
