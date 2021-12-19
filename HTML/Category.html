@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-md navbar-light">
       <div class="container-fluid">
         <!-- Logo -->
-        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Logo" class="logo">
+        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Company Logo" class="logo">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -94,21 +94,25 @@
         <form id="createBundleForm">
           <!-- Category or Bundle name -->
           <div class="col-12 mb-3">
-            <input type="text" class="form-control" id="catOrBundleName" placeholder="Name"
-              aria-describedby="catOrBundleNameHelp" required aria-required="true">
+            <label for="catOrBundleName" class="sr-only form-label">Category or Bundle Name</label>
+            <input type="text" class="form-control" id="catOrBundleName" placeholder="Name" required
+              aria-required="true">
           </div>
           <!-- Description -->
           <div class="col-12 mb-3">
-            <input type="text" class="form-control" id="description" placeholder="Description..."
-              aria-describedby="descriptionHelp" required aria-required="true">
+            <label for="description" class="sr-only form-label">Description</label>
+            <input type="text" class="form-control" id="description" placeholder="Description..." required
+              aria-required="true">
           </div>
           <!-- Image -->
           <div class="col-8 mb-3">
             <label for="image" class="form-label">Image</label>
-            <input class="form-control form-control" id="image" name="image" type="file" accept="image/png, image/jpeg" required aria-required="true"/>
+            <input class="form-control form-control" id="image" name="image" type="file" accept="image/png, image/jpeg"
+              required aria-required="true" />
           </div>
           <!-- Button to show the data for the bundle creation-->
           <div>
+            <label for="checkBundle" class="sr-only form-label">Show Bundle Form Button</label>
             <input type="checkbox" autocomplete="off" id="checkBundle" onclick="showBundle()"> Is it a bundle?
           </div>
           <div id="isBundle">
@@ -132,6 +136,7 @@
             <div class="input-group col-12 mb-1">
               <label class="input-group-text" for="addItem">Add Category</label>
               <button id="addCategory" type="button" class="btn btn-plus">
+                <span class="sr-only">Add an extra category to the bundle</span>
                 <i class="fa fa-plus"></i>
               </button>
             </div>
@@ -139,6 +144,7 @@
             <div class="input-group col-12 mb-3">
               <label class="input-group-text" for="removeItem">Remove Category</label>
               <button id="removeCategory" type="button" class="btn btn-minus">
+                <span class="sr-only">Ramove a category to the bundle</span>
                 <i class="fa fa-minus"></i>
               </button>
             </div>
@@ -165,7 +171,7 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="notificationTitle" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -237,7 +243,7 @@
         let products = []
         if ($('#checkBundle').is(":checked")) {
           for (let i = 1; i <= cnt; i++) {
-            if ($('#' + i + 'Category').val() != 'noCategory'){
+            if ($('#' + i + 'Category').val() != 'noCategory') {
               formData.append(`products[${i - 1}]`, $('#' + i + 'Category').val())
             }
           }
@@ -316,8 +322,11 @@
       })
       async function appendGroupCategory(categories, idSelect) {
         for (const category of categories) {
-          if (category.products.length == 0 || idSelect === 'categoryOfTheItem') {
+          if (category.products.length == 0) {
             $('#' + idSelect).append('<option value="' + category._id + '">' + category.name + '</option>')
+          }
+          else if(idSelect === 'categoryOfTheItem'){
+            $('#' + idSelect).append('<option class="optionBundle" value="' + category._id + '">' + category.name + '</option>')
           }
         }
       }
@@ -332,7 +341,6 @@
               leng = category.products.length
             }
           }
-          console.log(leng)
 
           if ($('#categoryOfTheItem').val() != null && leng == 0) {
             window.location.href = 'ItemSearch.html?idCategory=' + $('#categoryOfTheItem').val()
@@ -342,10 +350,7 @@
           }
         })
       })
-
     })
-
-    //Post of the category
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

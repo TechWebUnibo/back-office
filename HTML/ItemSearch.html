@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-md navbar-light">
       <div class="container-fluid">
         <!-- Logo -->
-        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Logo" class="logo">
+        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Company Logo" class="logo">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -91,10 +91,11 @@
         <h4>List of Items</h4>
         <div class="input-group">
           <div class="form-outline">
-            <input type="text" class="form-control" id="searchByItemName" placeholder="Item Name"
-              aria-describedby="searchByItemName" required aria-required="true">
+            <label for="searchByItemName" class="sr-only form-label">Search by Item's Name</label>
+            <input type="text" class="form-control" id="searchByItemName" placeholder="Item Name" required aria-required="true">
           </div>
-          <select aria-describedby="filterByCondition" class="dropdownFilter" id="searchByCondition">
+          <label for="searchByCondition" class="sr-only form-label">Search by Condition</label>
+          <select class="dropdownFilter" id="searchByCondition">
             <option selected="selected" hidden value="">Condition</option>
             <option value="all">All</option>
             <option value="perfect">Perfect</option>
@@ -103,11 +104,13 @@
             <option value="not_available">Not Available</option>
             <option value="broken">Broken</option>
           </select>
-          <select aria-describedby="filterByCategory" class="dropdownFilter" id="searchByCategory">
+          <label for="searchByCategory" class="sr-only form-label">Search by Category</label>
+          <select class="dropdownFilter" id="searchByCategory">
             <option selected="selected" hidden value="">Category</option>
             <option value="all">All</option>
           </select>
           <button id="searchButton" type="button" class="btn btn-modify">
+            <span class="sr-only" aria-describedby="searchButton">Search</span>
             <i class="fa fa-search" aria-hidden="true"></i>
           </button>
         </div>

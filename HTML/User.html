@@ -15,7 +15,7 @@
     <nav class="navbar navbar-expand-md navbar-light">
       <div class="container-fluid">
         <!-- Logo -->
-        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Logo" class="logo">
+        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Company Logo" class="logo">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,37 +89,40 @@
         <form id="createUserForm" method="POST">
           <!-- Username -->
           <div class="col-12 mb-3">
-            <input type="text" class="form-control" id="username" placeholder="Username" aria-describedby="usernameHelp"
-              required aria-required="true">
+            <label for="username" class="sr-only form-label">Username</label>
+            <input type="text" class="form-control" id="username" placeholder="Username" required aria-required="true">
           </div>
           <!-- Name & Surname -->
           <div class="row mb-3">
             <!-- Name -->
             <div class="col-6">
-              <input type="text" class="form-control" id="name" placeholder="Name" aria-describedby="nameHelp" required
-                aria-required="true">
+              <label for="name" class="sr-only form-label">Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Name" required aria-required="true">
             </div>
             <!-- Surname -->
             <div class="col-6">
-              <input type="text" class="form-control" id="surname" placeholder="Surname" aria-describedby="surnameHelp"
-                required aria-required="true">
+              <label for="surname" class="sr-only form-label">Surname</label>
+              <input type="text" class="form-control" id="surname" placeholder="Surname" required aria-required="true">
             </div>
           </div>
           <!-- Password -->
           <div class="mb-3">
             <div class="col-12 mb-1">
-              <input type="password" class="form-control" id="userPassword" placeholder="Password"
-                aria-describedby="passwordHelp" required aria-required="true">
+              <label for="userPassword" class="sr-only form-label">Password</label>
+              <input type="password" class="form-control" id="userPassword" placeholder="Password" required
+                aria-required="true">
             </div>
             <!-- Show password button -->
             <div>
-              <input type="checkbox" autocomplete="off" onclick="showPass()">Show Password
+              <label for="btnShowPassword" class="sr-only form-label">Show Password Button</label>
+              <input id="btnShowPassword" type="checkbox" autocomplete="off" onclick="showPass()">Show Password
             </div>
           </div>
           <!-- Avatar -->
           <div class="col-8 mb-3">
             <label for="avatar" class="form-label">Avatar</label>
-            <input class="form-control form-control" id="avatar" name="avatar" type="file" accept="image/png, image/jpeg"/>
+            <input class="form-control form-control" id="avatar" name="avatar" type="file"
+              accept="image/png, image/jpeg" />
           </div>
           <!-- Address -->
           <div class="row mb-3">

@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-md navbar-light">
       <div class="container-fluid">
         <!-- Logo -->
-        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Logo" class="logo">
+        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Company Logo" class="logo">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -91,7 +91,8 @@
         <h4>List of Rent</h4>
         <div class="input-group widthmax">
           <!-- Filter by status -->
-          <select aria-describedby="filterByStatus" class="dropdownFilter" id="searchByStatus">
+          <label for="searchByStatus" class="sr-only form-label">Search by Status</label>
+          <select class="dropdownFilter" id="searchByStatus">
             <option selected="selected" hidden value="rent-status">Status of the rent</option>
             <option value="all">All</option>
             <option value="not_started">Yet to start</option>
@@ -101,17 +102,19 @@
             <option value="cancelled">Cancelled</option>
           </select>
           <!-- Filter by User -->
-          <select aria-describedby="filterByUser" class="dropdownFilter" id="searchByUser">
+          <label for="searchByUser" class="sr-only form-label">Search by User</label>
+          <select class="dropdownFilter" id="searchByUser">
             <option selected="selected" hidden value="user">User</option>
             <option value="all">All</option>
           </select>
           <!-- Filter by Item -->
-          <select aria-describedby="filterByItem" class="dropdownFilter" id="searchByItem">
+          <label for="searchByItem" class="sr-only form-label">Search by Item</label>
+          <select class="dropdownFilter" id="searchByItem">
             <option selected="selected" hidden value="item">Item</option>
             <option value="all">All</option>
           </select>
           <button id="searchButton" type="button" class="btn btn-submit">
-            <!-- TODO far funzionare la fa icon -->
+            <span class="sr-only">Search</span>
             <i class="fa fa-search" aria-hidden="true"></i>
           </button>
         </div>
@@ -125,7 +128,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalTitle"></h5>
+          <h5 class="modal-title" id="modalTitle">Modal Title</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -202,7 +205,7 @@
               if(modifyBtn != '' || btn != ''){
                 divclass = ' class="card-footer bg-transparent" '
               }
-              $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6></h6><h6>Customer: '
+              $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6>Customer: '
                 + rent.customer + items + '</h6><h6>First day: ' + rent.start.split('T')[0]
                 + '</h6><h6>Last day: ' + rent.end.split('T')[0] + '</h6>'
                 + 'Status: ' + stat + '</h6><br>' + '</h6></div><div '+ divclass +'>' + modifyBtn + btn + '</div></div>')

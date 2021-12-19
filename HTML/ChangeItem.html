@@ -19,7 +19,7 @@
         <nav class="navbar navbar-expand-md navbar-light">
             <div class="container-fluid">
                 <!-- Logo -->
-                <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Logo" class="logo">
+                <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Company Logo" class="logo">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -96,8 +96,8 @@
                 <form id="modifyItemForm">
                     <!-- Item name -->
                     <div class="col-12 mb-3">
-                        <input type="text" class="form-control" id="itemname" placeholder="Name of the item"
-                            aria-describedby="itemnameHelp" required aria-required="true">
+                        <label for="itemName" class="sr-only form-label">Item name</label>
+                        <input type="text" class="form-control" id="itemName" placeholder="Name of the item" required aria-required="true">
                     </div>
                     <!-- Condition -->
                     <div class="input-group col-12 mb-3">
@@ -124,7 +124,7 @@
                 </form>
             </div>
         </div>
-        <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="notificationTitle" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -176,7 +176,7 @@
             const urlParams = new URLSearchParams(queryString);
             const id = urlParams.get('item')
             item = (await getItems({ _id: id }))[0]
-            $('#itemname').val(item.name)
+            $('#itemName').val(item.name)
             $('#condition').val(item.condition)
             $('#price').val(item.price)
             brokenItem()
@@ -187,7 +187,7 @@
 
             $("#modifyItemForm").submit(async function (event) {
                 event.preventDefault()
-                let name = $('#itemname').val()
+                let name = $('#itemName').val()
                 let price = $('#price').val()
                 let condition = $('#condition').val()
                 let data = { name, price, condition }

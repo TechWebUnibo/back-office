@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-md navbar-light">
       <div class="container-fluid">
         <!-- Logo -->
-        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Logo" class="logo">
+        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Company Logo" class="logo">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -91,18 +91,20 @@
         <h4>List of Users</h4>
         <div class="input-group">
           <div class="form-outline">
-            <input type="text" class="form-control" id="searchByUsername" placeholder="Username"
-              aria-describedby="searchByUsername" required aria-required="true">
+            <label for="searchByUsername" class="sr-only form-label">Search by Username</label>
+            <input type="text" class="form-control" id="searchByUsername" placeholder="Username" required aria-required="true">
           </div>
           <div>
+            <label for="searchByName" class="sr-only form-label">Search by Name</label>
             <input type="text" class="form-control" id="searchByName" placeholder="Name" aria-describedby="searchByName"
               required aria-required="true">
           </div>
           <div>
-            <input type="text" class="form-control" id="searchBySurname" placeholder="Surname"
-              aria-describedby="searchBySurname" required aria-required="true">
+            <label for="searchBySurname" class="sr-only form-label">Search by Surname</label>
+            <input type="text" class="form-control" id="searchBySurname" placeholder="Surname" required aria-required="true">
           </div>
           <button id="searchButton" type="button" class="btn btn-submit">
+            <span class="sr-only" aria-describedby="searchButton">Search</span>
             <i class="fa fa-search" aria-hidden="true"></i>
           </button>
         </div>
@@ -115,7 +117,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="modalTitle"></h5>
+            <h5 class="modal-title" id="modalTitle">Modal Title</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -174,7 +176,7 @@
             residence = customer.address.residence == '' ? 'Not defined' : customer.address.residence;
             zip = customer.address.zip == null ? 'Not defined' : customer.address.zip;
             $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><img src="' + avatar +
-              '" class="img-thumbnail img-fluid avatar"><h5 class ="card-title">' + customer.username +
+              '" class="img-thumbnail img-fluid avatar" alt="' + customer.username + ' avatar"><h5 class ="card-title">' + customer.username +
               '</h5><h6>' + customer.name + ' ' + customer.surname +
               '</h6><h7>City: ' + city +
               '</h7><br><h7>Address: ' + residence +
@@ -183,7 +185,7 @@
           }
           else {
             $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><img src="' + avatar +
-              '" class="img-thumbnail img-fluid avatar"><h5 class ="card-title">' + customer.username +
+              '" class="img-thumbnail img-fluid avatar" alt="' + customer.username + ' avatar"><h5 class ="card-title">' + customer.username +
               '</h5><h6>' + customer.name + ' ' + customer.surname +
               '</h6><h7>City: </h7><h7 class="text-black-50">Not definied</h7><h7>Address: </h7><h7 class="text-black-50">Not definied</h7><h7>Zip: </h7><h7 class="text-black-50">Not definied</h7></div><div class="card-footer bg-transparent"><button value="' + customer._id + '" class="btn btn-modify">Modify</button></div><button type="button" value="' + customer._id + '" class="btn btn-delete">Delete</button></div></div>');
           }

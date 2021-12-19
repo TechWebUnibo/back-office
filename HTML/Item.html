@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-md navbar-light">
       <div class="container-fluid">
         <!-- Logo -->
-        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Logo" class="logo">
+        <img src="https://site202118.tw.cs.unibo.it/img/logo.eda7be37.png" alt="Company Logo" class="logo">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -95,12 +95,12 @@
         <form id="createItemForm">
           <!-- Item name -->
           <div class="col-12 mb-3">
-            <input type="text" class="form-control" id="itemName" placeholder="Name of the item"
-              aria-describedby="itemNameHelp" required aria-required="true">
+            <label for="itemName" class="sr-only form-label">Item name</label>
+            <input type="text" class="form-control" id="itemName" placeholder="Name of the item" required aria-required="true">
           </div>
           <!-- Type -->
           <div class="input-group col-12 mb-3">
-            <label class="input-group-text" for="categoryOfTheItem" required>Category</label>
+            <label class="input-group-text" for="categoryOfTheItem">Category</label>
             <select class="form-select" id="categoryOfTheItem">
               <option value="" id="selectPlaceholder" disabled selected hidden>Choose a category</option>
             </select>
@@ -126,7 +126,7 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="notificationTitle" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

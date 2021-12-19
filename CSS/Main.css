@@ -1,4 +1,14 @@
-body{
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+  body{
     font-size: 17px;
     font-family: Arial, Helvetica, sans-serif;
     background: rgb(54,75,230);
@@ -63,7 +73,7 @@ body{
 /* submit */
 .btn-submit {
     color: #FFFFFF;
-    background-color: #c568d7;
+    background-color: #a24eb3;
     border-color: #e1a5cf;
 }
 .btn-submit:focus{
@@ -72,7 +82,7 @@ body{
 /* modify */
 .btn-modify {
     color: #FFFFFF;
-    background-color: #5e8dcc;
+    background-color: #3a6092;
     border-color: #4e9eb6;
 }
 .btn-modify:focus{
@@ -89,7 +99,7 @@ body{
 } /* search */
 .btn-search {
     color: #FFFFFF;
-    background-color: #e968cd;
+    background-color: #a53b8e;
     border-color: #ee86e0;
 }
 .btn-search:focus{
