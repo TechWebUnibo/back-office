@@ -120,6 +120,14 @@
 .btn-toClose:focus{
     box-shadow: 0 0 0 0.25rem #815f8677;
 }
+.btn-invoice{
+    color: #FFFFFF;
+    background-color: #682340;
+    border-color: #943a3e;
+}
+.btn-invoice:focus{
+    box-shadow: 0 0 0 0.25rem rgba(184, 61, 71, 0.25);
+}
 /* Login style */
 .loginForm{
     margin-top: 2rem;
@@ -156,6 +164,9 @@
     border-radius: 0.5rem;
 }
 .createForm > h3{
+    margin-top: 15px;
+    font-weight: bold;
+}.createForm > h2{
     margin-top: 15px;
     font-weight: bold;
 }

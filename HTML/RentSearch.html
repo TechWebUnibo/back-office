@@ -192,23 +192,23 @@
             let cond_status = (statusFilt == "rent-status") || (statusFilt == "all") || (statusFilt == rent.state)
             let cond_username = (userFilt == 'user') || (userFilt == "all") || (userFilt == rent.customer)
             let cond_categories = 0
-            for(const category of rent.products){
+            for (const category of rent.products) {
               cont_categories = category == categoryFilt ? 1 : cond_categories
             }
             cond_categories = (categoryFilt == "item") || (categoryFilt == "all") || (categoryFilt == rent.products)
             if (cond_status && cond_username && cond_categories) {
               let items = '<br>'
-              for(const category of rent.products){
+              for (const category of rent.products) {
                 items += '</h6><h6>Item: ' + category
               }
               let divclass = ''
-              if(modifyBtn != '' || btn != ''){
+              if (modifyBtn != '' || btn != '') {
                 divclass = ' class="card-footer bg-transparent" '
               }
               $('#cardRecipient').append('<div class="card col-lg-4";"><div class ="card-body"><h6>Customer: '
                 + rent.customer + items + '</h6><h6>First day: ' + rent.start.split('T')[0]
                 + '</h6><h6>Last day: ' + rent.end.split('T')[0] + '</h6>'
-                + 'Status: ' + stat + '</h6><br>' + '</h6></div><div '+ divclass +'>' + modifyBtn + btn + '</div></div>')
+                + 'Status: ' + stat + '</h6><br>' + '</h6></div><div ' + divclass + '>' + modifyBtn + btn + '</div></div>')
             }
           }
         }
@@ -224,6 +224,13 @@
           $(this).on("click", async function () {
             localStorage.idRent = $(this).val()
             window.location.href = 'RentClosure.html'
+          })
+        })
+        // Invoice of the rent
+        $(".btn-invoice").each(async function () {
+          $(this).on("click", async function () {
+            localStorage.idRent = $(this).val()
+            window.location.href = 'RentInvoice.html?rent='+ $(this).val()
           })
         })
         // Opening the rent
@@ -270,6 +277,7 @@
       async function checkStatus(status, id, start, end) {
         let btnToOpen = '<button type="submit" value="' + id + '" class="btn btn-toOpen">Start</button>'
         let btnToClose = '<button type="submit" value="' + id + '" class="btn btn-toClose">Close</button>'
+        let btnInvoice = '<button type="submit" value="' + id + '" class="btn btn-invoice">Invoice</button>'
         let btnToDoNothing = ""
         let today = (new Date())
         today.setHours(0, 0, 0, 0)
@@ -277,6 +285,7 @@
           return btnToOpen
         }
         else if (status == "in_progress") return btnToClose
+        else if (status == "terminated") return btnInvoice
         else if (status == "delayed") return btnToClose
         else return btnToDoNothing
       }
